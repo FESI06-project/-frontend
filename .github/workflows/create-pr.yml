@@ -67,10 +67,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.head_ref }}  # PR의 소스 브랜치
-          title: "${{ github.head_ref }}" # PR 제목을 브랜치 이름으로 설정
+          branch: ${{ github.ref }}  # PR의 소스 브랜치
+          title: "${{ github.ref }}" # PR 제목을 브랜치 이름으로 설정
           body: |
             ## **📃** 관련 이슈
             Related Issue: #${{ env.ISSUE_NUMBER }}
@@ -84,3 +83,4 @@ jobs:
             ## 💬 리뷰 요구사항
             ex) 의논할 점 및 특별히 요구할 부분
           base: dev  # PR의 대상 브랜치
+          token: ${{ secrets.PAT_TOKEN }}
