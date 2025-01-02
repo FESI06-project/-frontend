@@ -34,8 +34,8 @@ jobs:
       - name: Set up Node.js (Latest LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*' # 최신 LTS 버전 사용
-          cache: 'npm' # npm 캐시 활성화
+          node-version: 'lts/*' 
+          cache: 'npm' 
 
       - name: Install dependencies
         run: npm install
@@ -55,7 +55,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           commit-message: "Automated build and test success"
           branch: ${{ github.ref }}
           title: "${{ github.head_ref }}"
