@@ -57,6 +57,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
+          branch: ${{ github.ref }}
           title: "${{ github.head_ref }}"
           body: |
             ## **📃** 관련 이슈
