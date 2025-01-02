@@ -83,7 +83,7 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.head_ref }}  # PR의 소스 브랜치
+          branch: ${{ github.ref }}  # PR의 소스 브랜치
           title: "${{ env.PR_TITLE }}"    # PR 제목을 마지막 커밋 메시지로 설정
           body: |
             ## **📃** 관련 이슈
