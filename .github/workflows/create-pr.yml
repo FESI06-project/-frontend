@@ -3,62 +3,69 @@ name: Build, Test, and Create PR
 on:
   push:
     branches:
-      - feat-*  
+      - feat-*  # "feat-"로 시작하는 브랜치에 푸시될 때 트리거
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+  contents: write          # 브랜치 작업 권한
+  pull-requests: write     # PR 생성 및 업데이트 권한
+  issues: write            # PR과 이슈 연동 권한
 
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug Branch Name
+      # 2. Set up Git
+      - name: Configure Git
         run: |
-          echo "Head ref: ${{ github.head_ref }}"
-          echo "Ref: ${{ github.ref }}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Set Default Branch if Empty
+      # 3. Extract Issue Number
+      - name: Extract Issue Number
+        id: extract_issue_number
         run: |
-          if [ -z "${{ github.head_ref }}" ]; then
-            echo "Branch name is empty. Setting default branch."
-            echo "DEFAULT_BRANCH=dev" >> $GITHUB_ENV
+          BRANCH_NAME=${GITHUB_REF##*/}
+          ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+')
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "No issue number found. Defaulting to UNKNOWN."
+            echo "ISSUE_NUMBER=UNKNOWN" >> $GITHUB_ENV
           else
-            echo "DEFAULT_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
           fi
 
+      # 4. Set up Node.js
       - name: Set up Node.js (Latest LTS)
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
+          cache: 'npm'
 
+      # 5. Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # 6. Run build
       - name: Run build
         run: npm run build
 
+      # 7. Run tests (conditionally)
       - name: Run tests if available
         run: |
           if grep -q '"test":' package.json; then
+            echo "Test script found. Running tests..."
             npm test
           else
             echo "No test script found. Skipping tests..."
           fi
 
-      - name: Synchronize remote branch
-        run: |
-          git fetch origin
-          git checkout ${{ github.head_ref }}
-          git pull origin ${{ github.head_ref }} || echo "Branch is up-to-date or does not exist remotely."
-
+      # 8. Create Pull Request
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
