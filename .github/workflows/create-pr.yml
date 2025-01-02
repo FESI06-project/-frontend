@@ -6,8 +6,10 @@ on:
       - feat-*  
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: write          
+  pull-requests: write     
+  issues: write            
+  actions: write    
 
 jobs:
   build_and_test:
