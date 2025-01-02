@@ -14,11 +14,10 @@ jobs:
         uses: robvanderleek/create-issue-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch-name: "feat/{{number}}/{{title}}"
+          CREATE_ISSUE_BRANCH_BRANCH_NAME: "feat/{{number}}/{{title}}"
 
   manage_pr_closure:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true # PR이 머지된 경우에만 실행
     runs-on: ubuntu-latest
     steps:
       - name: Close Related Issue
@@ -32,6 +31,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin --delete ${{ github.event.pull_request.head.ref }}
+          git push origin --delete ${{ github.event.pull_request.head.ref }} # 브랜치 삭제
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
