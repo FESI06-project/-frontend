@@ -41,8 +41,14 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests if available
+        run: |
+          if grep -q '"test":' package.json; then
+            echo "Test script found. Running tests..."
+            npm test
+          else
+            echo "No test script found. Skipping tests..."
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
