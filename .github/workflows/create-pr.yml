@@ -3,47 +3,57 @@ name: Build, Test, and Create PR
 on:
   push:
     branches:
-      - feat-*
+      - feat-*  # "feat-"로 시작하는 브랜치에 푸시될 때 트리거
 
 permissions:
-  contents: write          # 코드 변경 및 브랜치 관련 작업
-  pull-requests: write     # PR 생성 및 업데이트
-  issues: write            # 이슈 관련 작업
-  actions: write           # 워크플로우 관련 작업
-  deployments: write       # 배포 관련 작업
-  checks: write            # 체크 및 워크플로우 상태 업데이트
+  contents: write          # 브랜치 작업 권한
+  pull-requests: write     # PR 생성 및 업데이트 권한
+  issues: write            # PR과 이슈 연동 권한
+
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Set up Git
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 3. Extract Issue Number
       - name: Extract Issue Number
         id: extract_issue_number
         run: |
-          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
-          ISSUE_NUMBER=$(echo ${GITHUB_REF##*/} | grep -oE '[0-9]+')
+          BRANCH_NAME=${GITHUB_REF##*/}
+          ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+')
           if [ -z "$ISSUE_NUMBER" ]; then
-            echo "No issue number found in branch name. Defaulting to UNKNOWN."
+            echo "No issue number found. Defaulting to UNKNOWN."
             echo "ISSUE_NUMBER=UNKNOWN" >> $GITHUB_ENV
           else
             echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
           fi
 
+      # 4. Set up Node.js
       - name: Set up Node.js (Latest LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*' 
-          cache: 'npm' 
+          node-version: 'lts/*'
+          cache: 'npm'
 
+      # 5. Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # 6. Run build
       - name: Run build
         run: npm run build
 
+      # 7. Run tests (conditionally)
       - name: Run tests if available
         run: |
           if grep -q '"test":' package.json; then
@@ -53,13 +63,14 @@ jobs:
             echo "No test script found. Skipping tests..."
           fi
 
+      # 8. Create Pull Request
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.head_ref }}
-          title: "${{ github.head_ref }}"
+          branch: ${{ github.head_ref }}  # 푸시된 브랜치 사용
+          title: ${{ github.head_ref }}   # PR 제목을 브랜치 이름으로 설정
           body: |
             ## **📃** 관련 이슈
             Related Issue: #${{ env.ISSUE_NUMBER }}
@@ -72,4 +83,4 @@ jobs:
 
             ## 💬 리뷰 요구사항
             ex) 의논할 점 및 특별히 요구할 부분
-          base: dev
+          base: dev  # PR의 대상 브랜치
