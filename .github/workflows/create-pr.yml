@@ -25,12 +25,25 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 3. Extract Commit Message and PR Trigger
-      - name: Extract Commit Message
+      # 3. Extract Issue Number and PR Trigger
+      - name: Extract Issue Number and PR Trigger
         id: extract_commit
         run: |
+          BRANCH_NAME=${GITHUB_REF##*/}
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Branch name: $BRANCH_NAME"
           echo "Last commit message: $LAST_COMMIT_MESSAGE"
+
+          # Extract issue number from branch name
+          ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+')
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "No issue number found in branch name. Defaulting to UNKNOWN."
+            echo "ISSUE_NUMBER=UNKNOWN" >> $GITHUB_ENV
+          else
+            echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          fi
+
+          # Check if commit message contains PR trigger
           if [[ "$LAST_COMMIT_MESSAGE" == *"createPR"* ]]; then
             echo "TRIGGER_PR=true" >> $GITHUB_ENV
             echo "PR_TITLE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
@@ -70,7 +83,7 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.ref }}  # PR의 소스 브랜치
+          branch: ${{ github.head_ref }}  # PR의 소스 브랜치
           title: "${{ env.PR_TITLE }}"    # PR 제목을 마지막 커밋 메시지로 설정
           body: |
             ## **📃** 관련 이슈
