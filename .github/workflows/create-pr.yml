@@ -29,10 +29,11 @@ jobs:
             echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
           fi
 
-      - name: Set up Node.js
+      - name: Set up Node.js (Latest LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 'lts/*' # 최신 LTS 버전 사용
+          cache: 'npm' # npm 캐시 활성화
 
       - name: Install dependencies
         run: npm install
@@ -62,4 +63,4 @@ jobs:
 
             ## 💬 리뷰 요구사항
             ex) 의논할 점 및 특별히 요구할 부분
-          base: main
+          base: dev
