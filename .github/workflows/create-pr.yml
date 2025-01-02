@@ -3,7 +3,7 @@ name: Build, Test, and Create PR
 on:
   push:
     branches:
-      - feat-*  
+      - feat-*
 
 permissions:
   contents: write          
