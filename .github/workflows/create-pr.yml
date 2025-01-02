@@ -65,12 +65,12 @@ jobs:
 
       # 8. Conditionally Create Pull Request
       - name: Create Pull Request
-        if: env.TRIGGER_PR == 'true'  # PR 생성 조건
+        if: env.TRIGGER_PR == 'true' 
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.head_ref }}  # PR의 소스 브랜치
+          branch: ${{ github.ref }}  # PR의 소스 브랜치
           title: "${{ env.PR_TITLE }}"    # PR 제목을 마지막 커밋 메시지로 설정
           body: |
             ## **📃** 관련 이슈
