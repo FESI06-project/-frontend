@@ -53,11 +53,10 @@ jobs:
           fi
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Automated build and test success"
-          branch: ${{ github.head_ref }}
           title: "${{ github.head_ref }}"
           body: |
             ## **📃** 관련 이슈
