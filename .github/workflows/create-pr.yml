@@ -1,0 +1,65 @@
+name: Build, Test, and Create PR
+
+on:
+  push:
+    branches:
+      - feat-*  
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Issue Number
+        id: extract_issue_number
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          ISSUE_NUMBER=$(echo ${GITHUB_REF##*/} | grep -oE '[0-9]+')
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "No issue number found in branch name. Defaulting to UNKNOWN."
+            echo "ISSUE_NUMBER=UNKNOWN" >> $GITHUB_ENV
+          else
+            echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Automated build and test success"
+          branch: ${{ github.head_ref }}
+          title: "${{ github.head_ref }}"
+          body: |
+            ## **📃** 관련 이슈
+            Related Issue: #${{ env.ISSUE_NUMBER }}
+
+            ## 📝 주요 작업 내용
+            ex) 설명 혹은 스크린샷
+
+            ## 📺 캡쳐본
+            (선택사항)
+
+            ## 💬 리뷰 요구사항
+            ex) 의논할 점 및 특별히 요구할 부분
+          base: main
