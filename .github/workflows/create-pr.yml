@@ -6,11 +6,12 @@ on:
       - feat-*
 
 permissions:
-  contents: write          
-  pull-requests: write     
-  issues: write            
-  actions: write    
-
+  contents: write          # 코드 변경 및 브랜치 관련 작업
+  pull-requests: write     # PR 생성 및 업데이트
+  issues: write            # 이슈 관련 작업
+  actions: write           # 워크플로우 관련 작업
+  deployments: write       # 배포 관련 작업
+  checks: write            # 체크 및 워크플로우 상태 업데이트
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
