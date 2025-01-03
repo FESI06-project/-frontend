@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-}
-
-body {
-  font-family: 'pretendard', sans-serif;
+@layer base {
+  html,
+  body {
+    @apply font-Pretendard;
+  }
 }
