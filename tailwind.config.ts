@@ -10,7 +10,7 @@ export default {
     extend: {
       colors: {},
       fontFamily: {
-        sans: ['Pretendard'],
+        Pretendard: ['Pretendard'],
       },
     },
   },
