@@ -2,9 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+@layer base {
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      local('Pretendard-Thin'),
+      url('/fonts/Pretendard-Thin.woff2') format('woff2'),
+      url('/fonts/Pretendard-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+  }
 }
-
 body {
   font-family: 'pretendard', sans-serif;
 }
