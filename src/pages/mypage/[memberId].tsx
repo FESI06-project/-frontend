@@ -17,13 +17,13 @@ const MY_PAGE_TABS: TabItem[] = [
 ];
 
 export default function MyPage() {
-  const router = useRouter();
-  const memberId = router.query.memberId || 'defaultMemberId';
+  // const router = useRouter();
+  // const memberId = router.query.memberId || 'defaultMemberId';
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
   const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
-    memberId: memberId as string,
+    memberId: 'defaultMemberId',
     email: "fitmon@fitmon.com",
     nickname: "김핏몬",
     profileImage: null
@@ -47,7 +47,8 @@ export default function MyPage() {
   };
 
   const handleGatheringClick = (gatheringId: number) => {
-    router.push(`/detail/${gatheringId}`);
+    // router.push(`/detail/${gatheringId}`);
+    console.log('모임 클릭:', gatheringId);
   };
 
   const handleProfileEdit = () => {

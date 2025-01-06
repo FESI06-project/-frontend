@@ -1,30 +1,36 @@
-import type { UserProfile } from '@/types';
+import { UserProfile } from "@/types";
 
 interface ProfileProps {
-  user: UserProfile;
+  user?: UserProfile;  
   onEditClick: () => void;
 }
 
-export default function Profile({ user, onEditClick }: ProfileProps) {
+export default function Profile({ 
+  user = {
+    memberId: '',
+    email: '',
+    nickname: '',
+    profileImage: null
+  } as UserProfile,  // UserProfile 타입으로 명시적 캐스팅
+  onEditClick 
+}: ProfileProps) {
   return (
     <div className="flex items-start gap-8">
-      {/* 프로필 이미지 섹션 */}
       <div className="flex-shrink-0">
-        {/* <img 
+        {/* <img
           src={user.profileImage || '/default-profile.png'}
           alt={user.nickname || 'Unknown'}
           className="w-32 h-32 rounded-full"
         /> */}
       </div>
 
-      {/* 유저 정보 섹션 */}
       <div className="flex-grow">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1> {/* 기본값 제공 */}
-            <p className="text-dark-600">{user.email || 'Unknown Email'}</p> {/* 기본값 제공 */}
+            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1>
+            <p className="text-dark-600">{user.email || 'Unknown Email'}</p>
           </div>
-          <button 
+          <button
             onClick={onEditClick}
             className="px-4 py-2 text-white bg-primary rounded-lg"
           >
