@@ -24,10 +24,13 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* 로고 영역 */}
-          <div className="flex-shrink-0 mr-8">
+          <div className="flex flex-row items-center flex-shrink-0 mr-8">
             {' '}
             {/* 오른쪽 여백 추가 */}
-            <Link href="/" className="text-red-500 font-bold text-2xl">
+            <div className="flex md:hidden">
+              <img src="/assets/image/list.svg" />
+            </div>
+            <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
               FitMon
             </Link>
           </div>
