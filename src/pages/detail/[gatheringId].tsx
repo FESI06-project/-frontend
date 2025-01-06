@@ -62,7 +62,7 @@ export default function GatheringDetail() {
       },
       {
         challengeId: 33,
-        challengeImage: 'www.www.ww.w.w.w.w',
+        challengeImage: 'www.ww.ww.w.w.w.w',
         challengeTitle: '',
         challengeDescription: '',
         challengeJoinedPeopleCount: 10,
