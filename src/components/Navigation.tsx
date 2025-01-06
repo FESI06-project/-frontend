@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import useMemberStore from '@/stores/useMemberStore';
+import useLayoutStore from '@/stores/useLayoutStore';
 
 export default function Navigation() {
   const router = useRouter();
@@ -13,15 +13,15 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const [isListExpanded, setIsListExpanded] = useState<boolean>(false);
   const { isLogin, setIsLogin, nickname } = useMemberStore();
+  const { toggleListExpanded } = useLayoutStore();
 
   const handleListButtonClick = () => {
-    setIsListExpanded(!isListExpanded);
+    toggleListExpanded();
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black shadow-lg z-50">
+    <nav className="fixed top-0 left-0 w-full bg-black shadow-lg z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* 로고 영역 */}
