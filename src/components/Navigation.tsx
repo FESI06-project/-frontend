@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -13,11 +14,16 @@ export default function Navigation() {
 
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [nickname, setNickname] = useState<string>('유저닉네임까지10글자까지');
+  const [isListExpanded, setIsListExpanded] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLogin(localStorage.getItem('isLogin') === 'true');
     setNickname(localStorage.getItem('nickname') ?? '유저닉네임까지10글자까지');
   }, []);
+
+  const handleListButtonClick = () => {
+    setIsListExpanded(!isListExpanded);
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black shadow-lg z-50">
@@ -28,7 +34,13 @@ export default function Navigation() {
             {' '}
             {/* 오른쪽 여백 추가 */}
             <div className="flex md:hidden">
-              <img src="/assets/image/list.svg" />
+              <Image
+                alt="list button"
+                onClick={handleListButtonClick}
+                src="/assets/image/list.svg"
+                width="23"
+                height="20"
+              />
             </div>
             <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
               FitMon
