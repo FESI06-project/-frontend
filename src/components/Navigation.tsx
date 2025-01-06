@@ -101,7 +101,7 @@ export default function Navigation() {
           ) : (
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="w-[124px] h-[42px] rounded-[10px] bg-primary text-white"
+              className="w-[100px] h-[34px] rounded-[10px] bg-primary text-white"
             >
               {'로그인'}
             </button>
