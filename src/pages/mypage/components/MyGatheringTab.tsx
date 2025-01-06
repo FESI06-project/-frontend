@@ -17,7 +17,7 @@ interface MyGatheringItem {
   }: MyGatheringTabProps) {
     return (
       <div className="space-y-4">
-        {myGatherings.map(gathering => (
+        {(myGatherings || []).map(gathering => (
           <div 
             key={gathering.gatheringId}
             className="p-4 bg-white rounded-lg cursor-pointer"

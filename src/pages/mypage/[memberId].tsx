@@ -18,7 +18,7 @@ const MY_PAGE_TABS: TabItem[] = [
 
 export default function MyPage() {
   const router = useRouter();
-  const memberId = router.query.memberId;
+  const memberId = router.query.memberId || 'defaultMemberId';
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
   const [, setIsEditModalOpen] = useState(false);
 

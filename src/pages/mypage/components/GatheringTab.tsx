@@ -13,7 +13,7 @@ export default function GatheringTab({
 }: GatheringTabProps) {
   return (
     <div className="space-y-4">
-      {gatherings
+      {(gatherings || [])
         .sort((a, b) => new Date(a.gatheringStartDate).getTime() - new Date(b.gatheringStartDate).getTime())
         .map(gathering => (
           <div 

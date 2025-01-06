@@ -21,7 +21,7 @@ export default function Profile({ user, onEditClick }: ProfileProps) {
       <div className="flex-grow">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold">{user.nickname}</h1>
+            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1>
             <p className="text-dark-600">{user.email}</p>
           </div>
           <button 

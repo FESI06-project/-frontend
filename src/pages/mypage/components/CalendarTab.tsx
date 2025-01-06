@@ -18,7 +18,7 @@ export default function CalendarTab({ events }: CalendarTabProps) {
         달력 구현 예정
       </div>
       <div className="mt-4 space-y-2">
-        {events.map(event => (
+        {(events || []).map(event => (
           <div 
             key={event.gatheringId}
             className="flex justify-between items-center p-2 border-b border-dark-300"
