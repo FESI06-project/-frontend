@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useMemberStore from '@/stores/useMemberStore';
 
 export default function Navigation() {
   const router = useRouter();
@@ -12,14 +13,8 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [nickname, setNickname] = useState<string>('유저닉네임까지10글자까지');
   const [isListExpanded, setIsListExpanded] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsLogin(localStorage.getItem('isLogin') === 'true');
-    setNickname(localStorage.getItem('nickname') ?? '유저닉네임까지10글자까지');
-  }, []);
+  const { isLogin, setIsLogin, nickname } = useMemberStore();
 
   const handleListButtonClick = () => {
     setIsListExpanded(!isListExpanded);
@@ -97,38 +92,17 @@ export default function Navigation() {
                       </div>
                     </button>
                   </div>
-                  <div className="text-gray-300 text-sm">{nickname}</div>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="flex items-center ml-4">
-                  <div className="mr-3">
-                    <button
-                      type="button"
-                      className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    >
-                      <span className="sr-only">Open user menu</span>
-                      <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-gray-300"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                    </button>
+                  <div className="hidden md:flex items-center text-gray-300 text-sm">
+                    {nickname}
                   </div>
-                  <div className="text-gray-300 text-sm">{nickname}</div>
                 </div>
               </div>
             </>
           ) : (
-            <button className="w-[124px] h-[42px] rounded-[10px] bg-primary text-white">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="w-[124px] h-[42px] rounded-[10px] bg-primary text-white"
+            >
               {'로그인'}
             </button>
           )}
