@@ -24,8 +24,9 @@ export default function SideBar() {
             className="fixed flex w-screen h-screen z-[45]"
             onClick={() => toggleListExpanded()}
           >
+            {/* 사이드바 */}
             <div
-              className="fixed flex flex-col top-0 left-0 px-5 h-screen bg-dark-200 z-50"
+              className="fixed flex flex-col top-0 left-0 px-5 h-screen bg-dark-200 z-50 transition-all"
               onClick={(e) => e.stopPropagation()}
             >
               {/* 닫기 버튼 */}
