@@ -74,6 +74,7 @@ export default function GatheringDetail() {
   };
   return (
     <div>
+      <h1>{gatheringId}</h1>
       <div id="gathering-information">
         <div id="type-information">
           <div className="flex">
