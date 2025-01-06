@@ -10,10 +10,11 @@ export default function SideBar() {
   const mypageContents = ['마이페이지', '로그아웃'];
   const isActive = (isActive: boolean) => {
     if (isActive) {
-      return `text-primary flex items-center text-lg w-[252px] h-[50px] p-[15px] bg-dark-300 rounded-[10px]`;
+      return `text-primary flex items-center text-lg w-[67vw] h-[50px] p-[15px] bg-dark-300 rounded-[10px]`;
     }
-    return `text-white flex items-center text-lg w-[252px] h-[50px] p-[15px]`;
+    return `text-white flex items-center text-lg w-[67vw] h-[50px] p-[15px]`;
   };
+
   return (
     <>
       {isListExpanded && (
@@ -33,19 +34,32 @@ export default function SideBar() {
               <li
                 key={index}
                 className={`${isActive(index === selectedIndex)}`}
+                onClick={() => setSelectedIndex(index)}
               >
                 {content}
               </li>
             ))}
           </ul>
-          <p className="text-white text-sm mt-[50px] ml-[23px]">{'MYPAGE'}</p>
+          <p className="text-white text-sm mt-[50px] ml-[3px] mb-5">
+            {'MYPAGE'}
+          </p>
           <ul className="flex flex-col gap-y-4 justify-center">
             {mypageContents.map((content, index) => (
               <li
                 key={index}
                 className={`${isActive(index + 3 === selectedIndex)}`}
+                onClick={() => setSelectedIndex(index + 3)}
               >
                 {content}
+                {index === 1 && (
+                  <Image
+                    className="ml-2"
+                    src={`${index + 3 === selectedIndex ? '/assets/image/logout-primary.svg' : '/assets/image/logout.svg'}`}
+                    alt="logout button"
+                    width={16}
+                    height={16}
+                  />
+                )}
               </li>
             ))}
           </ul>
