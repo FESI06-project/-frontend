@@ -20,7 +20,7 @@ export default function MyPage() {
   const router = useRouter();
   const memberId = router.query.memberId;
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
     memberId: memberId as string,
@@ -54,7 +54,7 @@ export default function MyPage() {
     setIsEditModalOpen(true);
   };
 
-  const handleCancelReservation = async (gatheringId: number) => {
+  const handleCancelReservation = async () => {
     // API 호출로 예약 취소 처리
   };
 
