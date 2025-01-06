@@ -84,7 +84,7 @@ export default function GatheringDetail() {
           </div>
         </div>
         <div id="image-and-description" className="flex">
-          <img className="w-30 h-30" src={gathering.gatheringImage} />
+          {/* <img className="w-30 h-30" src={gathering.gatheringImage} /> */}
           <div id="detail-information">
             <h1>{gathering.gatheringTitle}</h1>
             <p>{gathering.gatheringDescription}</p>

@@ -13,26 +13,26 @@ export default function Tab({
   currentTab,
   onTabChange,
   className = '',
-  rightElement
+  rightElement //버튼 만드는 조건 탭바 오른쪽에 버튼 생김
 }: TabProps) {
   const handleTabClick = (id: TabItem['id']) => {  // 여기도 수정
     onTabChange(id);
   };
-  
+
   return (
     <div className={`w-full ${className}`}>
       <div className="flex items-center justify-between">
-        <div className="flex border-b-[3px] border-dark-400 w-full">
+        <div className="flex border-b-[2px] border-dark-400 w-full">
           <div className="flex">
             {items.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item.id)}
                 className={`
-                  px-[32px] py-3 text-[2rem] font-medium min-w-[140px] border-b-[3px]
+                  px-[32px] py-3 text-[1.8rem] font-medium min-w-[140px] border-b-[2px]
                   ${currentTab === item.id
-                    ? 'text-primary border-primary -mb-[3px]'
-                    : 'text-dark-700 border-dark-700 -mb-[3px]'
+                    ? 'text-primary border-primary -mb-[2px]'
+                    : 'text-dark-700 border-dark-700 -mb-[2px]'
                   }
                 `}
               >
