@@ -1,4 +1,3 @@
-// src/components/Profile.tsx
 import type { UserProfile } from '@/types';
 
 interface ProfileProps {

@@ -1,4 +1,3 @@
-// src/components/mypage/GatheringTab.tsx
 import { GatheringItem } from '@/types';
 
 interface GatheringTabProps {

@@ -18,3 +18,11 @@ export interface GatheringItem {
   gatheringStartDate: string;
   isReservationCancellable: boolean;
 }
+export interface GuestbookItem {
+  guestbookId: number;
+  gatheringId: number;
+  gatheringTitle: string;
+  content: string;
+  rating: number;
+  createdAt: string;
+}

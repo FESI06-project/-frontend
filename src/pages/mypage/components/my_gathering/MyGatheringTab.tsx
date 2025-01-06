@@ -1,4 +1,3 @@
-// src/components/mypage/MyGatheringTab.tsx
 interface MyGatheringItem {
     gatheringId: number;
     gatheringTitle: string;
