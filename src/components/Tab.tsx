@@ -1,4 +1,3 @@
-// src/components/Tab.tsx
 import type { TabItem } from '@/types/index';
 
 interface TabProps {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Tab from '../../components/Tap';
+import Tab from '../../components/Tab';
 
 //일단 대충 만든거임
 const MY_PAGE_TABS = [
