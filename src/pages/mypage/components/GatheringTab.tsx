@@ -1,13 +1,13 @@
 import { GatheringItem } from '@/types';
 
 interface GatheringTabProps {
-  gatherings: GatheringItem[];
+  gatherings?: GatheringItem[];
   onGatheringClick: (gatheringId: number) => void;
   onCancelReservation: (gatheringId: number) => void;
 }
 
 export default function GatheringTab({ 
-  gatherings, 
+  gatherings = [],
   onGatheringClick, 
   onCancelReservation 
 }: GatheringTabProps) {

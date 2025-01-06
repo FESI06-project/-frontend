@@ -7,10 +7,10 @@ interface CalendarEvent {
 }
 
 interface CalendarTabProps {
-  events: CalendarEvent[];
+  events?: CalendarEvent[]; //
 }
 
-export default function CalendarTab({ events }: CalendarTabProps) {
+export default function CalendarTab({ events = [] }: CalendarTabProps) {
   return (
     <div className="bg-white rounded-lg p-4">
       {/* 달력 구현은 추후에 라이브러리 사용하여 구현 */}

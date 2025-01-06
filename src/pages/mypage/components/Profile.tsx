@@ -12,7 +12,7 @@ export default function Profile({ user, onEditClick }: ProfileProps) {
       <div className="flex-shrink-0">
         {/* <img 
           src={user.profileImage || '/default-profile.png'}
-          alt={user.nickname}
+          alt={user.nickname || 'Unknown'}
           className="w-32 h-32 rounded-full"
         /> */}
       </div>
@@ -21,8 +21,8 @@ export default function Profile({ user, onEditClick }: ProfileProps) {
       <div className="flex-grow">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1>
-            <p className="text-dark-600">{user.email}</p>
+            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1> {/* 기본값 제공 */}
+            <p className="text-dark-600">{user.email || 'Unknown Email'}</p> {/* 기본값 제공 */}
           </div>
           <button 
             onClick={onEditClick}

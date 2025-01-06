@@ -2,10 +2,10 @@ import { useState } from 'react';
 import GuestbookModal from './GuestbookModal';
 import { GuestbookItem } from '@/types';
 interface GuestbookTabProps {
-  guestbooks: GuestbookItem[];
+  guestbooks?: GuestbookItem[]; // optional로 변경
 }
 
-export default function GuestbookTab({ guestbooks }: GuestbookTabProps) {
+export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
   const [showWritten, setShowWritten] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
@@ -39,7 +39,7 @@ export default function GuestbookTab({ guestbooks }: GuestbookTabProps) {
       </div>
 
       <div className="space-y-6">
-        {guestbooks.map(guestbook => (
+        {(guestbooks || []).map((guestbook) => ( 
           <div 
             key={guestbook.guestbookId}
             className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"

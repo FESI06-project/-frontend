@@ -7,13 +7,11 @@ interface MyGatheringItem {
   }
   
   interface MyGatheringTabProps {
-    myGatherings: MyGatheringItem[];
-    onGatheringClick: (gatheringId: number) => void;
+    myGatherings?: MyGatheringItem[]; 
   }
   
-  export default function MyGatheringTab({ 
-    myGatherings,
-    onGatheringClick 
+  export default function MyGatheringTab({
+    myGatherings = [],  // 기본값 추가
   }: MyGatheringTabProps) {
     return (
       <div className="space-y-4">
@@ -21,7 +19,6 @@ interface MyGatheringItem {
           <div 
             key={gathering.gatheringId}
             className="p-4 bg-white rounded-lg cursor-pointer"
-            onClick={() => onGatheringClick(gathering.gatheringId)}
           >
             <h3 className="font-medium">{gathering.gatheringTitle}</h3>
             <div className="mt-2 flex gap-4 text-sm text-dark-600">

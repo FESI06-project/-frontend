@@ -83,7 +83,6 @@ export default function MyPage() {
           {currentTab === 'myGathering' && (
             <MyGatheringTab 
               myGatherings={[]}
-              onGatheringClick={handleGatheringClick}
             />
           )}
           {currentTab === 'calendar' && (
