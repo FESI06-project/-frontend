@@ -1,5 +1,4 @@
 // pages/mypage/[memberId].tsx
-import { useRouter } from 'next/router';
 import Tab from '@/components/Tab';
 import Profile from './components/Profile';
 import GatheringTab from './components/GatheringTab';
