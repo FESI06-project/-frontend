@@ -10,11 +10,11 @@ export default function Profile({ user, onEditClick }: ProfileProps) {
     <div className="flex items-start gap-8">
       {/* 프로필 이미지 섹션 */}
       <div className="flex-shrink-0">
-        <img 
+        {/* <img 
           src={user.profileImage || '/default-profile.png'}
           alt={user.nickname}
           className="w-32 h-32 rounded-full"
-        />
+        /> */}
       </div>
 
       {/* 유저 정보 섹션 */}

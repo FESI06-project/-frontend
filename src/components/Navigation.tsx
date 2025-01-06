@@ -21,8 +21,8 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black shadow-lg z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className=" sticky top-0 left-0 w-full bg-black shadow-lg z-40">
+      <div className="container mx-auto px-6 lg:px-10">
         <div className="flex items-center justify-between h-16">
           {/* 로고 영역 */}
           <div className="flex flex-row items-center flex-shrink-0 mr-8">
@@ -37,7 +37,7 @@ export default function Navigation() {
                 height="20"
               />
             </div>
-            <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
+            <Link href="/" className="text-red-500 font-bold text-[2.8rem] ml-6">
               FitMon
             </Link>
           </div>
@@ -47,19 +47,19 @@ export default function Navigation() {
             <div className="flex items-center space-x-8">
               <Link
                 href="/meeting"
-                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-sm font-medium transition-colors`}
+                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-[1.6rem] font-medium transition-colors`}
               >
                 모임 찾기
               </Link>
               <Link
                 href="/popular"
-                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-sm font-medium transition-colors`}
+                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-[1.6rem] font-medium transition-colors`}
               >
                 평한 모임
               </Link>
               <Link
                 href="/all"
-                className={`${isActive('/all')} hover:text-red-500 px-3 py-2 text-sm font-medium transition-colors`}
+                className={`${isActive('/all')} hover:text-red-500 px-3 py-2 text-[1.6rem] font-medium transition-colors`}
               >
                 모든 방명록
               </Link>
@@ -74,7 +74,7 @@ export default function Navigation() {
                   <div className="mr-3">
                     <button
                       type="button"
-                      className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      className="bg-gray-800 flex text-[1.6rem] rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                     >
                       <span className="sr-only">Open user menu</span>
                       <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center">
@@ -92,7 +92,7 @@ export default function Navigation() {
                       </div>
                     </button>
                   </div>
-                  <div className="hidden md:flex items-center text-gray-300 text-sm">
+                  <div className="hidden md:flex items-center text-gray-300 text-[1.6rem]">
                     {nickname}
                   </div>
                 </div>
@@ -101,7 +101,7 @@ export default function Navigation() {
           ) : (
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="w-[100px] h-[34px] rounded-[10px] bg-primary text-white"
+              className="w-[100px] h-[34px] rounded-[10px]  text-[1.6rem] bg-primary text-white"
             >
               {'로그인'}
             </button>
