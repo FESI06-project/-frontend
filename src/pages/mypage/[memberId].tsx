@@ -1,11 +1,11 @@
 // pages/mypage/[memberId].tsx
 import { useRouter } from 'next/router';
 import Tab from '@/components/Tab';
-import Profile from './components/profile/Profile';
-import GatheringTab from './components/gathering/GatheringTab';
-import GuestbookTab from './components/guest_book/GuestbookTab';
-import MyGatheringTab from './components/my_gathering/MyGatheringTab';
-import CalendarTab from './components/calendar/CalendarTab';
+import Profile from './components/Profile';
+import GatheringTab from './components/GatheringTab';
+import GuestbookTab from './components/GuestbookTab';
+import MyGatheringTab from './components/MyGatheringTab';
+import CalendarTab from './components/CalendarTab';
 import { useState } from 'react';
 import type { TabItem, UserProfile, GatheringItem } from '@/types';
 
