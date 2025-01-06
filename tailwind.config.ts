@@ -19,7 +19,7 @@ export default {
           700: '#B5BBC2',
         },
         white: '#F3F4F6',
-        red: '#FF2140',
+        primary: '#FF2140',
         error: '#FF0000',
       },
       fontFamily: {
