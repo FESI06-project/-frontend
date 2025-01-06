@@ -13,12 +13,12 @@ export default function Tab({
   currentTab,
   onTabChange,
   className = '',
-  rightElement
+  rightElement //버튼 만드는 조건 탭바 오른쪽에 버튼 생김
 }: TabProps) {
   const handleTabClick = (id: TabItem['id']) => {  // 여기도 수정
     onTabChange(id);
   };
-  
+
   return (
     <div className={`w-full ${className}`}>
       <div className="flex items-center justify-between">
