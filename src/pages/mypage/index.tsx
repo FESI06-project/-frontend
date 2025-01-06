@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Tab from '../../components/Tab';
+import type { TabItem } from '@/types';
 
-//일단 대충 만든거임
-const MY_PAGE_TABS = [
+const MY_PAGE_TABS: TabItem[] = [
   {
     id: 'profile',
     label: '프로필'
@@ -10,14 +10,19 @@ const MY_PAGE_TABS = [
   {
     id: 'settings',
     label: '설정'
+  },
+  {
+    id: 'test',
+    label: '테스트'
   }
-] as const;
+
+];
 
 export default function MyPage() {
-  const [currentTab, setCurrentTab] = useState(MY_PAGE_TABS[0].id);
+  const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
 
-  const handleTabChange = (tabId: string) => {
-    setCurrentTab(tabId);
+  const handleTabChange = (id: TabItem['id']) => {
+    setCurrentTab(id);
   };
 
   return (
@@ -28,7 +33,6 @@ export default function MyPage() {
         onTabChange={handleTabChange}
       />
       
-      {/* 탭 컨텐츠 */}
       <div className="mt-6">
         {currentTab === 'profile' && (
           <div className="p-4 bg-white rounded-lg">

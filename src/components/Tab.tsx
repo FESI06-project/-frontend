@@ -2,23 +2,23 @@ import type { TabItem } from '@/types/index';
 
 interface TabProps {
   items: TabItem[];
-  currentTab: string;
-  onTabChange: (id: string) => void;
+  currentTab: TabItem['id'];  // id 타입을 TabItem에서 참조
+  onTabChange: (id: TabItem['id']) => void;  // 여기도 마찬가지
   className?: string;
   rightElement?: React.ReactNode;
 }
 
-export default function Tab({ 
-  items, 
-  currentTab, 
+export default function Tab({
+  items,
+  currentTab,
   onTabChange,
   className = '',
-  rightElement //추가 버튼은 이거 넣어서 하시면 됩니다. 안쓰면 버튼 안생겨요.
+  rightElement
 }: TabProps) {
-  const handleTabClick = (id: string) => {
+  const handleTabClick = (id: TabItem['id']) => {  // 여기도 수정
     onTabChange(id);
   };
-
+  
   return (
     <div className={`w-full ${className}`}>
       <div className="flex items-center justify-between">
