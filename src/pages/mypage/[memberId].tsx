@@ -59,7 +59,7 @@ export default function MyPage() {
   };
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto px-4 pt-[72px]">
+    <div className="w-full max-w-screen-2xl mx-auto pt-[72px]">
       <Profile user={user} onEditClick={handleProfileEdit} />
 
       <div className="mt-8">

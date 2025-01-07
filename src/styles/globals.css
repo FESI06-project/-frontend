@@ -9,7 +9,7 @@
   }
   
   body {
+    @apply font-Pretendard bg-dark-100 text-white;
     font-size: 1.6rem;
-    @apply font-Pretendard;
   }
 }
