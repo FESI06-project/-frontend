@@ -6,10 +6,10 @@ import {
   GatheringStateType,
   GuestbookItem,
 } from '@/types';
-import GatheringInformation from './\bcomponents/GatheringInformation';
-import GatheringChallenge from './\bcomponents/GatheringChallenge';
-import GatheringGuestbook from './\bcomponents/GatheringGuestbook';
-import GatheringState from './\bcomponents/GatheringState';
+import GatheringInformation from './components/GatheringInformation';
+import GatheringChallenge from './components/GatheringChallenge';
+import GatheringGuestbook from './components/GatheringGuestbook';
+import GatheringState from './components/GatheringState';
 
 export default function GatheringDetail() {
   const router = useRouter();
