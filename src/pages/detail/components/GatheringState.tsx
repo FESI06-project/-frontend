@@ -5,5 +5,8 @@ export default function GatheringState({
 }: {
   state: GatheringStateType;
 }) {
+  if (!state) {
+    return <div>{'Loading..'}</div>;
+  }
   return <div>{state.gatheringAverageRating}</div>;
 }

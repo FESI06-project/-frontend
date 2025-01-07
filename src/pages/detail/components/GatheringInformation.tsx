@@ -7,11 +7,15 @@ export default function GatheringInformation({
 }: {
   information: GatheringItem;
 }) {
+  if (!information) {
+    return <div>{'Loading..'}</div>;
+  }
+  console.log(information);
   return (
     <div id="gathering-information" className="w-full">
       <div id="type-information">
         <div className="flex mt-20 gap-[10px]">
-          <p>{information.gatheringMainType}</p>
+          <p>{information.gatheringMainType ?? ''}</p>
           <Image
             src="/assets/image/arrow-right.svg"
             alt="arrow"

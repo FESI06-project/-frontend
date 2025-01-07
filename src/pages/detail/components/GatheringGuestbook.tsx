@@ -5,5 +5,5 @@ export default function GatheringGuestbook({
 }: {
   guestbook: Array<GuestbookItem>;
 }) {
-  return <div>{guestbook[0].content}</div>;
+  return <div>{guestbook ? 'ss' : 'dd'}</div>;
 }

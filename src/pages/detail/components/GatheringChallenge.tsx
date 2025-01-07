@@ -5,5 +5,5 @@ export default function GatheringChallenge({
 }: {
   challenge: GatheringChallengeType;
 }) {
-  return <div>{challenge.doneChallenges[0].challengeDescription}</div>;
+  return <div>{challenge ? 'df' : 'ss'}</div>;
 }

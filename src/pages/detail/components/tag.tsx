@@ -14,6 +14,7 @@ export function Tag({ tagName }: TagProps) {
 }
 
 export default function TagList({ tagList }: TagListProps) {
+  if (!tagList) return;
   return (
     <>
       <div className="flex gap-2">
