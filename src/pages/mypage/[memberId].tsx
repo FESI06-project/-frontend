@@ -12,20 +12,22 @@ const MY_PAGE_TABS: TabItem[] = [
   { id: 'gathering', label: '모임' },
   { id: 'guestbook', label: '방명록' },
   { id: 'myGathering', label: '내가 만든 모임' },
-  { id: 'calendar', label: '달력' }
+  { id: 'calendar', label: '달력' },
 ];
 
 export default function MyPage() {
   // const router = useRouter();
   // const memberId = router.query.memberId || 'defaultMemberId';
-  const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
+  const [currentTab, setCurrentTab] = useState<TabItem['id']>(
+    MY_PAGE_TABS[0].id,
+  );
   const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
     memberId: 'defaultMemberId',
-    email: "fitmon@fitmon.com",
-    nickname: "김핏몬",
-    profileImage: null
+    email: 'fitmon@fitmon.com',
+    nickname: '김핏몬',
+    profileImage: null,
   };
 
   const userGatherings: GatheringItem[] = [
@@ -37,8 +39,14 @@ export default function MyPage() {
       gatheringMainType: '유산소',
       gatheringSubType: '런닝',
       gatheringStartDate: '2025-01-10',
-      isReservationCancellable: true
-    }
+      gatheringEndDate: '2025-01-15',
+      isReservationCancellable: true,
+      gatheringSi: '대전시',
+      gatheringGu: '서구',
+      gatheringTags: ['심심할 때', '스트레스', '조아연'],
+      gatheringDescription: '모임 123',
+      captainStatus: false,
+    },
   ];
 
   const handleTabChange = (id: TabItem['id']) => {
@@ -68,26 +76,18 @@ export default function MyPage() {
           currentTab={currentTab}
           onTabChange={handleTabChange}
         />
-        
+
         <div className="mt-6">
           {currentTab === 'gathering' && (
-            <GatheringTab 
+            <GatheringTab
               gatherings={userGatherings}
               onGatheringClick={handleGatheringClick}
               onCancelReservation={handleCancelReservation}
             />
           )}
-          {currentTab === 'guestbook' && (
-            <GuestbookTab guestbooks={[]} />
-          )}
-          {currentTab === 'myGathering' && (
-            <MyGatheringTab 
-              myGatherings={[]}
-            />
-          )}
-          {currentTab === 'calendar' && (
-            <CalendarTab events={[]} />
-          )}
+          {currentTab === 'guestbook' && <GuestbookTab guestbooks={[]} />}
+          {currentTab === 'myGathering' && <MyGatheringTab myGatherings={[]} />}
+          {currentTab === 'calendar' && <CalendarTab events={[]} />}
         </div>
       </div>
     </div>
