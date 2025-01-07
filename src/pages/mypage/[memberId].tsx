@@ -59,10 +59,10 @@ export default function MyPage() {
   };
 
   return (
-    <div className="w-full max-w-screen-2xl mx-auto pt-[72px]">
+    <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
       <Profile user={user} onEditClick={handleProfileEdit} />
 
-      <div className="mt-8">
+      <div className="mt-14">
         <Tab
           items={MY_PAGE_TABS}
           currentTab={currentTab}
