@@ -14,6 +14,7 @@ export default function GatheringTab({
   return (
     <div className="space-y-4">
       {(gatherings || [])
+      // 모임 시작 날짜를 기준으로 정렬 (오름차순)
         .sort((a, b) => new Date(a.gatheringStartDate).getTime() - new Date(b.gatheringStartDate).getTime())
         .map(gathering => (
           <div 
