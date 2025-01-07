@@ -1,16 +1,25 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import TagList from './\bcomponents/tag';
+import {
+  GatheringChallengeType,
+  GatheringItem,
+  GatheringStateType,
+  GuestbookItem,
+} from '@/types';
+import GatheringInformation from './\bcomponents/GatheringInformation';
+import GatheringChallenge from './\bcomponents/GatheringChallenge';
+import GatheringGuestbook from './\bcomponents/GatheringGuestbook';
+import GatheringState from './\bcomponents/GatheringState';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
-  const gathering = {
+  const gathering: GatheringItem = {
+    gatheringId: 0,
     gatheringTitle: '모임 제목',
     gatheringDescription:
       '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷 ',
-    ownerStatus: true, // 이 사용자가 모임장인지 아닌지
+    captainStatus: true, // 이 사용자가 모임장인지 아닌지
     gatheringImage: 'www.www.ww.w.w.w.w',
     gatheringMainType: '유산소형',
     gatheringSubType: '런닝',
@@ -19,6 +28,11 @@ export default function GatheringDetail() {
     gatheringEndDate: '2022-23-23',
     gatheringSi: '대전',
     gatheringGu: '서구',
+    gatheringStatus: '모집중',
+    isReservationCancellable: false,
+  };
+
+  const gatheringState: GatheringStateType = {
     gatheringJoinedFivePeopleImages: [
       'www.www.ww.w.w.w.w',
       'www.www.ww.w.w.w.w',
@@ -29,6 +43,9 @@ export default function GatheringDetail() {
     gatheringMinPeopleCount: 3,
     gatheringJoinedPeopleCount: 5,
     gatheringStatus: '진행중',
+  };
+
+  const gatheringChallenge: GatheringChallengeType = {
     inProgressChallenges: [
       {
         // 진행중인 챌린지
@@ -77,76 +94,36 @@ export default function GatheringDetail() {
     ],
   };
 
+  const gatheringGuestbook: Array<GuestbookItem> = [
+    {
+      guestbookId: 1,
+      gatheringId: 1,
+      gatheringTitle: 'title1',
+      content: 'good',
+      rating: 4,
+      createdAt: '2022-22-22',
+    },
+    {
+      guestbookId: 2,
+      gatheringId: 2,
+      gatheringTitle: 'title2',
+      content: 'hello',
+      rating: 3,
+      createdAt: '2022-22-22',
+    },
+  ];
+
   useEffect(() => {
     console.log(gatheringId);
   }, []);
 
   return (
-    <div className="w-[1200px] flex place-self-center">
-      <div id="gathering-information" className="w-full">
-        <div id="type-information">
-          <div className="flex mt-20 gap-[10px]">
-            <p>{gathering.gatheringMainType}</p>
-            <Image
-              src="/assets/image/arrow-right.svg"
-              alt="arrow"
-              width={12}
-              height={12}
-            />
-            <p className="text-primary">{gathering.gatheringSubType}</p>
-          </div>
-        </div>
-        <div id="image-and-description" className="flex mt-[30px]">
-          <Image
-            width={280}
-            height={300}
-            alt="gathering-image"
-            src="/assets/image/fitmon.png"
-            className="rounded-[20px] mr-[50px] w-[280px] h-[300px] object-cover"
-          />
-          <div id="detail-information" className=" w-full">
-            <h3 className="text-[1.75rem] font-semibold">
-              {gathering.gatheringTitle}
-            </h3>
-            <p className="text-[1.125rem] text-dark-700 mt-4">
-              {gathering.gatheringDescription}
-            </p>
-            <div id="tags" className="mt-5">
-              <TagList tagList={gathering.gatheringTags} />
-            </div>
-            <div
-              id="range-and-place"
-              className="w-full mt-[25px] py-[30px] bg-dark-200 rounded-[20px]"
-            >
-              <div id="range" className="flex items-center mb-[13px]">
-                <Image
-                  src="/assets/image/time.svg"
-                  width={14}
-                  height={14}
-                  alt="time"
-                  className="ml-[25px] mr-2"
-                />
-                <h1 className="font-semibold">{'모임 기간'}</h1>
-                <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>{' '}
-                <p>{`${gathering.gatheringStartDate}~${gathering.gatheringEndDate}`}</p>
-              </div>
-              <div id="place" className="flex items-center">
-                <Image
-                  src="/assets/image/place.svg"
-                  width={14}
-                  height={14}
-                  alt="place"
-                  className="ml-[25px] mr-2"
-                />
-                <h1 className="font-semibold">{'모임 장소'}</h1>
-                <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>
-                <p>{`${gathering.gatheringSi} ${gathering.gatheringGu}`}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="w-[1200px] flex flex-col place-self-center">
+      <GatheringInformation information={gathering} />
+      <GatheringState state={gatheringState} />
       <div id="challenge-and-guestbook"></div>
+      <GatheringChallenge challenge={gatheringChallenge} />
+      <GatheringGuestbook guestbook={gatheringGuestbook} />
     </div>
   );
 }
