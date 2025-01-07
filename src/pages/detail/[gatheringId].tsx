@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 export default function GatheringDetail() {
@@ -73,18 +74,28 @@ export default function GatheringDetail() {
     ],
   };
   return (
-    <div>
-      <h1>{gatheringId}</h1>
-      <div id="gathering-information">
+    <div className="bg-dark-100 w-[1200px] flex place-self-center">
+      <div id="gathering-information" className="">
         <div id="type-information">
-          <div className="flex">
-            <p>{gathering.gatheringMainType}</p>
-            <p>{' > '}</p>
-            <p>{gathering.gatheringSubType}</p>
+          <div className="flex mt-20 gap-[10px]">
+            <p className="text-white">{gathering.gatheringMainType}</p>
+            <Image
+              src="/assets/image/arrow-right.svg"
+              alt="arrow"
+              width={12}
+              height={12}
+            />
+            <p className="text-primary">{gathering.gatheringSubType}</p>
           </div>
         </div>
-        <div id="image-and-description" className="flex">
-          {/* <img className="w-30 h-30" src={gathering.gatheringImage} /> */}
+        <div id="image-and-description" className="flex mt-[30px]">
+          <Image
+            width={280}
+            height={300}
+            alt="gathering-image"
+            src="/assets/image/fitmon.png"
+            className="rounded-[20px] mr-[50px]"
+          />
           <div id="detail-information">
             <h1>{gathering.gatheringTitle}</h1>
             <p>{gathering.gatheringDescription}</p>
