@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 @layer base {
-  html,
+  html {
+    height: 100%;
+    font-size: 62.5%;  /* 1rem = 10px */
+  }
+  
   body {
-    @apply font-Pretendard;
+    @apply font-Pretendard bg-dark-100 text-white;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em ;
   }
 }
