@@ -1,4 +1,4 @@
-import SubTag from '@/components/SubTag';
+import SubTag from '@/components/tag/SubTag';
 import { GatheringChallengeType } from '@/types';
 import { useState } from 'react';
 

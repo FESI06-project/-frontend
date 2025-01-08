@@ -1,4 +1,4 @@
-import Heart from '@/components/Heart';
+import Heart from '@/components/common/Heart';
 import { GatheringStateType } from '@/types';
 
 export default function GatheringState({

@@ -10,7 +10,7 @@ import GatheringInformation from './components/GatheringInformation';
 import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
-import Tab from '@/components/Tab';
+import Tab from '@/components/common/Tab';
 
 export default function GatheringDetail() {
   const router = useRouter();
