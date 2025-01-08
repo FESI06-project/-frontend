@@ -1,6 +1,4 @@
-import BarChart from '@/components/BarChart';
 import Heart from '@/components/Heart';
-import RingChart from '@/components/RingChart';
 import { GatheringStateType } from '@/types';
 
 export default function GatheringState({
