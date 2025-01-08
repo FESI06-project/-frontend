@@ -1,17 +1,16 @@
 import Image from 'next/image';
-import { GatheringStateType } from '@/types';
 
-interface EstablishmentStatusProps {
-  gatheringState: GatheringStateType;
+interface OpenStatusProps {
+  gatheringJoinedPeopleCount: number;
   className?: string;
 }
 
-export default function EstablishmentStatus({
-  gatheringState,
+export default function OpenStatus({
+  gatheringJoinedPeopleCount,
   className = ''
-}: EstablishmentStatusProps) {
+}: OpenStatusProps) {
   // 5명 이상이면 개설확정
-  const isConfirmed = gatheringState.gatheringJoinedPeopleCount >= 5;
+  const isConfirmed = gatheringJoinedPeopleCount >= 5;
 
   return (
     <div className={`text-left ${className}`}>
@@ -27,7 +26,7 @@ export default function EstablishmentStatus({
               alt="확정"
               width={16}
               height={16}
-              className="rounded-full bg-primary ml-[2px]" // Tailwind 클래스 사용
+              className="rounded-full bg-primary ml-[2px]" 
             />
           </div>
         ) : (

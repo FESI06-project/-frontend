@@ -9,7 +9,7 @@
 
   body {
     @apply font-Pretendard bg-dark-100 text-white;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.02em ;
   }
 
   /* 스크롤바 스타일링 */

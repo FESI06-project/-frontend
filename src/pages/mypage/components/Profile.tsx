@@ -1,4 +1,5 @@
 import { UserProfile } from "@/types";
+import Image from 'next/image';
 
 interface ProfileProps {
   user?: UserProfile;  
@@ -17,24 +18,29 @@ export default function Profile({
   return (
     <div className="flex items-start gap-8">
       <div className="flex-shrink-0">
-        {/* <img
-          src={user.profileImage || '/default-profile.png'}
-          alt={user.nickname || 'Unknown'}
-          className="w-32 h-32 rounded-full"
-        /> */}
+        <Image
+          src="/assets/image/mypage_profile.svg" // public 디렉토리에서 가져옴
+          alt="Edit Profile"
+          width={50}
+          height={50}
+        />
       </div>
 
       <div className="flex-grow">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{user.nickname || 'Unknown'}</h1>
-            <p className="text-dark-600">{user.email || 'Unknown Email'}</p>
+            <h1 className="font-medium">{user.nickname || 'Unknown'}</h1>
+            <p className="text-dark-600 font-medium">{user.email || 'Unknown Email'}</p>
           </div>
           <button
             onClick={onEditClick}
-            className="px-4 py-2 text-white bg-primary rounded-lg"
           >
-            프로필 수정
+            <Image
+              src="/assets/image/profile_edit.svg" // public 디렉토리에서 가져옴
+              alt="Edit Profile"
+              width={50}
+              height={50}
+            />
           </button>
         </div>
       </div>
