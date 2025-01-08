@@ -10,12 +10,12 @@ export default function RingChart({ total, value }: RingChartProps) {
   return (
     <div>
       <div className="relative flex justify-center items-center">
-        <div className="absolute w-[14px] h-[14px] rounded-full bg-dark-100 z-30"></div>
-        <div className="absolute bg-dark-600 w-5 h-5 rounded-full z-10"></div>
+        <div className="absolute w-[14px] h-[14px] rounded-full bg-dark-100 z-30" />
+        <div className="absolute bg-dark-600 w-5 h-5 rounded-full z-10" />
         <div
           className="absolute w-5 h-5 rounded-full z-20"
           style={{ background: conicGradient }}
-        ></div>
+        />
       </div>
     </div>
   );
