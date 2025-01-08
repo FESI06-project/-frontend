@@ -1,6 +1,7 @@
 import StatusTag from '@/components/StatusTag';
 import OpenStatus from '@/components/OpenStatus'
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
+import Image from 'next/image'; 
 
 interface GatheringTabProps {
   gatherings?: GatheringItem[];
@@ -56,7 +57,12 @@ export default function GatheringTab({
                   <h3 className="text-xl font-medium mb-2">{gathering.gatheringTitle}</h3>
                   <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
                     <span>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</span>
-                    <span>•</span>
+                    <Image
+                      src="/assets/image/person.svg" // person.svg 경로
+                      alt="참여자 아이콘"
+                      width={18}
+                      height={18}
+                    />
                     <span>{state.gatheringJoinedPeopleCount}/{state.gatheringMaxPeopleCount}</span>
                     <OpenStatus gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount} />
                     </div>

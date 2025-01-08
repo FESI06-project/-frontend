@@ -26,7 +26,7 @@ export default function OpenStatus({
               alt="확정"
               width={16}
               height={16}
-              className="rounded-full bg-primary ml-[2px]" // Tailwind 클래스 사용
+              className="rounded-full bg-primary ml-[2px]" 
             />
           </div>
         ) : (
