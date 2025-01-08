@@ -1,20 +1,38 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import {
+  GatheringChallengeType,
+  GatheringItem,
+  GatheringStateType,
+  GuestbookItem,
+} from '@/types';
+import GatheringInformation from './components/GatheringInformation';
+import GatheringChallenge from './components/GatheringChallenge';
+import GatheringGuestbook from './components/GatheringGuestbook';
+import GatheringState from './components/GatheringState';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
-  const gathering = {
+  const gathering: GatheringItem = {
+    gatheringId: 0,
     gatheringTitle: '모임 제목',
-    gatheringDescription: '모임 설명',
-    ownerStatus: true, // 이 사용자가 모임장인지 아닌지
+    gatheringDescription:
+      '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷 ',
+    captainStatus: true, // 이 사용자가 모임장인지 아닌지
     gatheringImage: 'www.www.ww.w.w.w.w',
     gatheringMainType: '유산소형',
     gatheringSubType: '런닝',
-    gatheringTags: ['심심할 때', '스트레스 풀면서 달리기', '런닝 최고'],
+    gatheringTags: ['심심할 때', '스트레스', '런닝 최고'],
     gatheringStartDate: '2022-22-22',
     gatheringEndDate: '2022-23-23',
     gatheringSi: '대전',
     gatheringGu: '서구',
+    gatheringStatus: '모집중',
+    isReservationCancellable: false,
+  };
+
+  const gatheringState: GatheringStateType = {
     gatheringJoinedFivePeopleImages: [
       'www.www.ww.w.w.w.w',
       'www.www.ww.w.w.w.w',
@@ -25,6 +43,9 @@ export default function GatheringDetail() {
     gatheringMinPeopleCount: 3,
     gatheringJoinedPeopleCount: 5,
     gatheringStatus: '진행중',
+  };
+
+  const gatheringChallenge: GatheringChallengeType = {
     inProgressChallenges: [
       {
         // 진행중인 챌린지
@@ -72,35 +93,37 @@ export default function GatheringDetail() {
       },
     ],
   };
+
+  const gatheringGuestbook: Array<GuestbookItem> = [
+    {
+      guestbookId: 1,
+      gatheringId: 1,
+      gatheringTitle: 'title1',
+      content: 'good',
+      rating: 4,
+      createdAt: '2022-22-22',
+    },
+    {
+      guestbookId: 2,
+      gatheringId: 2,
+      gatheringTitle: 'title2',
+      content: 'hello',
+      rating: 3,
+      createdAt: '2022-22-22',
+    },
+  ];
+
+  useEffect(() => {
+    console.log(gatheringId);
+  }, []);
+
   return (
-    <div>
-      <h1>{gatheringId}</h1>
-      <div id="gathering-information">
-        <div id="type-information">
-          <div className="flex">
-            <p>{gathering.gatheringMainType}</p>
-            <p>{' > '}</p>
-            <p>{gathering.gatheringSubType}</p>
-          </div>
-        </div>
-        <div id="image-and-description" className="flex">
-          {/* <img className="w-30 h-30" src={gathering.gatheringImage} /> */}
-          <div id="detail-information">
-            <h1>{gathering.gatheringTitle}</h1>
-            <p>{gathering.gatheringDescription}</p>
-            <div id="tags">
-              {gathering.gatheringTags.map((tag) => (
-                <span key={tag}>{`#${tag} `}</span>
-              ))}
-            </div>
-            <div id="range-and-place">
-              <div id="range">{`${gathering.gatheringStartDate}~${gathering.gatheringEndDate}`}</div>
-              <div id="place">{`${gathering.gatheringSi} ${gathering.gatheringGu}`}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="w-[1200px] flex flex-col place-self-center">
+      <GatheringInformation information={gathering} />
+      <GatheringState state={gatheringState} />
       <div id="challenge-and-guestbook"></div>
+      <GatheringChallenge challenge={gatheringChallenge} />
+      <GatheringGuestbook guestbook={gatheringGuestbook} />
     </div>
   );
 }
