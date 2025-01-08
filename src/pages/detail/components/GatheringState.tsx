@@ -1,5 +1,5 @@
+import Heart from '@/components/Heart';
 import { GatheringStateType } from '@/types';
-import Heart from './Heart';
 
 export default function GatheringState({
   state,
@@ -11,13 +11,13 @@ export default function GatheringState({
   }
   return (
     <div className="flex">
-      <div id="rating" className="mr-[174px]">
-        <h3>{'모임 만족도'}</h3>
-        <span>
+      <div id="rating" className="mr-[174px] mt-[25px] font-bold">
+        <h3 className="mb-[18px]">{'모임 만족도'}</h3>
+        <div className="flex">
           <Heart rating={state.gatheringAverageRating} />
-          {`${state.gatheringAverageRating} / 5.0`}
-        </span>
-        <div>{`총 ${state.gatheringGuestbookCount}개의 방명록`}</div>
+          <span className="ml-[10px]">{`${state.gatheringAverageRating} / 5.0`}</span>
+        </div>
+        <div className="text-sm mt-[18px]">{`총 ${state.gatheringGuestbookCount}개의 방명록`}</div>
       </div>
       <div id="joined-people">
         <div className="flex">
