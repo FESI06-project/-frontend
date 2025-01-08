@@ -22,8 +22,8 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40">
-      <div className="container mx-auto px-6 lg:px-10">
+    <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
+      <div className="container mx-auto px-6 lg:px-10 ">
         <div className="flex items-center justify-between h-20">
           {/* 로고 영역 */}
           <div className="flex flex-row items-center flex-shrink-0 mr-8">
