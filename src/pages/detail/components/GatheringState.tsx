@@ -1,4 +1,5 @@
 import Heart from '@/components/Heart';
+import RingChart from '@/components/RingChart';
 import { GatheringStateType } from '@/types';
 
 export default function GatheringState({
@@ -14,6 +15,7 @@ export default function GatheringState({
       <div id="rating" className="mr-[174px] mt-[25px] font-bold">
         <h3 className="mb-[18px]">{'모임 만족도'}</h3>
         <div className="flex">
+          <RingChart total={5} value={state.gatheringAverageRating} />
           <Heart rating={state.gatheringAverageRating} />
           <span className="ml-[10px]">{`${state.gatheringAverageRating} / 5.0`}</span>
         </div>
