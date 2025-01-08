@@ -131,7 +131,7 @@ export default function GatheringDetail() {
   }, []);
 
   return (
-    <div className="w-[1200px] flex flex-col place-self-center">
+    <div className="w-[1200px] flex flex-col place-self-center overflow-auto">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
       <Tab
