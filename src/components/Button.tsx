@@ -21,10 +21,10 @@ export default function Button({
 }: ButtonProps) {
   const buttonStyles = {
     default:
-      'w-full h-16 mt-9 rounded-[10px] bg-primary text-[1.8rem] font-semibold',
-    register: 'w-40 h-10 mt-9 rounded-[10px] bg-primary text-[1.6rem]',
+      'w-full h-16 mt-9 rounded-[10px] bg-primary text-[1.125rem] font-semibold',
+    register: 'w-40 h-10 mt-9 rounded-[10px] bg-primary text-[1rem]',
     cancel:
-      'w-40 h-10 mt-9 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1.6rem]',
+      'w-40 h-10 mt-9 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1rem]',
   };
   return (
     <button
