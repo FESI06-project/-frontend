@@ -135,7 +135,7 @@ const userGatheringStates: { [key: number]: GatheringStateType } = {
     gatheringGuestbookCount: 245,
     gatheringMaxPeopleCount: 20,
     gatheringMinPeopleCount: 3,
-    gatheringJoinedPeopleCount: 3,
+    gatheringJoinedPeopleCount: 4,
     gatheringStatus: "진행중"
   },
   3: {

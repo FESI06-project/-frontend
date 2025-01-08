@@ -1,3 +1,5 @@
+import StatusTag from '@/components/StatusTag';
+import OpenStatus from '@/components/OpenStatus'
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 
 interface GatheringTabProps {
@@ -43,12 +45,9 @@ export default function GatheringTab({
                       target.src = '/assets/image/default_img.png';
                     }}
                   />
-                  {/* 상태 뱃지 (진행중/모집중 등) */}
-                  <div className="absolute bottom-2 left-2">
-                    <span className={`px-2 py-1 rounded-full text-sm ${gathering.captainStatus ? 'bg-red-500' : 'bg-green-500'
-                      } text-white`}>
-                      {gathering.captainStatus ? '시작된' : '진행중'}
-                    </span>
+                  {/* StatusTag 컴포넌트로 교체 */}
+                  <div className="absolute bottom-7 left-5">
+                    <StatusTag status={gathering.gatheringStatus} />
                   </div>
                 </div>
 
@@ -59,7 +58,8 @@ export default function GatheringTab({
                     <span>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</span>
                     <span>•</span>
                     <span>{state.gatheringJoinedPeopleCount}/{state.gatheringMaxPeopleCount}</span>
-                  </div>
+                    <OpenStatus gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount} />
+                    </div>
 
                   {/* 예약 취소 버튼 */}
                   {gathering.isReservationCancellable && (
