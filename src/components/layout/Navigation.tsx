@@ -26,7 +26,7 @@ export default function Navigation() {
       <div className="container mx-auto px-6 lg:px-10 ">
         <div className="flex items-center justify-between h-20">
           {/* 로고 영역 */}
-          <div className="flex flex-row items-center flex-shrink-0 mr-8">
+          <nav className="flex flex-row items-center flex-shrink-0 mr-8">
             {' '}
             {/* 오른쪽 여백 추가 */}
             <div className="flex md:hidden">
@@ -41,10 +41,10 @@ export default function Navigation() {
             <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
               FitMon
             </Link>
-          </div>
+          </nav>
 
           {/* 메인 네비게이션 */}
-          <div className="hidden md:flex flex-1 items-center">
+          <nav className="hidden md:flex flex-1 items-center">
             <div className="flex items-center space-x-8">
               <Link
                 href="/meeting"
@@ -65,7 +65,7 @@ export default function Navigation() {
                 모든 방명록
               </Link>
             </div>
-          </div>
+          </nav>
 
           {/* 사용자 프로필 영역 */}
           {isLogin ? (
