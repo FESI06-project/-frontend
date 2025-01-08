@@ -139,7 +139,7 @@ export default function GatheringDetail() {
         items={gatheringTabItems}
         currentTab={currentTab}
         onTabChange={(newTab) => setCurrentTab(newTab)}
-        className="w-[140px] h-[31.7px] text-lg pb-[15px]"
+        className="w-[140px] h-[31.7px] text-lg pb-[15px] mt-[50px]"
       />
       <GatheringChallenge challenge={gatheringChallenge} />
       <GatheringGuestbook guestbook={gatheringGuestbook} />
