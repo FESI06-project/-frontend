@@ -10,9 +10,9 @@ export default function SideBar() {
   const mypageContents = ['마이페이지', '로그아웃'];
   const isActive = (isActive: boolean) => {
     if (isActive) {
-      return `text-primary flex items-center text-[1.8rem] w-[67vw] h-[50px] p-[15px] bg-dark-300 rounded-[10px]`;
+      return `text-primary flex items-center text-lg w-[67vw] h-[50px] p-[15px] bg-dark-300 rounded-[10px]`;
     }
-    return `text-white flex items-center text-[1.8rem] w-[67vw] h-[50px] p-[15px]`;
+    return `text-white flex items-center text-lg w-[67vw] h-[50px] p-[15px]`;
   };
 
   return (
@@ -41,7 +41,7 @@ export default function SideBar() {
               {/* FitMon 로고 */}
               <Link
                 href="/"
-                className="text-red-500 font-bold text-[2.8rem] mb-[30px]"
+                className="text-red-500 font-bold text-[1.75rem] mb-[30px]"
               >
                 FitMon
               </Link>
@@ -58,7 +58,7 @@ export default function SideBar() {
                 ))}
               </ul>
               {/* 마이페이지 요소 */}
-              <p className="text-white text-[1.4rem] mt-[50px] ml-[3px] mb-5">
+              <p className="text-white text-sm mt-[50px] ml-[3px] mb-5">
                 {'MYPAGE'}
               </p>
               <ul className="flex flex-col gap-y-4 justify-center">
