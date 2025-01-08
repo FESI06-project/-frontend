@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Input from '../../components/Input';
+import Button from '@/components/Button';
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
@@ -159,12 +160,13 @@ export default function Register() {
             </p>
           )}
 
-          <button
-            type="submit"
-            className="w-full h-16 mt-9 rounded-lg bg-primary text-[1.8rem] font-semibold"
-          >
-            회원가입
-          </button>
+          <Button type="submit" name="회원가입" />
+          <div className="flex flex-row justify-end mt-9">
+            <p className="mr-4 text-[1.6rem]">{'이미 회원이신가요?'}</p>
+            <p className="text-[1.6rem] text-primary cursor-pointer">
+              {'로그인하기'}
+            </p>
+          </div>
         </form>
       </div>
     </div>
