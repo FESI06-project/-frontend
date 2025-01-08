@@ -19,6 +19,7 @@ export default function GatheringChallenge({
         tags={challengeSubTagItems}
         currentTag={currentTag}
         onTagChange={(newTag) => setCurrentTag(newTag)}
+        className="mt-[40px]"
       />
       <p>{challenge ? 'df' : 'ss'}</p>
     </div>
