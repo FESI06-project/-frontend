@@ -98,7 +98,7 @@ const userGatherings: GatheringItem[] = [
     gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
     gatheringImage: "null",
     gatheringStatus: "진행중",
-    gatheringStartDate: "2024.12.04",
+    gatheringStartDate: "2025.01.04",
     gatheringEndDate: "2025.01.23",
     gatheringMainType: "근력형",
     gatheringSubType: "헬스",
@@ -107,7 +107,7 @@ const userGatherings: GatheringItem[] = [
     gatheringTags: ["헬스", "근력", "저녁운동"],
     gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
     captainStatus: false,
-    isReservationCancellable: true
+    isReservationCancellable: false
   },
   {
     gatheringId: 3,
@@ -123,7 +123,7 @@ const userGatherings: GatheringItem[] = [
     gatheringTags: ["수영", "아침운동", "초보환영"],
     gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
     captainStatus: false,
-    isReservationCancellable: true
+    isReservationCancellable: false
   }
 ];
 

@@ -1,7 +1,8 @@
 import StatusTag from '@/components/StatusTag';
-import OpenStatus from '@/components/OpenStatus'
+import OpenStatus from '@/components/OpenStatus';
+import CanceledGathering from '@/components/CanceledGathering';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
-import Image from 'next/image'; 
+import Image from 'next/image';
 
 interface GatheringTabProps {
   gatherings?: GatheringItem[];
@@ -22,16 +23,20 @@ export default function GatheringTab({
     <div className="space-y-6">
       {(gatherings || [])
         .sort((a, b) =>
-          new Date(a.gatheringStartDate).getTime() - new Date(b.gatheringStartDate).getTime()
+          new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
         )
         .map(gathering => {
           const state = gatheringStates[gathering.gatheringId];
           const challenges = gatheringChallenges[gathering.gatheringId];
 
+        console.log('모임 ID:', gathering.gatheringId);
+        console.log('챌린지 데이터:', challenges);
+        console.log('챌린지 진행중:', challenges?.inProgressChallenges);
+
           return (
-            <div key={gathering.gatheringId} className="w-[906px] h-[200px] rounded-lg overflow-hidden">
+            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden">
               {/* 메인 카드 영역 */}
-              <div className="flex gap-6 p-4">
+              <div className="flex w-[906px] h-[200px] gap-[30px]">
                 {/* 이미지 영역 */}
                 <div className="relative w-[300px] h-[200px]">
                   <img
@@ -39,7 +44,7 @@ export default function GatheringTab({
                       ? '/assets/image/default_img.png'
                       : gathering.gatheringImage}
                     alt={gathering.gatheringTitle}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover rounded-[20px]"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
@@ -53,32 +58,31 @@ export default function GatheringTab({
                 </div>
 
                 {/* 정보 영역 */}
-                <div className="flex flex-col flex-1 text-white">
-                  <h3 className="text-xl font-medium mb-2">{gathering.gatheringTitle}</h3>
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
+                <div className="flex flex-col flex-1 py-[19px]">
+                  <span className="text-primary font-normal mb-3.5">{gathering.gatheringSubType} | {gathering.gatheringSi} {gathering.gatheringGu} </span>
+                  <span className="text-xl font-bold mb-3.5">{gathering.gatheringTitle}</span>
+                  <div className="flex items-center gap-[10px] text-dark-700 mb-[21px]">
                     <span>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</span>
                     <Image
-                      src="/assets/image/person.svg" // person.svg 경로
+                      src="/assets/image/person.svg"
                       alt="참여자 아이콘"
                       width={18}
                       height={18}
                     />
                     <span>{state.gatheringJoinedPeopleCount}/{state.gatheringMaxPeopleCount}</span>
                     <OpenStatus gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount} />
-                    </div>
+                  </div>
 
                   {/* 예약 취소 버튼 */}
-                  {gathering.isReservationCancellable && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onCancelReservation(gathering.gatheringId);
-                      }}
-                      className="px-4 py-2 bg-[#FF0844] text-white rounded-lg self-start"
-                    >
-                      참여 취소하기
-                    </button>
-                  )}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCancelReservation(gathering.gatheringId);
+                    }}
+                    className="h-[43px] w-[163px] rounded-[10px] border border-primary text-primary font-semibold"
+                  >
+                    참여 취소하기
+                  </button>
                 </div>
               </div>
 
@@ -118,10 +122,18 @@ export default function GatheringTab({
                           </p>
                         </div>
                       </div>
+
                     </div>
                   ))}
+
                 </div>
               )}
+              {/* 취소 오버레이 */}
+              <CanceledGathering
+                gatheringStartDate={gathering.gatheringStartDate}
+                gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
+                isReservationCancellable={gathering.isReservationCancellable || false}
+              />
             </div>
           );
         })}
