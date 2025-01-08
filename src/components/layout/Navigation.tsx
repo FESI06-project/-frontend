@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
+import UserProfile from './UserProfile';
 
 export default function Navigation() {
   const router = useRouter();
@@ -47,19 +48,19 @@ export default function Navigation() {
             <div className="flex items-center space-x-8">
               <Link
                 href="/meeting"
-                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-base font-medium transition-colors`}
+                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-base font-semibold transition-colors`}
               >
                 모임 찾기
               </Link>
               <Link
                 href="/popular"
-                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-base font-medium transition-colors`}
+                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
               >
                 평한 모임
               </Link>
               <Link
                 href="/all"
-                className={`${isActive('/all')} hover:text-red-500 px-3 py-2 text-base font-medium transition-colors`}
+                className={`${isActive('/all')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
               >
                 모든 방명록
               </Link>
@@ -68,40 +69,11 @@ export default function Navigation() {
 
           {/* 사용자 프로필 영역 */}
           {isLogin ? (
-            <>
-              <div className="flex items-center">
-                <div className="flex items-center ml-4">
-                  <div className="mr-3">
-                    <button
-                      type="button"
-                      className="bg-gray-800 flex text-[1.6rem] rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    >
-                      <span className="sr-only">Open user menu</span>
-                      <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-gray-300"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                    </button>
-                  </div>
-                  <div className="hidden md:flex items-center text-gray-300 text-sm">
-                    {nickname}
-                  </div>
-                </div>
-              </div>
-            </>
+            <UserProfile nickname={nickname} />
           ) : (
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="sm:w-[124px] w-[100px] h-[34px] rounded-[10px] text-base bg-primary text-white"
+              className="sm:w-[124px] sm:h-[42px] w-[100px] h-[34px] rounded-[10px] text-base bg-primary text-white"
             >
               {'로그인'}
             </button>
