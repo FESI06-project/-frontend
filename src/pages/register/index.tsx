@@ -165,6 +165,12 @@ export default function Register() {
           >
             회원가입
           </button>
+          <div className="flex flex-row justify-end mt-9">
+            <p className="mr-4 text-[1.6rem]">{'이미 회원이신가요?'}</p>
+            <p className="text-[1.6rem] text-primary cursor-pointer">
+              {'로그인하기'}
+            </p>
+          </div>
         </form>
       </div>
     </div>
