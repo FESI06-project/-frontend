@@ -30,7 +30,7 @@ export default function Tab({
                 key={item.id}
                 onClick={() => handleTabClick(item.id)}
                 className={`
-                  px-[32px] py-3 text-[1.8rem] font-medium min-w-[140px] border-b-[2px]
+                    px-[32px] py-3 text-[1.125rem] font-medium min-w-[140px] border-b-[2px]
                   ${
                     currentTab === item.id
                       ? 'text-primary border-primary -mb-[2px]'
