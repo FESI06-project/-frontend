@@ -22,7 +22,6 @@ export default function Alert({
       <div className="h-[178px] w-[380px] rounded-2xl bg-dark-300 px-[30px] py-[35px] flex flex-col justify-between items-center">
         {/* 메시지 */}
         <p className="text-center text-lg text-white">{message}</p>
-
         {/* 버튼 영역 */}
         <div
           className={`w-full flex ${
@@ -48,3 +47,37 @@ export default function Alert({
     </div>
   );
 }
+
+// 사용방법 
+//     const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+//     const [showSelectAlert, setShowSelectAlert] = useState(false);
+    
+//     const handleConfirm = () => {
+//       setShowConfirmAlert(false);
+//       setShowSelectAlert(false);
+//       console.log('Confirmed!');
+//     };
+    
+//     const handleCancel = () => {
+//       setShowSelectAlert(false);
+//       console.log('Cancelled!');
+//     };
+
+//     return (
+//           <div className="space-y-2">
+//             <h2 className="text-lg font-semibold">Select Alert</h2>
+//             <button
+//               onClick={() => setShowSelectAlert(true)}
+//               className="w-full rounded-lg bg-green-500 py-2 text-white hover:bg-green-600"
+//             >
+//               Select Alert 열기
+//             </button>
+//           </div>
+//           <Alert
+//             isOpen={showSelectAlert}
+//             type="select"
+//             message="선택 Alert 입니다 선택해주세요."
+//             onConfirm={handleConfirm}
+//             onCancel={handleCancel}
+//           />
+//     );
