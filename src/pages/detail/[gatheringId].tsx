@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   GatheringChallengeType,
   GatheringItem,
@@ -10,10 +10,23 @@ import GatheringInformation from './components/GatheringInformation';
 import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
+import Tab from '@/components/Tab';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
+  const gatheringTabItems = [
+    {
+      id: 'challenge',
+      label: '챌린지',
+    },
+    {
+      id: 'guestbook',
+      label: '방명록',
+    },
+  ];
+  const [currentTab, setCurrentTab] = useState('challenge');
+
   const gathering: GatheringItem = {
     gatheringId: 0,
     gatheringTitle: '모임 제목',
@@ -121,7 +134,12 @@ export default function GatheringDetail() {
     <div className="w-[1200px] flex flex-col place-self-center">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
-      <div id="challenge-and-guestbook"></div>
+      <Tab
+        items={gatheringTabItems}
+        currentTab={currentTab}
+        onTabChange={(newTab) => setCurrentTab(newTab)}
+        className="w-[140px] h-[31.7px] text-lg pb-[15px]"
+      />
       <GatheringChallenge challenge={gatheringChallenge} />
       <GatheringGuestbook guestbook={gatheringGuestbook} />
     </div>
