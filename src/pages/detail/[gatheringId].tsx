@@ -16,7 +16,7 @@ export default function GatheringDetail() {
   const gatheringId = router.query.gatheringId;
   const gathering: GatheringItem = {
     gatheringId: 0,
-    gatheringTitle: '모임 제목',
+    gatheringTitle: '모임 제목모임 제목',
     gatheringDescription:
       '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷 ',
     captainStatus: true, // 이 사용자가 모임장인지 아닌지

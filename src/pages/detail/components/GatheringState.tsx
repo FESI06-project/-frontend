@@ -11,13 +11,13 @@ export default function GatheringState({
   }
   return (
     <div className="flex">
-      <div id="rating" className="mr-[174px]">
+      <div id="rating" className="mr-[174px] mt-[25px] font-bold">
         <h3>{'모임 만족도'}</h3>
         <span>
           <Heart rating={state.gatheringAverageRating} />
           {`${state.gatheringAverageRating} / 5.0`}
         </span>
-        <div>{`총 ${state.gatheringGuestbookCount}개의 방명록`}</div>
+        <div className="text-sm">{`총 ${state.gatheringGuestbookCount}개의 방명록`}</div>
       </div>
       <div id="joined-people">
         <div className="flex">

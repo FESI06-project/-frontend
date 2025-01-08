@@ -34,9 +34,20 @@ export default function GatheringInformation({
           className="rounded-[20px] mr-[50px] w-[280px] h-[300px] object-cover"
         />
         <div id="detail-information" className=" w-full">
-          <h3 className="text-[1.75rem] font-semibold">
-            {information.gatheringTitle}
-          </h3>
+          <div className="flex justify-between">
+            {' '}
+            <h3 className="text-[1.75rem] font-semibold">
+              {information.gatheringTitle}
+            </h3>
+            {information.captainStatus && (
+              <Image
+                src="/assets/image/setting.svg"
+                alt="setting"
+                width={28}
+                height={28}
+              />
+            )}
+          </div>
           <p className="text-[1.125rem] text-dark-700 mt-4">
             {information.gatheringDescription}
           </p>
