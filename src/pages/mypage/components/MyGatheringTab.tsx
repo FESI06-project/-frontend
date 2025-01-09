@@ -1,33 +1,78 @@
-interface MyGatheringItem {
-    gatheringId: number;
-    gatheringTitle: string;
-    gatheringStatus: string;
-    memberCount: number;
-    challengeCount: number;
-  }
-  
-  interface MyGatheringTabProps {
-    myGatherings?: MyGatheringItem[]; 
-  }
-  
-  export default function MyGatheringTab({
-    myGatherings = [],  // 기본값 추가
-  }: MyGatheringTabProps) {
-    return (
-      <div className="space-y-4">
-        {(myGatherings || []).map(gathering => (
-          <div 
-            key={gathering.gatheringId}
-            className="p-4 bg-white rounded-lg cursor-pointer"
-          >
-            <h3 className="font-medium">{gathering.gatheringTitle}</h3>
-            <div className="mt-2 flex gap-4 text-sm text-dark-600">
-              <span>상태: {gathering.gatheringStatus}</span>
-              <span>참여자: {gathering.memberCount}명</span>
-              <span>챌린지: {gathering.challengeCount}개</span>
+// MyGatheringTab.tsx
+import MainCard from './MainCard';
+import ChallengeSection from './ChallengeSection';
+import CanceledGathering from '@/components/common/CanceledGathering';
+import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
+import { useState } from 'react';
+
+interface MyGatheringTabProps {
+  gatherings?: GatheringItem[];
+  gatheringStates: { [key: number]: GatheringStateType };
+  gatheringChallenges: { [key: number]: GatheringChallengeType };
+  onGatheringClick: (gatheringId: number) => void;
+  onCancelReservation: (gatheringId: number) => void;
+}
+
+export default function MyGatheringTab({
+  gatherings = [],
+  gatheringStates,
+  gatheringChallenges,
+  onCancelReservation,
+}: MyGatheringTabProps) {
+  const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
+
+  const handleToggleChallenge = (gatheringId: number) => {
+    setOpenChallenges(prev => ({
+      ...prev,
+      [gatheringId]: !prev[gatheringId]
+    }));
+  };
+
+  return (
+    <div className="space-y-6 pb-[50px]">
+      {(gatherings || [])
+        .sort((a, b) =>
+          new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
+        )
+        .map((gathering) => {
+          if (!gathering) return null;
+
+          const state = gatheringStates[gathering.gatheringId];
+          if (!state) return null;
+
+          const challenges = gatheringChallenges[gathering.gatheringId];
+          const isOpen = openChallenges[gathering.gatheringId];
+
+          return (
+            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
+              <MainCard
+                gathering={gathering}
+                state={state}
+                onCancelReservation={onCancelReservation}
+              />
+
+              <ChallengeSection
+                challenges={challenges}
+                gathering={gathering}
+                isOpen={isOpen}
+                onToggle={() => handleToggleChallenge(gathering.gatheringId)}
+              />
+
+              <CanceledGathering
+                type="gathering"
+                gatheringStartDate={gathering.gatheringStartDate}
+                gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
+                isReservationCancellable={gathering.isReservationCancellable || false}
+                onOverlay={() => {
+                  setOpenChallenges(prev => ({
+                    ...prev,
+                    [gathering.gatheringId]: false
+                  }));
+                }}
+              />
             </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+          );
+        })}
+    </div>
+  );
+}
