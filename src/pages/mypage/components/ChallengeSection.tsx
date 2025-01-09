@@ -14,6 +14,9 @@ export default function ChallengeSection({
   isOpen,
   onToggle,
 }: ChallengeSectionProps) {
+  if (!gathering) {
+    return null; // gathering이 없는 경우 아무것도 렌더링하지 않음
+  }
   // 상태에 따른 텍스트와 스타일 반환
   const getStatusInfo = (challenge: ChallengeType) => {
     if (gathering.captainStatus) {
@@ -32,10 +35,11 @@ export default function ChallengeSection({
   };
 
   // 필터링된 챌린지
-  const filteredChallenges = gathering.captainStatus
-    ? challenges?.inProgressChallenges // 내가 만든 모임 -> 모든 챌린지
-    : challenges?.inProgressChallenges.filter(c => c.challengeParticipationStatus); // 참여한 챌린지만
-
+  const filteredChallenges: ChallengeType[] = gathering.captainStatus
+    ? challenges?.inProgressChallenges
+    : challenges?.inProgressChallenges.filter(
+        (c: ChallengeType) => c.challengeParticipationStatus
+      );
   return (
     <>
       {/* 챌린지 헤더 */}

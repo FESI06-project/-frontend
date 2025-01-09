@@ -216,7 +216,7 @@ export default function MyPage() {
           challengeSuccessPeopleCount: 2,
           challengeParticipationStatus: true,
           challengeVerificationStatus: false
-        },  {
+        }, {
           challengeId: 3,
           challengeImage: "null",
           challengeTitle: "챌린지 제목은 최대 25자입니다. 최대 25자",
@@ -285,14 +285,14 @@ export default function MyPage() {
           )}
           {currentTab === 'guestbook' && <GuestbookTab guestbooks={[]} />}
           {currentTab === 'myGathering' && (
-  <MyGatheringTab
-    gatherings={hostedGatherings}
-    gatheringStates={hostedGatheringStates}
-    gatheringChallenges={hostedGatheringChallenges}
-    onGatheringClick={handleGatheringClick}
-    onCancelReservation={handleCancelReservation}
-  />
-)}
+            <MyGatheringTab
+              gatherings={hostedGatherings}
+              gatheringStates={hostedGatheringStates}
+              gatheringChallenges={hostedGatheringChallenges}
+              onGatheringClick={handleGatheringClick}
+              onCancelReservation={handleCancelReservation}
+            />
+          )}
           {currentTab === 'calendar' && <CalendarTab events={[]} />}
         </div>
       </div>
