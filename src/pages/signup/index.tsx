@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Input from '../../components/common/Input';
 import Button from '@/components/common/Button';
 import { RegisterValidation } from './components/SignupValidation';
+import postSignup from './components/postSignup';
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
@@ -35,12 +36,30 @@ export default function Signup() {
     RegisterValidation({ e, password: formData.password, setFormDataError });
   };
 
+  // 회원가입 요청
+  // 회원가입 쿠키 테스트용 코드, 이후 수정 예정
+  const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formDataError.passwordCheck) {
+      console.log(formData);
+      console.log(formData.password);
+      postSignup({
+        email: formData.email,
+        nickName: formData.nickName,
+        password: formData.password,
+      });
+    }
+  };
+
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="flex flex-col justify-center items-center max-w-[640px] w-1/3">
         <h1 className="mb-12 text-[2.25rem] font-medium">회원가입</h1>
 
-        <form className="flex flex-col w-full px-6">
+        <form
+          onSubmit={handleSignupSubmit}
+          className="flex flex-col w-full px-6"
+        >
           <p className="mb-2.5 text-[1rem]">닉네임</p>
           <Input
             type="text"
