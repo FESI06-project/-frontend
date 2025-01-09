@@ -50,7 +50,7 @@ export default function GatheringTab({
                 state={state}
                 onCancelReservation={onCancelReservation}
               />
-
+              
               <ChallengeSection
                 challenges={challenges}
                 gathering={gathering}
