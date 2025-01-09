@@ -18,8 +18,6 @@ export default function Button({
   type = 'button',
   name,
   style = 'default',
-  width = '100%',
-  height = '100%',
   className = '',
   handleButtonClick,
 }: ButtonProps) {
@@ -29,7 +27,7 @@ export default function Button({
     register: 'w-40 h-10 rounded-[10px] bg-primary text-[1rem]',
     cancel:
       'w-40 h-10 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1rem]',
-    custom: `w-[${width}] h-[${height}] rounded-[10px] bg-primary text-[1.125rem] font-semibold`,
+    custom: `rounded-[10px] bg-primary text-[1.125rem] font-semibold`,
   };
   return (
     <button
