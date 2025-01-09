@@ -121,7 +121,7 @@ export default function Signup() {
             placeholder="비밀번호를 입력해주세요"
             handleInputChange={handleInputChange}
             handleBlur={handleBlur}
-            className={formDataError.passwordCheck ? 'mb-3' : ''}
+            className={formDataError.passwordCheck ? 'mb-3' : 'mb-9'}
           />
           {formDataError.passwordCheck && (
             <p className="mt-3 text-[0.875rem] text-error">

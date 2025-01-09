@@ -24,10 +24,13 @@ export default function Navigation() {
   };
 
   useEffect(() => {
-    setIsLogin(localStorage.getItem('isLogin') === 'true');
-    if (isLogin) {
+    const localIsLogin = localStorage.getItem('isLogin');
+    setIsLogin(localIsLogin === 'true');
+    if (localIsLogin === 'true') {
       const localMemberId = localStorage.getItem('memberId');
       const localNickname = localStorage.getItem('nickname');
+      // console.log('localMemberId', localMemberId);
+      // console.log('localNickname', localNickname);
       if (localNickname) {
         setNickname(localNickname);
       }
@@ -35,10 +38,14 @@ export default function Navigation() {
         setMemberId(Number(localMemberId));
       }
     }
-    console.log('isLogin', isLogin);
-  }, []);
-
-  useEffect(() => {}, [isLogin, setIsLogin]);
+    // const localMemberId = localStorage.getItem('memberId');
+    // const localNickname = localStorage.getItem('nickname');
+    // console.log('localMemberId', localMemberId);
+    // console.log('localNickname', localNickname);
+    console.log('isLogin', useMemberStore.getState().isLogin);
+    console.log('nickname', useMemberStore.getState().nickname);
+    console.log('memberId', useMemberStore.getState().memberId);
+  }, [isLogin, setIsLogin]);
 
   return (
     <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
