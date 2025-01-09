@@ -2,6 +2,7 @@ import StatusTag from '@/components/StatusTag';
 import OpenStatus from '@/components/OpenStatus';
 import CanceledGathering from '@/components/CanceledGathering';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface GatheringTabProps {
@@ -19,8 +20,19 @@ export default function GatheringTab({
   //onGatheringClick, 클릭 시 이동 프롭스
   onCancelReservation
 }: GatheringTabProps) {
+  // 각 모임별 챌린지 토글 상태 관리
+  const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
+
+  // 챌린지 토글 핸들러
+  const handleToggleChallenge = (gatheringId: number) => {
+    setOpenChallenges(prev => ({
+      ...prev,
+      [gatheringId]: !prev[gatheringId]
+    }));
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-[50px]">
       {(gatherings || [])
         .sort((a, b) =>
           new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
@@ -28,13 +40,10 @@ export default function GatheringTab({
         .map(gathering => {
           const state = gatheringStates[gathering.gatheringId];
           const challenges = gatheringChallenges[gathering.gatheringId];
-
-        console.log('모임 ID:', gathering.gatheringId);
-        console.log('챌린지 데이터:', challenges);
-        console.log('챌린지 진행중:', challenges?.inProgressChallenges);
+          const isOpen = openChallenges[gathering.gatheringId];
 
           return (
-            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden">
+            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
               {/* 메인 카드 영역 */}
               <div className="flex w-[906px] h-[200px] gap-[30px]">
                 {/* 이미지 영역 */}
@@ -52,7 +61,7 @@ export default function GatheringTab({
                     }}
                   />
                   {/* StatusTag 컴포넌트로 교체 */}
-                  <div className="absolute bottom-7 left-5">
+                  <div className="absolute bottom-4 left-5">
                     <StatusTag status={gathering.gatheringStatus} />
                   </div>
                 </div>
@@ -88,48 +97,84 @@ export default function GatheringTab({
 
               {/* 챌린지 영역 토글 버튼 */}
               <div
-                className="px-4 py-2 border-t border-gray-700 text-white cursor-pointer hover:bg-gray-800"
+                className="mt-[30px] bg-dark-200 py-5 px-6 cursor-pointer rounded-[10px] "
                 onClick={(e) => {
                   e.stopPropagation();
-                  // 챌린지 토글 로직
+                  handleToggleChallenge(gathering.gatheringId);
                 }}
               >
-                <span className="flex items-center gap-2">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                <span className="flex items-center gap-2 font-semibold">
+                  <Image
+                    src="/assets/image/toggle.svg"
+                    alt="토글"
+                    width={16}
+                    height={20}
+                    className={`transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  />
                   이 모임에서 참여했던 챌린지
                 </span>
               </div>
 
-              {/* 챌린지 그리드 (토글되었을 때 표시) */}
-              {challenges && challenges.inProgressChallenges.length > 0 && (
-                <div className="grid grid-cols-3 gap-4 p-4 bg-[#2C2C2C]">
+              {/* 챌린지 그리드 (토글 상태에 따라 표시) */}
+              {isOpen && challenges && challenges.inProgressChallenges.length > 0 && (
+                <div className="grid grid-cols-3 gap-[10px] px-8 py-[30px] bg-dark-200">
                   {challenges.inProgressChallenges.map(challenge => (
-                    <div key={challenge.challengeId} className="bg-[#363636] p-3 rounded-lg">
+                    <div key={challenge.challengeId} className="bg-dark-300 p-3 rounded-lg">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden">
-                          <img
-                            src={challenge.challengeImage}
+                        <div className="relative w-[61px] h-[61px] rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={
+                              challenge.challengeImage === "null" || !challenge.challengeImage
+                                ? '/assets/image/default_challenge.png'
+                                : challenge.challengeImage
+                            }
                             alt={challenge.challengeTitle}
-                            className="w-full h-full object-cover"
+                            width={61}
+                            height={61}
+                            className="object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.onerror = null;
+                              target.src = '/assets/image/default_challenge.png';
+                            }}
                           />
                         </div>
-                        <div>
-                          <p className="text-white text-sm">{challenge.challengeTitle}</p>
-                          <p className="text-gray-400 text-xs mt-1">
-                            {gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}
-                          </p>
-                        </div>
-                      </div>
-
-                    </div>
-                  ))}
-
-                </div>
-              )}
-              {/* 취소 오버레이 */}
+                        <span className={`text-sm px-2 py-1 rounded-full ${
+            challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
+              ? 'bg-[#4A4A4A] text-white'
+              : 'bg-primary text-white'
+          }`}>
+            {challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
+              ? '참여완료'
+              : '참여중'}
+          </span>
+          <div className="flex items-center gap-[10px] text-dark-700 mb-[21px]">
+          <Image
+                      src="/assets/image/person.svg"
+                      alt="참여자 아이콘"
+                      width={18}
+                      height={18}
+                    />
+          <span className="text-dark-700 text-xs">
+                  {challenge.challengeSuccessPeopleCount}/{challenge.challengeJoinedPeopleCount}
+                </span>
+        </div>
+        </div>
+        <div>
+          <p className="text-white text-sm font-medium truncate mb-1">
+            {challenge.challengeTitle}
+          </p>
+          <p className="text-dark-700 text-xs">
+            {gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+              {/* 취소 오버레이-> 오버레이 될경우 토글은 저절로 닫히게 구현되어야됌됌 */} 
               <CanceledGathering
+                type="gathering"
                 gatheringStartDate={gathering.gatheringStartDate}
                 gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
                 isReservationCancellable={gathering.isReservationCancellable || false}

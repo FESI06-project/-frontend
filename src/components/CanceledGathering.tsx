@@ -1,31 +1,43 @@
 import Image from 'next/image';
 
 interface CanceledGatheringOverlayProps {
-  gatheringStartDate: string;
-  gatheringJoinedPeopleCount: number;
-  isReservationCancellable: boolean;
+  type: 'gathering' | 'challenge'; // 추가: 어떤 종류의 취소인지 구분 취소 구분 조건은 지금 안달려 있습니다.
+  gatheringStartDate?: string; // 모임 관련 정보는 선택적
+  gatheringJoinedPeopleCount?: number; // 모임 관련 정보는 선택적
+  isReservationCancellable?: boolean; // 모임 관련 정보는 선택적
   className?: string;
 }
-
-export default function CanceledGathering({
+export default function CanceledOverlay({
+  type,
   gatheringStartDate,
   gatheringJoinedPeopleCount,
   isReservationCancellable,
   className = ''
 }: CanceledGatheringOverlayProps) {
-  const checkCancellationReason = () => {
-    const currentDate = new Date();
-    const startDate = new Date(gatheringStartDate);
-    const isExpired = startDate < currentDate;
-    const isNotConfirmed = gatheringJoinedPeopleCount < 5;
 
-    // 모임장이 취소한 경우
-    if (isReservationCancellable) {
-      return "모집 취소된 모임이예요.";
+  const checkCancellationReason = () => {
+    if (type === 'challenge') {
+      return "챌린지가 취소되었습니다.";
     }
-    // 시작일이 지났고 5명 미만인 경우
-    else if (isExpired && isNotConfirmed) {
-      return "모집 미달로 취소된 모임이예요.";
+
+    if (type === 'gathering') {
+      if (!gatheringStartDate || gatheringJoinedPeopleCount === undefined || isReservationCancellable === undefined) {
+        throw new Error('Gathering props are required for gathering type.');
+      }
+
+      const currentDate = new Date();
+      const startDate = new Date(gatheringStartDate);
+      const isExpired = startDate < currentDate;
+      const isNotConfirmed = gatheringJoinedPeopleCount < 5;
+
+      // 모임장이 취소한 경우
+      if (isReservationCancellable) {
+        return "모집 취소된 모임이예요.";
+      }
+      // 시작일이 지났고 5명 미만인 경우
+      else if (isExpired && isNotConfirmed) {
+        return "모집 미달로 취소된 모임이예요.";
+      }
     }
 
     return null;

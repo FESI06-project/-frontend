@@ -98,8 +98,8 @@ const userGatherings: GatheringItem[] = [
     gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
     gatheringImage: "null",
     gatheringStatus: "진행중",
-    gatheringStartDate: "2025.01.04",
-    gatheringEndDate: "2025.01.23",
+    gatheringStartDate: "2025.03.04",
+    gatheringEndDate: "2025.03.23",
     gatheringMainType: "근력형",
     gatheringSubType: "헬스",
     gatheringSi: "대전",
@@ -155,13 +155,72 @@ const userGatheringChallenges: { [key: number]: GatheringChallengeType } = {
     inProgressChallenges: [
       {
         challengeId: 3,
-        challengeImage: "challenge3.jpg",
+        challengeImage: "null",
         challengeTitle: "챌린지 제목은 최대 25자입니다",
         challengeDescription: "하체운동 인증",
         challengeJoinedPeopleCount: 3,
         challengeSuccessPeopleCount: 2,
         challengeParticipationStatus: true,
         challengeVerificationStatus: false
+      },
+      {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: false
+      },
+      {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: false
+      },
+      {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: false
+      },
+      {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: false
+      },
+      {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: false
+      },  {
+        challengeId: 3,
+        challengeImage: "null",
+        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeDescription: "하체운동 인증",
+        challengeJoinedPeopleCount: 3,
+        challengeSuccessPeopleCount: 2,
+        challengeParticipationStatus: true,
+        challengeVerificationStatus: true
       }
     ],
     doneChallenges: []
@@ -170,7 +229,7 @@ const userGatheringChallenges: { [key: number]: GatheringChallengeType } = {
     inProgressChallenges: [
       {
         challengeId: 4,
-        challengeImage: "challenge4.jpg",
+        challengeImage: "null",
         challengeTitle: "챌린지 제목은 최대 25자입니다",
         challengeDescription: "수영 인증",
         challengeJoinedPeopleCount: 3,
@@ -210,7 +269,7 @@ const userGatheringChallenges: { [key: number]: GatheringChallengeType } = {
           onTabChange={handleTabChange}
         />
 
-        <div className="mt-6">
+        <div className="mt-[37px]">
           {currentTab === 'gathering' && (
             <GatheringTab
               gatherings={userGatherings}
