@@ -29,14 +29,17 @@ export default function GatheringTab({
 
   return (
     <div className="space-y-6 pb-[50px]">
-      {(gatherings || [])
+    {(gatherings || [])
         .sort((a, b) =>
           new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
         )
         .map((gathering) => {
-          if (!gathering) return null;  // 추가: undefined 체크
+          // gathering이 유효하지 않은 경우 무시
+          if (!gathering) return null;
+
           const state = gatheringStates[gathering.gatheringId];
-          if (!state) return 
+          if (!state) return null;
+
           const challenges = gatheringChallenges[gathering.gatheringId];
           const isOpen = openChallenges[gathering.gatheringId];
 

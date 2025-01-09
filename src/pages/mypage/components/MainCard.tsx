@@ -11,6 +11,10 @@ interface MainCardProps {
 }
 
 export default function MainCard({ gathering, state, onCancelReservation }: MainCardProps) {
+  // gathering 객체가 유효한지 확인
+  if (!gathering || !gathering.gatheringImage) {
+    return null; // 또는 기본 UI 렌더링
+  }
   return (
     <div className="flex w-[906px] h-[200px] gap-[30px]">
       {/* 이미지 영역 */}
