@@ -2,7 +2,7 @@ import StatusTag from '@/components/StatusTag';
 import OpenStatus from '@/components/OpenStatus';
 import CanceledGathering from '@/components/CanceledGathering';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 interface GatheringTabProps {
@@ -117,10 +117,10 @@ export default function GatheringTab({
 
               {/* 챌린지 그리드 (토글 상태에 따라 표시) */}
               {isOpen && challenges && challenges.inProgressChallenges.length > 0 && (
-                <div className="grid grid-cols-3 gap-[10px] px-8 py-[30px] bg-dark-200">
+                <div className="grid grid-cols-3 gap-[10px] px-8 py-[30px] max-h-[403px] overflow-y-auto bg-dark-200">
                   {challenges.inProgressChallenges.map(challenge => (
-                    <div key={challenge.challengeId} className="bg-dark-300 p-3 rounded-lg">
-                      <div className="flex items-start gap-3">
+                    <div key={challenge.challengeId} className="bg-dark-300 px-[28px] py-[25px] rounded-lg ">
+                      <div className="flex items-start gap-[17px]">
                         <div className="relative w-[61px] h-[61px] rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
@@ -139,45 +139,59 @@ export default function GatheringTab({
                             }}
                           />
                         </div>
-                        <span className={`text-sm px-2 py-1 rounded-full ${
-            challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
-              ? 'bg-[#4A4A4A] text-white'
-              : 'bg-primary text-white'
-          }`}>
-            {challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
-              ? '참여완료'
-              : '참여중'}
-          </span>
-          <div className="flex items-center gap-[10px] text-dark-700 mb-[21px]">
-          <Image
-                      src="/assets/image/person.svg"
-                      alt="참여자 아이콘"
-                      width={18}
-                      height={18}
-                    />
-          <span className="text-dark-700 text-xs">
-                  {challenge.challengeSuccessPeopleCount}/{challenge.challengeJoinedPeopleCount}
-                </span>
-        </div>
-        </div>
-        <div>
-          <p className="text-white text-sm font-medium truncate mb-1">
-            {challenge.challengeTitle}
-          </p>
-          <p className="text-dark-700 text-xs">
-            {gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}
-          </p>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
-              {/* 취소 오버레이-> 오버레이 될경우 토글은 저절로 닫히게 구현되어야됌됌 */} 
+                        {/* 챌린지 상태 및 참여 정보 */}
+                        <div className="flex-1">
+                          <div className="flex items-center gap-[13px] mb-1">
+                            <span
+                              className={`text-sm font-semibold w-[84px] text-center px-[12px] py-[7px] rounded-full ${challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
+                                ? 'bg-dark-500'
+                                : 'bg-primary'
+                                }`}
+                            >
+                              {challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
+                                ? '참여완료'
+                                : '참여중'}
+                            </span>
+                            <div className="flex items-center font-normal gap-2">
+                              <Image
+                                src="/assets/image/person.svg"
+                                alt="참여자 아이콘"
+                                width={20}
+                                height={20}
+                              />
+                              <span className="text-dark-700 ">
+                                {challenge.challengeSuccessPeopleCount}/{challenge.challengeJoinedPeopleCount}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* 챌린지 제목 및 기간 */}
+                          <div className="w-full min-w-0 h-[60px]">  {/* min-w-0 추가로 flex 내부에서 텍스트 줄바꿈 허용 */}
+                            <p className="font-semibold break-words">  {/* truncate 제거하고 break-words 추가 */}
+                              {challenge.challengeTitle}
+                            </p>
+                            <p className="text-dark-700 text-sm font-normal">
+                              {gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* 취소 오버레이-> 오버레이 될경우 토글은 저절로 닫히게 구현되어야됌됌 */}
               <CanceledGathering
                 type="gathering"
                 gatheringStartDate={gathering.gatheringStartDate}
                 gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
                 isReservationCancellable={gathering.isReservationCancellable || false}
+                onOverlay={() => {
+                  setOpenChallenges(prev => ({
+                    ...prev,
+                    [gathering.gatheringId]: false
+                  }));
+                }}
               />
             </div>
           );

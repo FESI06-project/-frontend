@@ -98,7 +98,7 @@ const userGatherings: GatheringItem[] = [
     gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
     gatheringImage: "null",
     gatheringStatus: "진행중",
-    gatheringStartDate: "2025.03.04",
+    gatheringStartDate: "2025.01.04",
     gatheringEndDate: "2025.03.23",
     gatheringMainType: "근력형",
     gatheringSubType: "헬스",
@@ -215,7 +215,7 @@ const userGatheringChallenges: { [key: number]: GatheringChallengeType } = {
       },  {
         challengeId: 3,
         challengeImage: "null",
-        challengeTitle: "챌린지 제목은 최대 25자입니다",
+        challengeTitle: "챌린지 제목은 최대 25자입니다. 최대 25자",
         challengeDescription: "하체운동 인증",
         challengeJoinedPeopleCount: 3,
         challengeSuccessPeopleCount: 2,

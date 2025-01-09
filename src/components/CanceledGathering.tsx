@@ -5,6 +5,7 @@ interface CanceledGatheringOverlayProps {
   gatheringStartDate?: string; // 모임 관련 정보는 선택적
   gatheringJoinedPeopleCount?: number; // 모임 관련 정보는 선택적
   isReservationCancellable?: boolean; // 모임 관련 정보는 선택적
+  onOverlay?: () => void;//바로 토글닫치는지지
   className?: string;
 }
 export default function CanceledOverlay({
