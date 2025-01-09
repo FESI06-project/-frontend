@@ -140,13 +140,25 @@ export default function GatheringDetail() {
     <div className="w-[1200px] flex flex-col place-self-center overflow-auto">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
-      <Tab
-        items={gatheringTabItems}
-        currentTab={currentTab}
-        onTabChange={(newTab) => setCurrentTab(newTab)}
-        className="w-[140px] h-[31px] text-lg font-bold mt-[50px] mb-[43px] pb-[15px] "
-      />
-      <button onClick={() => setShowModal(!showModal)}>모달 켜기</button>
+      <div className="flex mt-[50px] w-[1200px] ">
+        <Tab
+          items={gatheringTabItems}
+          currentTab={currentTab}
+          onTabChange={(newTab) => setCurrentTab(newTab)}
+          className="w-[1200px] absolute h-[31px] text-lg font-bold pb-[15px] "
+        />
+        {gathering.captainStatus && (
+          <div className="w-full relative flex justify-between ">
+            <div></div>
+            <button
+              onClick={() => setShowModal(!showModal)}
+              className="text-lg"
+            >
+              {'+ 챌린지 추가하기'}
+            </button>
+          </div>
+        )}
+      </div>
       {showModal && (
         <Modal title="모임 정보를 입력해주세요.">
           <div>
