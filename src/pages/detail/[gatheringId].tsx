@@ -151,8 +151,8 @@ export default function GatheringDetail() {
       {showModal &&
         createPortal(
           <Modal title="모임 정보를 입력해주세요.">
-            <div className="w-[300px]">
-              <p>dsf</p>
+            <div>
+              <p>{'모임 정보'}</p>
             </div>
           </Modal>,
 

@@ -14,6 +14,7 @@ export default function Modal({ children, title }: ModalProps) {
         className="bg-black/50 w-screen h-screen z-[10000] left-0 top-0 absolute flex items-center justify-center"
       >
         <div
+          onClick={(e) => e.stopPropagation()}
           style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)' }}
           className=" bg-dark-300 rounded-[10px] px-[30px] py-[35px] "
         >
