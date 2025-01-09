@@ -1,5 +1,6 @@
 export interface RegisterValidationProps {
-  e: React.FocusEvent<HTMLInputElement>;
+  name: string;
+  value: string;
   password: string;
   setFormDataError: React.Dispatch<
     React.SetStateAction<{
@@ -12,13 +13,12 @@ export interface RegisterValidationProps {
 }
 
 // 회원가입 유효성 검사
-export default function RegisterValidation({
-  e,
+const RegisterValidation = ({
+  name,
+  value,
   password,
   setFormDataError,
-}: RegisterValidationProps) {
-  const { name, value } = e.target;
-
+}: RegisterValidationProps) => {
   // 닉네임 유효성 검사
   const NicknameValidation = () => {
     setFormDataError((prev) => ({
@@ -59,4 +59,6 @@ export default function RegisterValidation({
   } else if (name === 'passwordCheck') {
     PasswordCheckValidation();
   }
-}
+};
+
+export default RegisterValidation;

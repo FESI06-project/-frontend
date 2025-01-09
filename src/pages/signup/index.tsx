@@ -33,7 +33,12 @@ export default function Signup() {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    RegisterValidation({ e, password: formData.password, setFormDataError });
+    RegisterValidation({
+      name: e.target.name,
+      value: e.target.value,
+      password: formData.password,
+      setFormDataError,
+    });
   };
 
   // 회원가입 요청
