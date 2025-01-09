@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Input from '../../components/common/Input';
 import Button from '@/components/common/Button';
-import { RegisterValidation } from './components/SignupValidation';
+import RegisterValidation from './components/SignupValidation';
 import postSignup from './components/postSignup';
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
