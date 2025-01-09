@@ -1,5 +1,7 @@
 import useModalStore from '@/stores/useModalStore';
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
+
 interface ModalProps {
   children: React.ReactNode;
   title: string;
@@ -7,7 +9,7 @@ interface ModalProps {
 export default function Modal({ children, title }: ModalProps) {
   const { showModal, setShowModal } = useModalStore();
 
-  return (
+  return createPortal(
     <div>
       <div
         onClick={() => setShowModal(!showModal)}
@@ -36,6 +38,7 @@ export default function Modal({ children, title }: ModalProps) {
           <div className="z-[10002] ">{children}</div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById('aside-root')!,
   );
 }
