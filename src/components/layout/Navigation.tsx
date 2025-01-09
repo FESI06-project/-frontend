@@ -42,12 +42,10 @@ export default function Navigation() {
     // const localNickname = localStorage.getItem('nickname');
     // console.log('localMemberId', localMemberId);
     // console.log('localNickname', localNickname);
-    // console.log('isLogin', useMemberStore.getState().isLogin);
-    // console.log('nickname', useMemberStore.getState().nickname);
-    // console.log('memberId', useMemberStore.getState().memberId);
-  }, []);
-
-  useEffect(() => {}, [isLogin, setIsLogin]);
+    console.log('isLogin', useMemberStore.getState().isLogin);
+    console.log('nickname', useMemberStore.getState().nickname);
+    console.log('memberId', useMemberStore.getState().memberId);
+  }, [isLogin, setIsLogin]);
 
   return (
     <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
