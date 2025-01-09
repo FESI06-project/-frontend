@@ -14,14 +14,18 @@ export default function GatheringInformation({
     <div id="gathering-information" className="w-full">
       <div id="type-information">
         <div className="flex mt-20 gap-[10px]">
-          <p>{information.gatheringMainType ?? ''}</p>
+          <p className="text-lg font-semibold">
+            {information.gatheringMainType ?? ''}
+          </p>
           <Image
             src="/assets/image/arrow-right.svg"
             alt="arrow"
             width={12}
             height={12}
           />
-          <p className="text-primary">{information.gatheringSubType}</p>
+          <p className="text-primary text-lg font-semibold">
+            {information.gatheringSubType}
+          </p>
         </div>
       </div>
       <div id="image-and-description" className="flex mt-[30px]">
@@ -66,9 +70,9 @@ export default function GatheringInformation({
                 alt="time"
                 className="ml-[25px] mr-2"
               />
-              <h1 className="font-semibold">{'모임 기간'}</h1>
+              <h1 className="font-semibold text-lg">{'모임 기간'}</h1>
               <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>{' '}
-              <p>{`${information.gatheringStartDate}~${information.gatheringEndDate}`}</p>
+              <p className="text-lg">{`${information.gatheringStartDate}~${information.gatheringEndDate}`}</p>
             </div>
             <div id="place" className="flex items-center">
               <Image
@@ -78,9 +82,9 @@ export default function GatheringInformation({
                 alt="place"
                 className="ml-[25px] mr-2"
               />
-              <h1 className="font-semibold">{'모임 장소'}</h1>
+              <h1 className="font-semibold text-lg">{'모임 장소'}</h1>
               <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>
-              <p>{`${information.gatheringSi} ${information.gatheringGu}`}</p>
+              <p className="text-lg">{`${information.gatheringSi} ${information.gatheringGu}`}</p>
             </div>
           </div>
         </div>
