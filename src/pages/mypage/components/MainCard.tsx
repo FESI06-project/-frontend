@@ -19,7 +19,7 @@ export default function MainCard({ gathering, state, onCancelReservation }: Main
           src={gathering.gatheringImage === "null" || !gathering.gatheringImage
             ? '/assets/image/default_img.png'
             : gathering.gatheringImage}
-          alt={gathering.gatheringTitle}
+          alt={gathering.gatheringTitle || '기본 이미지'}
           width={300}
           height={200}
           className="w-full h-full object-cover rounded-[20px]"

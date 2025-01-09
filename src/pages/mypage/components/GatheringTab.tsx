@@ -34,7 +34,9 @@ export default function GatheringTab({
           new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
         )
         .map((gathering) => {
+          if (!gathering) return null;  // 추가: undefined 체크
           const state = gatheringStates[gathering.gatheringId];
+          if (!state) return 
           const challenges = gatheringChallenges[gathering.gatheringId];
           const isOpen = openChallenges[gathering.gatheringId];
 
