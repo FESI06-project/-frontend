@@ -13,7 +13,7 @@ export interface RegisterValidationProps {
 }
 
 // 회원가입 유효성 검사
-const RegisterValidation = ({
+const SignupValidation = ({
   name,
   value,
   password,
@@ -61,4 +61,4 @@ const RegisterValidation = ({
   }
 };
 
-export default RegisterValidation;
+export default SignupValidation;
