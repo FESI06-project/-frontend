@@ -25,7 +25,7 @@ export default function Input({
       placeholder={placeholder}
       onChange={handleInputChange}
       onBlur={handleBlur}
-      className={`w-full h-16 rounded-lg px-5 py-6 outline outline-1 outline-dark-400 bg-dark-300 focus:outline-1 focus:outline-[#FF7487] ${className}`}
+      className={`w-full h-16 rounded-[10px] px-5 py-6 text-[1rem] outline outline-1 outline-dark-400 bg-dark-300 focus:outline-1 focus:outline-[#FF7487] ${className}`}
     />
   );
 }

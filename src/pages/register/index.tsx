@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import Input from '../../components/Input';
+import Input from '../../components/common/Input';
+import Button from '@/components/common/Button';
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
@@ -92,10 +93,10 @@ export default function Register() {
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="flex flex-col justify-center items-center max-w-[640px] w-1/3">
-        <h1 className="mb-12 text-[3.6rem] font-medium">회원가입</h1>
+        <h1 className="mb-12 text-[2.25rem] font-medium">회원가입</h1>
 
         <form className="flex flex-col w-full px-6">
-          <p className="mb-2.5 text-[1.6rem]">이메일</p>
+          <p className="mb-2.5 text-[1rem]">이메일</p>
           <Input
             type="email"
             name="email"
@@ -106,12 +107,12 @@ export default function Register() {
             className={formDataError.email ? 'mb-3' : ''}
           />
           {formDataError.email && (
-            <p className="mt-3 text-[1.4rem] text-error">
+            <p className="mt-3 text-[0.875rem] text-error">
               {'유효한 이메일 주소를 입력해주세요.'}
             </p>
           )}
 
-          <p className="mt-6 mb-2.5 text-[1.6rem]">닉네임</p>
+          <p className="mt-6 mb-2.5 text-[1rem]">닉네임</p>
           <Input
             type="text"
             name="nickname"
@@ -122,12 +123,12 @@ export default function Register() {
             className={formDataError.nickname ? 'mb-3' : ''}
           />
           {formDataError.nickname && (
-            <p className="mt-3 text-[1.4rem] text-error">
+            <p className="mt-3 text-[0.875rem] text-error">
               {'닉네임은 2자 이상 10자 이하로 입력해주세요.'}
             </p>
           )}
 
-          <p className="mt-6 mb-2.5 text-[1.6rem]">비밀번호</p>
+          <p className="mt-6 mb-2.5 text-[1rem]">비밀번호</p>
           <Input
             type="password"
             name="password"
@@ -138,12 +139,12 @@ export default function Register() {
             className={formDataError.password ? 'mb-3' : ''}
           />
           {formDataError.password && (
-            <p className="mt-3 text-[1.4rem] text-error">
+            <p className="mt-3 text-[0.875rem] text-error">
               {'비밀번호는 최소 8자 이상이어야 합니다.'}
             </p>
           )}
 
-          <p className="mt-6 mb-2.5 text-[1.6rem]">비밀번호 확인</p>
+          <p className="mt-6 mb-2.5 text-[1rem]">비밀번호 확인</p>
           <Input
             type="password"
             name="passwordCheck"
@@ -154,17 +155,17 @@ export default function Register() {
             className={formDataError.passwordCheck ? 'mb-3' : ''}
           />
           {formDataError.passwordCheck && (
-            <p className="mt-3 text-[1.4rem] text-error">
+            <p className="mt-3 text-[0.875rem] text-error">
               {'비밀번호가 일치하지 않습니다.'}
             </p>
           )}
-
-          <button
-            type="submit"
-            className="w-full h-16 mt-9 rounded-lg bg-primary text-[1.8rem] font-semibold"
-          >
-            회원가입
-          </button>
+          <Button type="submit" name="회원가입" />
+          <div className="flex flex-row justify-end mt-9">
+            <p className="mr-4 text-[1rem]">{'이미 회원이신가요?'}</p>
+            <p className="text-[1.125rem] text-primary cursor-pointer">
+              {'로그인하기'}
+            </p>
+          </div>
         </form>
       </div>
     </div>
