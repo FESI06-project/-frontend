@@ -54,6 +54,7 @@ export default function Login() {
             value={loginFormData.password}
             placeholder="비밀번호를 입력해주세요"
             handleInputChange={handleInputChange}
+            className="mb-9"
           />
 
           <Button type="submit" name="로그인" />
