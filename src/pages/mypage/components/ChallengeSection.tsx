@@ -17,7 +17,10 @@ export default function ChallengeSection({
   return (
     <>
       <div
-        className="mt-[30px] bg-dark-200 py-5 px-6 cursor-pointer rounded-[10px]"
+        className={`mt-[30px] bg-dark-200 py-5 px-6 cursor-pointer ${isOpen
+            ? 'rounded-t-[10px]'  // 열려있을 때는 위쪽만 라운드
+            : 'rounded-[10px]'    // 닫혀있을 때는 모든 방향 라운드
+          }`}
         onClick={onToggle}
       >
         <span className="flex items-center gap-2 font-semibold">
@@ -57,11 +60,11 @@ export default function ChallengeSection({
                 </div>
                 {/* 챌린지 상태 및 참여 정보 */}
                 <div className="flex-1">
-                  <div className="flex items-center gap-[13px] mb-1">
+                  <div className="flex items-center gap-[13px] mb-[10px]">
                     <span
                       className={`text-sm font-semibold w-[84px] text-center px-[12px] py-[7px] rounded-full ${challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
-                          ? 'bg-dark-500'
-                          : 'bg-primary'
+                        ? 'bg-dark-500'
+                        : 'bg-primary'
                         }`}
                     >
                       {challenge.challengeVerificationStatus && challenge.challengeParticipationStatus
@@ -75,20 +78,22 @@ export default function ChallengeSection({
                         width={20}
                         height={20}
                       />
-                      <span className="text-dark-700">
+                      <span className="">
                         {challenge.challengeSuccessPeopleCount}/{challenge.challengeJoinedPeopleCount}
                       </span>
                     </div>
                   </div>
 
                   {/* 챌린지 제목 및 기간 */}
-                  <div className="w-full min-w-0 h-[60px]">
-                    <p className="font-semibold break-words">
-                      {challenge.challengeTitle}
-                    </p>
-                    <p className="text-dark-700 text-sm font-normal">
+                  <div>
+                    <div className="w-full min-w-0 h-[60px] mb-[10px]">
+                      <h4 className="font-semibold break-words">
+                        {challenge.challengeTitle}
+                      </h4>
+                    </div>
+                    <h5 className="text-dark-700 text-sm font-normal">
                       {gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}
-                    </p>
+                    </h5>
                   </div>
                 </div>
               </div>

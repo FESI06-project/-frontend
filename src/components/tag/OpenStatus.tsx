@@ -19,7 +19,7 @@ export default function OpenStatus({
           }`}
       >
         {isConfirmed ? (
-          <div className="flex items-center gap-[2px]">
+          <div className="flex items-center gap-[4px]">
             <span>개설확정</span>
             <Image
               src="/assets/image/open-check.svg"

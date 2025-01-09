@@ -40,19 +40,21 @@ export default function MainCard({ gathering, state, onCancelReservation }: Main
 
       {/* 정보 영역 */}
       <div className="flex flex-col flex-1 py-[19px]">
-        <span className="text-primary font-normal mb-3.5">
+        <h3 className="text-primary font-normal mb-3.5">
           {gathering.gatheringSubType} | {gathering.gatheringSi} {gathering.gatheringGu}
-        </span>
-        <span className="text-xl font-bold mb-3.5">{gathering.gatheringTitle}</span>
-        <div className="flex items-center gap-[10px] text-dark-700 mb-[21px]">
-          <span>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</span>
-          <Image
-            src="/assets/image/person.svg"
-            alt="참여자 아이콘"
-            width={18}
-            height={18}
-          />
-          <span>{state.gatheringJoinedPeopleCount}/{state.gatheringMaxPeopleCount}</span>
+        </h3>
+        <h2 className="text-xl font-bold mb-3.5">{gathering.gatheringTitle}</h2>
+        <div className="flex items-center gap-[13px] text-dark-700 mb-[21px]">
+          <h4>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</h4>
+          <div className="flex items-center font-normal gap-2 text-white">
+            <Image
+              src="/assets/image/person.svg"
+              alt="참여자 아이콘"
+              width={18}
+              height={18}
+            />
+            <span>{state.gatheringJoinedPeopleCount}/{state.gatheringMaxPeopleCount}</span>
+          </div>
           <OpenStatus gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount} />
         </div>
         <Button

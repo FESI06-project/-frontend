@@ -15,10 +15,10 @@ import type {
 } from '@/types';
 
 const MY_PAGE_TABS: TabItem[] = [
-  { id: 'gathering', label: '모임' },
-  { id: 'guestbook', label: '방명록' },
+  { id: 'gathering', label: '나의 모임' },
+  { id: 'guestbook', label: '나의 방명록' },
   { id: 'myGathering', label: '내가 만든 모임' },
-  { id: 'calendar', label: '달력' },
+  { id: 'calendar', label: '캘린더' },
 ];
 
 export default function MyPage() {
