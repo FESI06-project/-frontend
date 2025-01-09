@@ -16,7 +16,7 @@ export default function Profile({
   onEditClick 
 }: ProfileProps) {
   return (
-    <div className="flex items-start gap-8">
+    <div className="flex items-start gap-[20px]">
       <div className="flex-shrink-0">
         <Image
           src="/assets/image/mypage_profile.svg" // public 디렉토리에서 가져옴
@@ -30,7 +30,7 @@ export default function Profile({
         <div className="flex items-center justify-between">
           <div>
             <h1 className="font-medium">{user.nickname || 'Unknown'}</h1>
-            <p className="text-dark-600 font-medium">{user.email || 'Unknown Email'}</p>
+            <p className="text-dark-600 font-light">{user.email || 'Unknown Email'}</p>
           </div>
           <button
             onClick={onEditClick}
