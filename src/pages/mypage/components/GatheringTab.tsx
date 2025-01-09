@@ -2,7 +2,7 @@ import StatusTag from '@/components/StatusTag';
 import OpenStatus from '@/components/OpenStatus';
 import CanceledGathering from '@/components/CanceledGathering';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface GatheringTabProps {
@@ -48,11 +48,13 @@ export default function GatheringTab({
               <div className="flex w-[906px] h-[200px] gap-[30px]">
                 {/* 이미지 영역 */}
                 <div className="relative w-[300px] h-[200px]">
-                  <img
+                  <Image
                     src={gathering.gatheringImage === "null" || !gathering.gatheringImage
                       ? '/assets/image/default_img.png'
                       : gathering.gatheringImage}
                     alt={gathering.gatheringTitle}
+                    width={300}
+                    height={200}
                     className="w-full h-full object-cover rounded-[20px]"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
