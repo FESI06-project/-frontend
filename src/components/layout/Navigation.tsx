@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
+import { useEffect } from 'react';
 
 export default function Navigation() {
   const router = useRouter();
@@ -14,12 +15,30 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const { isLogin, setIsLogin, nickname } = useMemberStore();
+  const { isLogin, setIsLogin, setNickname, setMemberId, nickname } =
+    useMemberStore();
   const { toggleListExpanded } = useLayoutStore();
 
   const handleListButtonClick = () => {
     toggleListExpanded();
   };
+
+  useEffect(() => {
+    setIsLogin(localStorage.getItem('isLogin') === 'true');
+    if (isLogin) {
+      const localMemberId = localStorage.getItem('memberId');
+      const localNickname = localStorage.getItem('nickname');
+      if (localNickname) {
+        setNickname(localNickname);
+      }
+      if (localMemberId) {
+        setMemberId(Number(localMemberId));
+      }
+    }
+    console.log('isLogin', isLogin);
+  }, []);
+
+  useEffect(() => {}, [isLogin, setIsLogin]);
 
   return (
     <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
@@ -69,10 +88,24 @@ export default function Navigation() {
 
           {/* 사용자 프로필 영역 */}
           {isLogin ? (
-            <UserProfile nickname={nickname} />
+            <>
+              <UserProfile nickname={nickname} />
+              <button
+                onClick={() => {
+                  localStorage.removeItem('isLogin');
+                  localStorage.removeItem('email');
+                  localStorage.removeItem('memberId');
+                  localStorage.removeItem('nickname');
+                  useMemberStore.getState().setIsLogin(false);
+                  router.push('/');
+                }}
+              >
+                {'로그아웃'}
+              </button>
+            </>
           ) : (
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => router.push('/login')}
               className="sm:w-[124px] sm:h-[42px] w-[100px] h-[34px] rounded-[10px] text-base bg-primary text-white"
             >
               {'로그인'}
