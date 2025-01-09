@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { GatheringChallengeType, GatheringItem } from '@/types';
+import { ChallengeType, GatheringChallengeType, GatheringItem } from '@/types';
 
 interface ChallengeSectionProps {
   challenges: GatheringChallengeType;
@@ -15,7 +15,7 @@ export default function ChallengeSection({
   onToggle,
 }: ChallengeSectionProps) {
   // 상태에 따른 텍스트와 스타일 반환
-  const getStatusInfo = (challenge: any) => {
+  const getStatusInfo = (challenge: ChallengeType) => {
     if (gathering.captainStatus) {
       if (challenge.challengeVerificationStatus && challenge.challengeParticipationStatus) {
         return { text: '참여완료', style: 'bg-dark-500' };
