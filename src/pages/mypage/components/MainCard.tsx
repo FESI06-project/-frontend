@@ -59,10 +59,10 @@ export default function MainCard({ gathering, state, onCancelReservation }: Main
         </div>
         <Button
           name={gathering.captainStatus ? "모임 취소하기" : "참여 취소하기"}
-          style={gathering.captainStatus ? "default" : "cancel"}
+          style={gathering.captainStatus ? "custom" : "cancel"}
           className={gathering.captainStatus
-            ? "w-[163px] h-[43px] "
-            : "w-[163px] h-[43px] text-primary"}
+            ? "w-[163px] h-[43px] text-base "
+            : "w-[163px] h-[43px] text-primary font-semibold"}
           handleButtonClick={() => onCancelReservation(gathering.gatheringId)}
         />
       </div>

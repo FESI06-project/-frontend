@@ -35,67 +35,67 @@ export default function MyPage() {
     nickname: '김핏몬',
     profileImage: null,
   };
-  // // 핏몬이가 모임장인 모임 데이터
-  // const hostedGatherings: GatheringItem[] = [
-  //   {
-  //     gatheringId: 1,
-  //     gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
-  //     gatheringImage: "gathering1.jpg",
-  //     gatheringStatus: "진행중",
-  //     gatheringStartDate: "2024.12.04",
-  //     gatheringEndDate: "2025.01.23",
-  //     gatheringMainType: "유산소형",
-  //     gatheringSubType: "런닝",
-  //     gatheringSi: "대전",
-  //     gatheringGu: "서구",
-  //     gatheringTags: ["심심할 때", "스트레스", "런닝"],
-  //     gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
-  //     captainStatus: true,
-  //     isReservationCancellable: false
-  //   }
-  // ];
+  // 핏몬이가 모임장인 모임 데이터
+  const hostedGatherings: GatheringItem[] = [
+    {
+      gatheringId: 1,
+      gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
+      gatheringImage: "null",
+      gatheringStatus: "진행중",
+      gatheringStartDate: "2024.12.04",
+      gatheringEndDate: "2025.01.23",
+      gatheringMainType: "유산소형",
+      gatheringSubType: "런닝",
+      gatheringSi: "대전",
+      gatheringGu: "서구",
+      gatheringTags: ["심심할 때", "스트레스", "런닝"],
+      gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
+      captainStatus: true,
+      isReservationCancellable: false
+    }
+  ];
 
-  // // 호스트 모임 상태 정보
-  // const hostedGatheringStates: { [key: number]: GatheringStateType } = {
-  //   1: {
-  //     gatheringJoinedFivePeopleImages: ["profile1.jpg", "profile2.jpg"],
-  //     gatheringAverageRating: 4.5,
-  //     gatheringGuestbookCount: 333,
-  //     gatheringMaxPeopleCount: 20,
-  //     gatheringMinPeopleCount: 3,
-  //     gatheringJoinedPeopleCount: 8,
-  //     gatheringStatus: "진행중"
-  //   }
-  // };
+  // 호스트 모임 상태 정보
+  const hostedGatheringStates: { [key: number]: GatheringStateType } = {
+    1: {
+      gatheringJoinedFivePeopleImages: ["profile1.jpg", "profile2.jpg"],
+      gatheringAverageRating: 4.5,
+      gatheringGuestbookCount: 333,
+      gatheringMaxPeopleCount: 20,
+      gatheringMinPeopleCount: 3,
+      gatheringJoinedPeopleCount: 8,
+      gatheringStatus: "진행중"
+    }
+  };
 
-  // // 호스트 모임 챌린지 정보
-  // const hostedGatheringChallenges: { [key: number]: GatheringChallengeType } = {
-  //   1: {
-  //     inProgressChallenges: [
-  //       {
-  //         challengeId: 1,
-  //         challengeImage: "challenge1.jpg",
-  //         challengeTitle: "챌린지 제목은 최대 25자입니다",
-  //         challengeDescription: "매일 달리기 인증하기",
-  //         challengeJoinedPeopleCount: 3,
-  //         challengeSuccessPeopleCount: 2,
-  //         challengeParticipationStatus: true,
-  //         challengeVerificationStatus: true
-  //       },
-  //       {
-  //         challengeId: 2,
-  //         challengeImage: "challenge2.jpg",
-  //         challengeTitle: "챌린지 제목은 최대 25자입니다",
-  //         challengeDescription: "물 마시기 인증",
-  //         challengeJoinedPeopleCount: 3,
-  //         challengeSuccessPeopleCount: 3,
-  //         challengeParticipationStatus: true,
-  //         challengeVerificationStatus: true
-  //       }
-  //     ],
-  //     doneChallenges: []
-  //   }
-  // };
+  // 호스트 모임 챌린지 정보
+  const hostedGatheringChallenges: { [key: number]: GatheringChallengeType } = {
+    1: {
+      inProgressChallenges: [
+        {
+          challengeId: 1,
+          challengeImage: "null",
+          challengeTitle: "챌린지 제목은 최대 25자입니다",
+          challengeDescription: "매일 달리기 인증하기",
+          challengeJoinedPeopleCount: 3,
+          challengeSuccessPeopleCount: 2,
+          challengeParticipationStatus: true,
+          challengeVerificationStatus: true
+        },
+        {
+          challengeId: 2,
+          challengeImage: "null",
+          challengeTitle: "챌린지 제목은 최대 25자입니다",
+          challengeDescription: "물 마시기 인증",
+          challengeJoinedPeopleCount: 3,
+          challengeSuccessPeopleCount: 3,
+          challengeParticipationStatus: false,
+          challengeVerificationStatus: true
+        }
+      ],
+      doneChallenges: []
+    }
+  };
 
   const userGatherings: GatheringItem[] = [
     {
@@ -204,7 +204,7 @@ export default function MyPage() {
           challengeDescription: "하체운동 인증",
           challengeJoinedPeopleCount: 3,
           challengeSuccessPeopleCount: 2,
-          challengeParticipationStatus: true,
+          challengeParticipationStatus: false,
           challengeVerificationStatus: false
         },
         {
@@ -284,7 +284,15 @@ export default function MyPage() {
             />
           )}
           {currentTab === 'guestbook' && <GuestbookTab guestbooks={[]} />}
-          {currentTab === 'myGathering' && <MyGatheringTab myGatherings={[]} />}
+          {currentTab === 'myGathering' && (
+  <MyGatheringTab
+    gatherings={hostedGatherings}
+    gatheringStates={hostedGatheringStates}
+    gatheringChallenges={hostedGatheringChallenges}
+    onGatheringClick={handleGatheringClick}
+    onCancelReservation={handleCancelReservation}
+  />
+)}
           {currentTab === 'calendar' && <CalendarTab events={[]} />}
         </div>
       </div>
