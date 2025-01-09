@@ -12,7 +12,7 @@ export interface RegisterValidationProps {
 }
 
 // 회원가입 유효성 검사
-export function RegisterValidation({
+export default function RegisterValidation({
   e,
   password,
   setFormDataError,
