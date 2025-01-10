@@ -40,15 +40,22 @@ export interface GatheringChallengeType {
   doneChallenges: Array<ChallengeType>;
 }
 
+export interface GatheringChallegeProps {
+  challenges: GatheringChallengeType;
+  captainStatus: boolean;
+}
 export interface ChallengeType {
+  gatheringId: number;
   challengeId: number;
-  challengeImage: string;
-  challengeTitle: string;
-  challengeDescription: string;
-  challengeJoinedPeopleCount: number;
-  challengeSuccessPeopleCount: number;
-  challengeParticipationStatus: boolean;
-  challengeVerificationStatus: boolean;
+  imageUrl: string;
+  title: string;
+  description: string;
+  participantCount: number;
+  successParticipantCount: number;
+  participantStatus: boolean;
+  verificationStatus: boolean;
+  startDate: string;
+  endDate: string;
 }
 export interface GuestbookItem {
   guestbookId: number;

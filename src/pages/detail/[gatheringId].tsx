@@ -67,48 +67,71 @@ export default function GatheringDetail() {
   const gatheringChallenge: GatheringChallengeType = {
     inProgressChallenges: [
       {
-        // 진행중인 챌린지
-        challengeId: 33,
-        challengeImage: 'www.www.ww.w.w.w.w',
-        challengeTitle: '',
-        challengeDescription: '',
-        challengeJoinedPeopleCount: 10,
-        challengeSuccessPeopleCount: 5,
-        challengeParticipationStatus: false, // 이 사용자가 참여중인지?
-        challengeVerificationStatus: true, // 이 사용자가 인증을 완료했는지?
+        gatheringId: 0,
+        challengeId: 0,
+        title: 'string',
+        description: 'string',
+        imageUrl: 'string',
+        participantCount: 10,
+        successParticipantCount: 3,
+        participantStatus: false,
+        verificationStatus: true,
+        startDate: '2025-01-09T08:12:48.388Z',
+        endDate: '2025-01-09T08:12:48.388Z',
       },
       {
-        challengeId: 33,
-        challengeImage: 'www.www.ww.w.w.w.w',
-        challengeTitle: '',
-        challengeDescription: '',
-        challengeJoinedPeopleCount: 10,
-        challengeSuccessPeopleCount: 5,
-        challengeParticipationStatus: false,
-        challengeVerificationStatus: true,
+        gatheringId: 0,
+        challengeId: 0,
+        title: 'string',
+        description: 'string',
+        imageUrl: 'string',
+        participantCount: 10,
+        successParticipantCount: 3,
+        participantStatus: true,
+        verificationStatus: false,
+        startDate: '2025-01-09T08:12:48.388Z',
+        endDate: '2025-01-09T08:12:48.388Z',
+      },
+      {
+        gatheringId: 0,
+        challengeId: 0,
+        title: 'string',
+        description: 'string',
+        imageUrl: 'string',
+        participantCount: 10,
+        successParticipantCount: 3,
+        participantStatus: true,
+        verificationStatus: false,
+        startDate: '2025-01-09T08:12:48.388Z',
+        endDate: '2025-01-09T08:12:48.388Z',
       },
     ],
     doneChallenges: [
       {
-        // 완료된 챌린지
-        challengeId: 33,
-        challengeImage: 'www.www.ww.w.w.w.w',
-        challengeTitle: '',
-        challengeDescription: '',
-        challengeJoinedPeopleCount: 10,
-        challengeSuccessPeopleCount: 5,
-        challengeParticipationStatus: false, // 이 사용자가 참여했었인지?
-        challengeVerificationStatus: true, // 이 사용자가 인증을 완료했었는지?
+        gatheringId: 0,
+        challengeId: 0,
+        title: 'string',
+        description: 'string',
+        imageUrl: 'string',
+        participantCount: 10,
+        successParticipantCount: 3,
+        participantStatus: true,
+        verificationStatus: true,
+        startDate: '2025-01-09T08:12:48.388Z',
+        endDate: '2025-01-09T08:12:48.388Z',
       },
       {
-        challengeId: 33,
-        challengeImage: 'www.ww.ww.w.w.w.w',
-        challengeTitle: '',
-        challengeDescription: '',
-        challengeJoinedPeopleCount: 10,
-        challengeSuccessPeopleCount: 5,
-        challengeParticipationStatus: false,
-        challengeVerificationStatus: true,
+        gatheringId: 0,
+        challengeId: 0,
+        title: 'string',
+        description: 'string',
+        imageUrl: 'string',
+        participantCount: 10,
+        successParticipantCount: 3,
+        participantStatus: true,
+        verificationStatus: true,
+        startDate: '2025-01-09T08:12:48.388Z',
+        endDate: '2025-01-09T08:12:48.388Z',
       },
     ],
   };
@@ -145,7 +168,7 @@ export default function GatheringDetail() {
           items={gatheringTabItems}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
-          className="w-[1200px] absolute h-[31px] text-lg font-bold pb-[15px] "
+          className="w-[1200px] h-[31px] text-lg font-bold pb-[15px] "
         />
         {gathering.captainStatus && (
           <div className="w-full relative flex justify-between ">
@@ -166,7 +189,10 @@ export default function GatheringDetail() {
           </div>
         </Modal>
       )}
-      <GatheringChallenge challenge={gatheringChallenge} />
+      <GatheringChallenge
+        challenges={gatheringChallenge}
+        captainStatus={gathering.captainStatus ?? false}
+      />
       <GatheringGuestbook guestbook={gatheringGuestbook} />
     </div>
   );
