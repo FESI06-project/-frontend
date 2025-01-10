@@ -43,11 +43,12 @@ export default function ListChallenge() {
         },
       }}
     >
-      {data?.map((challenge) => (
-        <SwiperSlide key={challenge.challengeId}>
-          <ChallengeCard data={challenge} />
-        </SwiperSlide>
-      ))}
+      {data &&
+        data.map((challenge) => (
+          <SwiperSlide key={challenge.challengeId}>
+            <ChallengeCard data={challenge} />
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 }
