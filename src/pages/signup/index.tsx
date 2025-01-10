@@ -3,6 +3,8 @@ import Input from '../../components/common/Input';
 import Button from '@/components/common/Button';
 import SignupValidation from './components/SignupValidation';
 import postSignup from './components/postSignup';
+import router from 'next/router';
+
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
@@ -131,7 +133,10 @@ export default function Signup() {
           <Button type="submit" name="회원가입" />
           <div className="flex flex-row justify-end mt-9">
             <p className="mr-4 text-[1rem]">{'이미 회원이신가요?'}</p>
-            <p className="text-[1rem] text-primary underline decoration-primary underline-offset-[5px] cursor-pointer">
+            <p
+              onClick={() => router.push('/login')}
+              className="text-[1rem] text-primary underline decoration-primary underline-offset-[5px] cursor-pointer"
+            >
               {'로그인하기'}
             </p>
           </div>
