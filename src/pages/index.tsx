@@ -1,4 +1,4 @@
-import ListChallenge from '@/pages/main/components/listChallenge';
+import ListChallenge from '@/pages/main/components/ListChallenge';
 
 export default function Home() {
   return (
