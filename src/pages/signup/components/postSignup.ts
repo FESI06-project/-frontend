@@ -1,9 +1,8 @@
 import axiosInstance from '@/utils/axios';
+import router from 'next/router';
 
 interface postSignupProps {
-  email: string;
-  nickName: string;
-  password: string;
+  message: string;
 }
 
 const postSignup = async (data: {
@@ -12,13 +11,14 @@ const postSignup = async (data: {
   password: string;
 }) => {
   try {
-    console.log('data', data);
-    console.log(JSON.stringify(data));
     const response = await axiosInstance.post<postSignupProps>(
       'api/v1/signup',
       data,
     );
-    console.log('response', response.data);
+    if (response.data.message === '사용자 생성 성공') {
+      console.log('회원가입 성공');
+      router.push('/login');
+    }
   } catch (error) {
     console.error('회원가입 요청 에러:', error);
   }

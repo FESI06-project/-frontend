@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import postLogin from './components/postLogin';
+import router from 'next/router';
 
 export default function Login() {
   const [loginFormData, setLoginFormData] = useState({
@@ -58,6 +59,15 @@ export default function Login() {
           />
 
           <Button type="submit" name="로그인" />
+          <div className="flex flex-row justify-end mt-9">
+            <p className="mr-4 text-[1rem]">{'아직 회원이 아니신가요?'}</p>
+            <p
+              onClick={() => router.push('/signup')}
+              className="text-[1rem] text-primary underline decoration-primary underline-offset-[5px] cursor-pointer"
+            >
+              {'회원가입하기'}
+            </p>
+          </div>
         </form>
       </div>
     </div>
