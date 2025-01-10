@@ -58,10 +58,16 @@ export interface ChallengeType {
   endDate: string;
 }
 export interface GuestbookItem {
-  guestbookId: number;
-  gatheringId: number;
-  gatheringTitle: string;
+  reviewId: number;
   content: string;
   rating: number;
-  createdAt: string;
+  createDate: string;
+  writer: GuestbookWriter;
+  reviewOwnerStatus: boolean;
+}
+
+export interface GuestbookWriter {
+  memberId: number;
+  nickName: string;
+  profileImageUrl: string;
 }

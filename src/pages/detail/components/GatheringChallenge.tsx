@@ -95,7 +95,6 @@ export default function GatheringChallenge({
 }
 
 function Challenge({ challenge }: { challenge: ChallengeProps }) {
-  console.log(JSON.stringify(challenge));
   const button = () => {
     if (!challenge.participantStatus) {
       return (
@@ -127,11 +126,11 @@ function Challenge({ challenge }: { challenge: ChallengeProps }) {
   };
 
   return (
-    <div className="w-full h-[250px]  bg-dark-200 rounded-[20px]">
+    <div className="w-full h-[250px] bg-dark-200 rounded-[10px]">
       <div className="flex">
         {/* 좌측 사진 */}
         <Image
-          className="rounded-bl-[20px] rounded-tl-[20px]"
+          className="rounded-bl-[10px] rounded-tl-[10px]"
           src="/assets/image/fitmon.png"
           alt="alt"
           width={250}

@@ -138,20 +138,29 @@ export default function GatheringDetail() {
 
   const gatheringGuestbook: Array<GuestbookItem> = [
     {
-      guestbookId: 1,
-      gatheringId: 1,
-      gatheringTitle: 'title1',
-      content: 'good',
-      rating: 4,
-      createdAt: '2022-22-22',
+      reviewId: 0,
+      rating: 3.5,
+      content:
+        '방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가',
+      createDate: '2025-01-10T02:30:13.671Z',
+      writer: {
+        memberId: 0,
+        nickName: '유저닉네임10글자까지',
+        profileImageUrl: 'string',
+      },
+      reviewOwnerStatus: true,
     },
     {
-      guestbookId: 2,
-      gatheringId: 2,
-      gatheringTitle: 'title2',
-      content: 'hello',
-      rating: 3,
-      createdAt: '2022-22-22',
+      reviewId: 0,
+      rating: 0,
+      content: 'string',
+      createDate: '2025-01-10T02:30:13.671Z',
+      writer: {
+        memberId: 0,
+        nickName: 'string',
+        profileImageUrl: 'string',
+      },
+      reviewOwnerStatus: true,
     },
   ];
 
@@ -189,11 +198,15 @@ export default function GatheringDetail() {
           </div>
         </Modal>
       )}
-      <GatheringChallenge
-        challenges={gatheringChallenge}
-        captainStatus={gathering.captainStatus ?? false}
-      />
-      <GatheringGuestbook guestbook={gatheringGuestbook} />
+
+      {currentTab === 'challenge' ? (
+        <GatheringChallenge
+          challenges={gatheringChallenge}
+          captainStatus={gathering.captainStatus ?? false}
+        />
+      ) : (
+        <GatheringGuestbook guestbooks={gatheringGuestbook} />
+      )}
     </div>
   );
 }
