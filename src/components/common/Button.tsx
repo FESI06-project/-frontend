@@ -1,7 +1,9 @@
 interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   name: string;
-  style?: 'default' | 'register' | 'cancel';
+  style?: 'default' | 'register' | 'cancel' | 'custom' | 'disabled';
+  width?: string;
+  height?: string;
   className?: string;
   handleButtonClick?: () => void;
 }
@@ -21,16 +23,19 @@ export default function Button({
 }: ButtonProps) {
   const buttonStyles = {
     default:
-      'w-full h-16 mt-9 rounded-[10px] bg-primary text-[1.8rem] font-semibold',
-    register: 'w-40 h-10 mt-9 rounded-[10px] bg-primary text-[1.6rem]',
+      'w-full h-16 rounded-[10px] bg-primary text-[1.125rem] font-semibold',
+    register: 'w-40 h-10 rounded-[10px] bg-primary text-[1rem]',
     cancel:
-      'w-40 h-10 mt-9 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1.6rem]',
+      'w-40 h-10 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1rem]',
+    custom: `rounded-[10px] bg-primary text-[1.125rem] font-semibold`,
+    disabled: `rounded-[10px] bg-dark-700 text-[1.125rem] font-semibold`,
   };
   return (
     <button
       onClick={handleButtonClick}
       type={type}
       className={`${buttonStyles[style]} ${className}`}
+      disabled={style === 'disabled'}
     >
       {name}
     </button>

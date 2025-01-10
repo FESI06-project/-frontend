@@ -42,7 +42,7 @@ export default function Toast({
 
   return (
     <div className="fixed bottom-[60px] left-1/2 -translate-x-1/2 z-50 transition-opacity duration-300 opacity-100">
-      <div className="flex items-center px-[30px] py-[15px] rounded-lg bg-dark-300">
+      <div className="flex items-center px-[30px] py-[15px] rounded-[10px] bg-dark-300">
         <Image
           src={toastIcons[type]}
           alt={`${type} icon`}
