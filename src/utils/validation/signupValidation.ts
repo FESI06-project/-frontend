@@ -1,4 +1,4 @@
-export interface RegisterValidationProps {
+export interface SignupValidationProps {
   name: string;
   value: string;
   password: string;
@@ -13,12 +13,12 @@ export interface RegisterValidationProps {
 }
 
 // 회원가입 유효성 검사
-const SignupValidation = ({
+export default function signupValidation({
   name,
   value,
   password,
   setFormDataError,
-}: RegisterValidationProps) => {
+}: SignupValidationProps) {
   // 닉네임 유효성 검사
   const NicknameValidation = () => {
     setFormDataError((prev) => ({
@@ -59,6 +59,4 @@ const SignupValidation = ({
   } else if (name === 'passwordCheck') {
     PasswordCheckValidation();
   }
-};
-
-export default SignupValidation;
+}
