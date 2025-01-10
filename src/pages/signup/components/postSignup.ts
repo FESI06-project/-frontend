@@ -21,7 +21,6 @@ const postSignup = async (data: {
     }
   } catch (error) {
     console.error('회원가입 요청 에러:', error);
-    alert('회원가입에 실패했습니다.');
   }
 };
 
