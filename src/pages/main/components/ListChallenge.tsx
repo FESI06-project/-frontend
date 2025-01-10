@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
 export default function ListChallenge() {
-  const { data, isLoading } = useQuery<MainChallenge[]>({
+  const { data, isLoading, error } = useQuery<MainChallenge[]>({
     queryKey: ['mainChallengeList'],
     queryFn: async () => {
       return await apiRequest<MainChallenge[]>({
@@ -16,10 +16,16 @@ export default function ListChallenge() {
     },
   });
 
-  console.log(data);
+  if (error) {
+    return <div>Error: 데이터를 가져오지 못했습니다.</div>;
+  }
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (!data || data.length === 0) {
+    return <div>데이터가 없습니다.</div>;
   }
 
   return (
