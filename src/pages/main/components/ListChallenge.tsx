@@ -5,9 +5,6 @@ import Loading from '@/components/dialog/Loading';
 import ChallengeCard from './ChallengeCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 export default function ListChallenge() {
   const { data, isLoading } = useQuery<MainChallenge[]>({
