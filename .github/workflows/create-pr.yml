@@ -6,9 +6,10 @@ on:
       - feat-* # "feat-"로 시작하는 브랜치에 푸시될 때 트리거
 
 permissions:
-  contents: write # 브랜치 작업 권한
+  contents: write # 코드 변경 및 브랜치 관련 작업
   pull-requests: write # PR 생성 및 업데이트 권한
   issues: write # PR과 이슈 연동 권한
+  actions: write # 워크플로우 관련 작업 (필요시 추가)
 
 jobs:
   build_and_test:
