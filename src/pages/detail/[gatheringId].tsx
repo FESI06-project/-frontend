@@ -57,7 +57,7 @@ export default function GatheringDetail() {
       'www.www.ww.w.w.w.w',
     ],
     gatheringAverageRating: 4.5,
-    gatheringGuestbookCount: 333,
+    gatheringGuestbookCount: 100,
     gatheringMaxPeopleCount: 10,
     gatheringMinPeopleCount: 3,
     gatheringJoinedPeopleCount: 6,
@@ -169,7 +169,7 @@ export default function GatheringDetail() {
   }, []);
 
   return (
-    <div className="w-[1200px] flex flex-col place-self-center overflow-auto">
+    <div className="w-[1200px] flex flex-col place-self-center ">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
       <div className="flex mt-[50px] w-[1200px] ">
@@ -205,7 +205,10 @@ export default function GatheringDetail() {
           captainStatus={gathering.captainStatus ?? false}
         />
       ) : (
-        <GatheringGuestbook guestbooks={gatheringGuestbook} />
+        <GatheringGuestbook
+          guestbooks={gatheringGuestbook}
+          gatheringGuestbookCount={gatheringState.gatheringGuestbookCount}
+        />
       )}
     </div>
   );
