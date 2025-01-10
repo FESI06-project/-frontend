@@ -1,4 +1,4 @@
-import SubTag from '@/components/SubTag';
+import SubTag from '@/components/tag/SubTag';
 import { GatheringChallengeType } from '@/types';
 import { useState } from 'react';
 
@@ -19,7 +19,6 @@ export default function GatheringChallenge({
         tags={challengeSubTagItems}
         currentTag={currentTag}
         onTagChange={(newTag) => setCurrentTag(newTag)}
-        className="mt-[40px]"
       />
       <p>{challenge ? 'df' : 'ss'}</p>
     </div>

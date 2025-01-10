@@ -10,11 +10,14 @@ import GatheringInformation from './components/GatheringInformation';
 import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
-import Tab from '@/components/Tab';
+import Tab from '@/components/common/Tab';
+import useModalStore from '@/stores/useModalStore';
+import Modal from '@/components/dialog/Modal';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
+  const { showModal, setShowModal } = useModalStore();
   const gatheringTabItems = [
     {
       id: 'challenge',
@@ -49,12 +52,15 @@ export default function GatheringDetail() {
     gatheringJoinedFivePeopleImages: [
       'www.www.ww.w.w.w.w',
       'www.www.ww.w.w.w.w',
+      'www.www.ww.w.w.w.w',
+      'www.www.ww.w.w.w.w',
+      'www.www.ww.w.w.w.w',
     ],
     gatheringAverageRating: 4.5,
     gatheringGuestbookCount: 333,
     gatheringMaxPeopleCount: 10,
     gatheringMinPeopleCount: 3,
-    gatheringJoinedPeopleCount: 5,
+    gatheringJoinedPeopleCount: 6,
     gatheringStatus: '진행중',
   };
 
@@ -138,8 +144,16 @@ export default function GatheringDetail() {
         items={gatheringTabItems}
         currentTab={currentTab}
         onTabChange={(newTab) => setCurrentTab(newTab)}
-        className="w-[140px] h-[31.7px] text-lg pb-[15px] mt-[50px]"
+        className="w-[140px] h-[31px] text-lg font-bold mt-[50px] mb-[43px] pb-[15px] "
       />
+      <button onClick={() => setShowModal(!showModal)}>모달 켜기</button>
+      {showModal && (
+        <Modal title="모임 정보를 입력해주세요.">
+          <div>
+            <p>{'모임 정보'}</p>
+          </div>
+        </Modal>
+      )}
       <GatheringChallenge challenge={gatheringChallenge} />
       <GatheringGuestbook guestbook={gatheringGuestbook} />
     </div>

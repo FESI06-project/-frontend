@@ -30,7 +30,7 @@ export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
           <button
             onClick={() => setShowWritten(false)}
             className={`px-4 py-2 rounded ${
-              !showWritten ? 'bg-primary text-white' : 'bg-gray-100'
+              !showWritten ? 'bg-primary text-white' : 'bg-gray-100 text-black'
             }`}
           >
             작성 가능한 방명록
@@ -42,7 +42,7 @@ export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
         {(guestbooks || []).map((guestbook) => ( 
           <div 
             key={guestbook.guestbookId}
-            className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            className="p-6 bg-whit text-black rounded-lg shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-lg font-semibold text-dark-700">
