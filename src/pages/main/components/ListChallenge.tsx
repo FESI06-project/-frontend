@@ -21,16 +21,10 @@ export default function ListChallenge() {
   }
 
   return (
-    <div>
-      <ul>
-        {data?.map((challenge) => {
-          return (
-            <li key={challenge.challengeId}>
-              <ChallengeCard data={challenge} />
-            </li>
-          );
-        })}
-      </ul>
+    <div className="flex gap-5">
+      {data?.map((challenge) => {
+        return <ChallengeCard data={challenge} key={challenge.challengeId} />;
+      })}
     </div>
   );
 }
