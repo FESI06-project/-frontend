@@ -19,7 +19,7 @@ export default function Profile({
     nickname: '',
     profileImage: null
   } as UserProfile,
-  onEditClick
+
 }: ProfileProps) {
   const [showToast, setShowToast] = useState(false);
   const { showModal, setShowModal } = useModalStore();
