@@ -17,7 +17,7 @@ export default function SubTag({
     onTagChange(id);
   };
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`${className}`}>
       {tags.map((tag) => (
         <button
           key={tag.id}

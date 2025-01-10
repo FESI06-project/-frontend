@@ -17,12 +17,13 @@ export default function Tab({
 }: TabProps) {
   const handleTabClick = (id: TabItem['id']) => {
     // 여기도 수정
+    console.log('click');
     onTabChange(id);
   };
 
   return (
-    <div className={`w-full ${className}`}>
-      <div className="flex items-center justify-between">
+    <div className={` ${className}`}>
+      <div className="w-full flex items-center justify-between">
         <div className="flex border-b-[2px] border-dark-400 w-full">
           <div className="flex">
             {items.map((item) => (

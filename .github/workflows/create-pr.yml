@@ -3,12 +3,13 @@ name: Build, Test, and Create PR
 on:
   push:
     branches:
-      - feat-*  # "feat-"로 시작하는 브랜치에 푸시될 때 트리거
+      - feat-* # "feat-"로 시작하는 브랜치에 푸시될 때 트리거
 
 permissions:
-  contents: write          # 브랜치 작업 권한
-  pull-requests: write     # PR 생성 및 업데이트 권한
-  issues: write            # PR과 이슈 연동 권한
+  contents: write # 코드 변경 및 브랜치 관련 작업
+  pull-requests: write # PR 생성 및 업데이트 권한
+  issues: write # PR과 이슈 연동 권한
+  actions: write # 워크플로우 관련 작업 (필요시 추가)
 
 jobs:
   build_and_test:
@@ -78,13 +79,13 @@ jobs:
 
       # 8. Conditionally Create Pull Request
       - name: Create Pull Request
-        if: env.TRIGGER_PR == 'true' 
+        if: env.TRIGGER_PR == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.PAT_TOKEN }}
-          commit-message: "Automated build and test success"
-          branch: ${{ github.ref }}  # PR의 소스 브랜치
-          title: "${{ env.PR_TITLE }}"    # PR 제목을 마지막 커밋 메시지로 설정
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Automated build and test success'
+          branch: ${{ github.ref }} # PR의 소스 브랜치
+          title: '${{ env.PR_TITLE }}' # PR 제목을 마지막 커밋 메시지로 설정
           body: |
             ## **📃** 관련 이슈
             Related Issue: #${{ env.ISSUE_NUMBER }}
@@ -97,4 +98,5 @@ jobs:
 
             ## 💬 리뷰 요구사항
             ex) 의논할 점 및 특별히 요구할 부분
-          base: dev  # PR의 대상 브랜치
+          base: dev # PR의 대상 브랜치
+          assignees: ${{ github.actor }} # 브랜치 생성자를 Assignee로 설정
