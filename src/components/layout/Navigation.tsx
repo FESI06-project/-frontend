@@ -48,11 +48,11 @@ export default function Navigation() {
   }, [isLogin, setIsLogin]);
 
   return (
-    <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
-      <div className="container mx-auto px-6 lg:px-10 ">
+    <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-8 ">
         <div className="flex items-center justify-between h-20">
           {/* 로고 영역 */}
-          <nav className="flex flex-row items-center flex-shrink-0 mr-8">
+          <h1 className="flex flex-row items-center flex-shrink-0 mr-8">
             {' '}
             {/* 오른쪽 여백 추가 */}
             <div className="flex md:hidden">
@@ -64,17 +64,17 @@ export default function Navigation() {
                 height="20"
               />
             </div>
-            <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
+            <Link href="/" className="text-red-500 font-bold text-2xl">
               FitMon
             </Link>
-          </nav>
+          </h1>
 
           {/* 메인 네비게이션 */}
           <nav className="hidden md:flex flex-1 items-center">
             <div className="flex items-center space-x-8">
               <Link
-                href="/meeting"
-                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-base font-semibold transition-colors`}
+                href="/"
+                className={`${isActive('/')} hover:text-red-500 px-3 py-2 text-base font-semibold transition-colors`}
               >
                 모임 찾기
               </Link>
@@ -120,6 +120,6 @@ export default function Navigation() {
           )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
