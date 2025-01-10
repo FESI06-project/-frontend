@@ -173,8 +173,8 @@ export default function MyPage() {
         {
           gatheringId: 1,
           challengeId: 3,
-          imageUrl: 'challenge3.jpg',
-          title: '챌린지 제목은 최대 25자입니다',
+          imageUrl: 'null',
+          title: '챌린지 제목은 최대 25자입니다.25자입니다',
           description: '하체운동 인증',
           participantCount: 3,
           successParticipantCount: 2,
@@ -186,8 +186,8 @@ export default function MyPage() {
         {
           gatheringId: 1,
           challengeId: 3,
-          imageUrl: 'challenge3.jpg',
-          title: '챌린지 제목은 최대 25자입니다',
+          imageUrl: 'null',
+          title: '챌린지 제목은 최대 25자입니다 25자입니다',
           description: '하체운동 인증',
           participantCount: 3,
           successParticipantCount: 2,
@@ -199,8 +199,8 @@ export default function MyPage() {
         {
           gatheringId: 1,
           challengeId: 3,
-          imageUrl: 'challenge3.jpg',
-          title: '챌린지 제목은 최대 25자입니다',
+          imageUrl: 'null',
+          title: '챌린지 제목은 최대 25자입니다25자입니다cho',
           description: '하체운동 인증',
           participantCount: 3,
           successParticipantCount: 2,
@@ -217,8 +217,8 @@ export default function MyPage() {
         {
           gatheringId: 1,
           challengeId: 3,
-          imageUrl: 'challenge3.jpg',
-          title: '챌린지 제목은 최대 25자입니다',
+          imageUrl: 'null',
+          title: '챌린지 제목은 최대 25자입니다 ',
           description: '하체운동 인증',
           participantCount: 3,
           successParticipantCount: 2,
