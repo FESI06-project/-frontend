@@ -84,7 +84,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Automated build and test success'
-          branch: ${{ github.ref }} # PR의 소스 브랜치
+          branch: ${{ github.head_ref }} # PR의 소스 브랜치
           title: '${{ env.PR_TITLE }}' # PR 제목을 마지막 커밋 메시지로 설정
           body: |
             ## **📃** 관련 이슈
@@ -99,3 +99,4 @@ jobs:
             ## 💬 리뷰 요구사항
             ex) 의논할 점 및 특별히 요구할 부분
           base: dev # PR의 대상 브랜치
+          assignees: ${{ github.actor }} # 브랜치 생성자를 Assignee로 설정
