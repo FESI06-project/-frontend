@@ -102,6 +102,7 @@ export default function GatheringChallenge({
   );
 }
 
+
 function Challenge({ challenge }: { challenge: ChallengeProps }) {
   const button = () => {
     if (!challenge.participantStatus) {
