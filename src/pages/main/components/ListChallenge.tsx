@@ -1,9 +1,11 @@
 import { MainChallenge } from '@/types/index';
 import { useQuery } from '@tanstack/react-query';
 import apiRequest from '@/utils/apiRequest';
+import Loading from '@/components/dialog/Loading';
+import ChallengeCard from './ChallengeCard';
 
 export default function ListChallenge() {
-  const { data } = useQuery<MainChallenge[]>({
+  const { data, isLoading } = useQuery<MainChallenge[]>({
     queryKey: ['mainChallengeList'],
     queryFn: async () => {
       return await apiRequest<MainChallenge[]>({
@@ -14,5 +16,21 @@ export default function ListChallenge() {
 
   console.log(data);
 
-  return <div>챌린지 슬라이드 컴포넌트</div>;
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  return (
+    <div>
+      <ul>
+        {data?.map((challenge) => {
+          return (
+            <li key={challenge.challengeId}>
+              <ChallengeCard data={challenge} />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
