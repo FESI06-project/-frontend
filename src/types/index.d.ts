@@ -58,3 +58,15 @@ export interface GuestbookItem {
   rating: number;
   createdAt: string;
 }
+
+export interface MainChallenge {
+  gatheringId: number;
+  challengeId: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  participantCount: number;
+  successParticipantCount: number;
+  startDate: string;
+  endDate: string;
+}
