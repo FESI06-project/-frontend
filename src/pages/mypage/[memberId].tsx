@@ -39,33 +39,35 @@ export default function MyPage() {
   const hostedGatherings: GatheringItem[] = [
     {
       gatheringId: 1,
-      gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
-      gatheringImage: "null",
-      gatheringStatus: "진행중",
-      gatheringStartDate: "2024.12.04",
-      gatheringEndDate: "2025.01.23",
-      gatheringMainType: "유산소형",
-      gatheringSubType: "런닝",
-      gatheringSi: "대전",
-      gatheringGu: "서구",
-      gatheringTags: ["심심할 때", "스트레스", "런닝"],
-      gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
+      gatheringTitle:
+        '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
+      gatheringImage: 'null',
+      gatheringStatus: '진행중',
+      gatheringStartDate: '2024.12.04',
+      gatheringEndDate: '2025.01.23',
+      gatheringMainType: '유산소형',
+      gatheringSubType: '런닝',
+      gatheringSi: '대전',
+      gatheringGu: '서구',
+      gatheringTags: ['심심할 때', '스트레스', '런닝'],
+      gatheringDescription:
+        '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷',
       captainStatus: true,
-      isReservationCancellable: false
-    }
+      isReservationCancellable: false,
+    },
   ];
 
   // 호스트 모임 상태 정보
   const hostedGatheringStates: { [key: number]: GatheringStateType } = {
     1: {
-      gatheringJoinedFivePeopleImages: ["profile1.jpg", "profile2.jpg"],
+      gatheringJoinedFivePeopleImages: ['profile1.jpg', 'profile2.jpg'],
       gatheringAverageRating: 4.5,
       gatheringGuestbookCount: 333,
       gatheringMaxPeopleCount: 20,
       gatheringMinPeopleCount: 3,
       gatheringJoinedPeopleCount: 8,
-      gatheringStatus: "진행중"
-    }
+      gatheringStatus: '진행중',
+    },
   };
 
   // 호스트 모임 챌린지 정보
@@ -73,63 +75,73 @@ export default function MyPage() {
     1: {
       inProgressChallenges: [
         {
-          challengeId: 1,
-          challengeImage: "null",
-          challengeTitle: "챌린지 제목은 최대 25자입니다",
-          challengeDescription: "매일 달리기 인증하기",
-          challengeJoinedPeopleCount: 3,
-          challengeSuccessPeopleCount: 2,
-          challengeParticipationStatus: true,
-          challengeVerificationStatus: true
+          gatheringId: 1,
+          challengeId: 3,
+          imageUrl: 'challenge3.jpg',
+          title: '챌린지 제목은 최대 25자입니다',
+          description: '하체운동 인증',
+          participantCount: 3,
+          successParticipantCount: 2,
+          participantStatus: true,
+          verificationStatus: false,
+          startDate: 'string',
+          endDate: 'string',
         },
         {
-          challengeId: 2,
-          challengeImage: "null",
-          challengeTitle: "챌린지 제목은 최대 25자입니다",
-          challengeDescription: "물 마시기 인증",
-          challengeJoinedPeopleCount: 3,
-          challengeSuccessPeopleCount: 3,
-          challengeParticipationStatus: false,
-          challengeVerificationStatus: true
-        }
+          gatheringId: 1,
+          challengeId: 3,
+          imageUrl: 'challenge3.jpg',
+          title: '챌린지 제목은 최대 25자입니다',
+          description: '하체운동 인증',
+          participantCount: 3,
+          successParticipantCount: 2,
+          participantStatus: true,
+          verificationStatus: false,
+          startDate: 'string',
+          endDate: 'string',
+        },
       ],
-      doneChallenges: []
-    }
+      doneChallenges: [],
+    },
   };
 
   const userGatherings: GatheringItem[] = [
     {
       gatheringId: 2,
-      gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
-      gatheringImage: "null",
-      gatheringStatus: "진행중",
-      gatheringStartDate: "2025.03.04",
-      gatheringEndDate: "2025.03.23",
-      gatheringMainType: "근력형",
-      gatheringSubType: "헬스",
-      gatheringSi: "대전",
-      gatheringGu: "유성구",
-      gatheringTags: ["헬스", "근력", "저녁운동"],
-      gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
+      gatheringTitle:
+        '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
+      gatheringImage: 'null',
+      gatheringStatus: '진행중',
+      gatheringStartDate: '2025.03.04',
+      gatheringEndDate: '2025.03.23',
+      gatheringMainType: '근력형',
+      gatheringSubType: '헬스',
+      gatheringSi: '대전',
+      gatheringGu: '유성구',
+      gatheringTags: ['헬스', '근력', '저녁운동'],
+      gatheringDescription:
+        '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷',
       captainStatus: false,
-      isReservationCancellable: false
+      isReservationCancellable: false,
     },
     {
       gatheringId: 3,
-      gatheringTitle: "모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자",
-      gatheringImage: "null",
-      gatheringStatus: "모집중",
-      gatheringStartDate: "2024.12.04",
-      gatheringEndDate: "2025.01.23",
-      gatheringMainType: "유산소형",
-      gatheringSubType: "수영",
-      gatheringSi: "대전",
-      gatheringGu: "중구",
-      gatheringTags: ["수영", "아침운동", "초보환영"],
-      gatheringDescription: "디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷",
+      gatheringTitle:
+        '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
+      gatheringImage: 'null',
+      gatheringStatus: '모집중',
+      gatheringStartDate: '2024.12.04',
+      gatheringEndDate: '2025.01.23',
+      gatheringMainType: '유산소형',
+      gatheringSubType: '수영',
+      gatheringSi: '대전',
+      gatheringGu: '중구',
+      gatheringTags: ['수영', '아침운동', '초보환영'],
+      gatheringDescription:
+        '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷',
       captainStatus: false,
-      isReservationCancellable: false
-    }
+      isReservationCancellable: false,
+    },
   ];
 
   // 참여 모임 상태 정보
@@ -171,36 +183,33 @@ export default function MyPage() {
           endDate: 'string',
         },
         {
+          gatheringId: 1,
           challengeId: 3,
-          challengeImage: "null",
-          challengeTitle: "챌린지 제목은 최대 25자입니다",
-          challengeDescription: "하체운동 인증",
-          challengeJoinedPeopleCount: 3,
-          challengeSuccessPeopleCount: 2,
-          challengeParticipationStatus: false,
-          challengeVerificationStatus: false
+          imageUrl: 'challenge3.jpg',
+          title: '챌린지 제목은 최대 25자입니다',
+          description: '하체운동 인증',
+          participantCount: 3,
+          successParticipantCount: 2,
+          participantStatus: true,
+          verificationStatus: false,
+          startDate: 'string',
+          endDate: 'string',
         },
         {
+          gatheringId: 1,
           challengeId: 3,
-          challengeImage: "null",
-          challengeTitle: "챌린지 제목은 최대 25자입니다",
-          challengeDescription: "하체운동 인증",
-          challengeJoinedPeopleCount: 3,
-          challengeSuccessPeopleCount: 2,
-          challengeParticipationStatus: true,
-          challengeVerificationStatus: false
-        }, {
-          challengeId: 3,
-          challengeImage: "null",
-          challengeTitle: "챌린지 제목은 최대 25자입니다. 최대 25자",
-          challengeDescription: "하체운동 인증",
-          challengeJoinedPeopleCount: 3,
-          challengeSuccessPeopleCount: 2,
-          challengeParticipationStatus: true,
-          challengeVerificationStatus: true
-        }
+          imageUrl: 'challenge3.jpg',
+          title: '챌린지 제목은 최대 25자입니다',
+          description: '하체운동 인증',
+          participantCount: 3,
+          successParticipantCount: 2,
+          participantStatus: true,
+          verificationStatus: false,
+          startDate: 'string',
+          endDate: 'string',
+        },
       ],
-      doneChallenges: []
+      doneChallenges: [],
     },
     3: {
       inProgressChallenges: [
@@ -218,8 +227,8 @@ export default function MyPage() {
           endDate: 'string',
         },
       ],
-      doneChallenges: []
-    }
+      doneChallenges: [],
+    },
   };
   const handleTabChange = (id: TabItem['id']) => {
     setCurrentTab(id);
