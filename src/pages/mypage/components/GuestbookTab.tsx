@@ -31,7 +31,7 @@ export default function GuestbookTab({ guestbooks = [] }: GuestbookTabProps) {
           <button
             onClick={() => setShowWritten(false)}
             className={`px-4 py-2 rounded ${
-              !showWritten ? 'bg-primary text-white' : 'bg-gray-100'
+              !showWritten ? 'bg-primary text-white' : 'bg-gray-100 text-black'
             }`}
           >
             작성 가능한 방명록

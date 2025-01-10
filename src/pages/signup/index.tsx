@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import Input from '../../components/common/Input';
 import Button from '@/components/common/Button';
-import SignupValidation from './components/SignupValidation';
+import signupValidation from '@/utils/validation/signupValidation';
 import postSignup from './components/postSignup';
 import router from 'next/router';
-
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
@@ -35,7 +34,7 @@ export default function Signup() {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    SignupValidation({
+    signupValidation({
       name: e.target.name,
       value: e.target.value,
       password: formData.password,

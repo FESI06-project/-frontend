@@ -22,6 +22,17 @@ export default function GatheringTab({
   //onGatheringClick, 클릭 시 이동 프롭스
   onCancelReservation,
 }: GatheringTabProps) {
+  const [openChallenges, setOpenChallenges] = useState<{
+    [key: number]: boolean;
+  }>({});
+
+  const handleToggleChallenge = (gatheringId: number) => {
+    setOpenChallenges((prev) => ({
+      ...prev,
+      [gatheringId]: !prev[gatheringId],
+    }));
+  };
+
   return (
     <div className="space-y-6">
       {(gatherings || [])
@@ -32,7 +43,10 @@ export default function GatheringTab({
         )
         .map((gathering) => {
           const state = gatheringStates[gathering.gatheringId];
+          if (!state) return null;
+
           const challenges = gatheringChallenges[gathering.gatheringId];
+          const isOpen = openChallenges[gathering.gatheringId];
 
           return (
             <div
