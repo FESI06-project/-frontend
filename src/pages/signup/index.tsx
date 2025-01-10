@@ -4,7 +4,6 @@ import Button from '@/components/common/Button';
 import SignupValidation from './components/SignupValidation';
 import postSignup from './components/postSignup';
 import router from 'next/router';
-
 // 태블릿 24, 모바일 14
 // 회원가입 창 mt 140 글자 mb 50
 
