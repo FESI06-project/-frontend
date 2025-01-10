@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import GuestbookModal from './GuestbookModal';
 import { GuestbookItem } from '@/types';
+import Null from '@/components/common/Null';
+
 interface GuestbookTabProps {
-  guestbooks?: GuestbookItem[]; // optional로 변경
+  guestbooks?: GuestbookItem[];
 }
 
 export default function GuestbookTab({ guestbooks = [] }: GuestbookTabProps) {
   const [showWritten, setShowWritten] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedGuestbook, setSelectedGuestbook] =
-    useState<GuestbookItem | null>(null);
+  const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
 
   const handleEditClick = (guestbook: GuestbookItem) => {
     setSelectedGuestbook(guestbook);
@@ -40,50 +41,55 @@ export default function GuestbookTab({ guestbooks = [] }: GuestbookTabProps) {
       </div>
 
       <div className="space-y-6">
-   {(guestbooks || []).map((guestbook) => (
-          <div
-            key={guestbook.reviewId}
-            className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-lg font-semibold text-dark-700">
-                {guestbook.content}
-              </h3>
-              <div className="flex items-center space-x-4">
-                <div className="flex">
-                  {[...Array(5)].map((_, index) => (
-                    <span
-                      key={index}
-                      className={`text-xl ${
-                        index < guestbook.rating
-                          ? 'text-yellow-400'
-                          : 'text-gray-200'
-                      }`}
-                    >
-                      ★
-                    </span>
-                  ))}
+        {guestbooks.length > 0 ? (
+          guestbooks.map((guestbook) => (
+            <div
+              key={guestbook.reviewId}
+              className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* 기존 방명록 내용 */}
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg font-semibold text-dark-700">
+                  {guestbook.content}
+                </h3>
+                <div className="flex items-center space-x-4">
+                  <div className="flex">
+                    {[...Array(5)].map((_, index) => (
+                      <span
+                        key={index}
+                        className={`text-xl ${
+                          index < guestbook.rating
+                            ? 'text-yellow-400'
+                            : 'text-gray-200'
+                        }`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => handleEditClick(guestbook)}
+                    className="text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded"
+                  >
+                    수정
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleEditClick(guestbook)}
-                  className="text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded"
-                >
-                  수정
-                </button>
+              </div>
+              <p className="text-dark-600 mb-3 leading-relaxed">
+                {guestbook.content}
+              </p>
+              <div className="text-sm text-dark-500">
+                {new Date(guestbook.createDate).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </div>
             </div>
-            <p className="text-dark-600 mb-3 leading-relaxed">
-              {guestbook.content}
-            </p>
-            <div className="text-sm text-dark-500">
-              {new Date(guestbook.createDate).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <Null message="아직 작성된 방명록이 없습니다." />
+        )}
       </div>
 
       <GuestbookModal
