@@ -19,7 +19,6 @@ export default function Profile({
     nickname: '',
     profileImage: null
   } as UserProfile,  // UserProfile 타입으로 명시적 캐스팅
-  onEditClick
 }: ProfileProps) {
   const [showToast, setShowToast] = useState(false);
   const { showModal, setShowModal } = useModalStore();
