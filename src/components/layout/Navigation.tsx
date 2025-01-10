@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
+import { useEffect } from 'react';
 
 export default function Navigation() {
   const router = useRouter();
@@ -14,19 +15,44 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const { isLogin, setIsLogin, nickname } = useMemberStore();
+  const { isLogin, setIsLogin, setNickname, setMemberId, nickname } =
+    useMemberStore();
   const { toggleListExpanded } = useLayoutStore();
 
   const handleListButtonClick = () => {
     toggleListExpanded();
   };
 
+  useEffect(() => {
+    const localIsLogin = localStorage.getItem('isLogin');
+    setIsLogin(localIsLogin === 'true');
+    if (localIsLogin === 'true') {
+      const localMemberId = localStorage.getItem('memberId');
+      const localNickname = localStorage.getItem('nickname');
+      // console.log('localMemberId', localMemberId);
+      // console.log('localNickname', localNickname);
+      if (localNickname) {
+        setNickname(localNickname);
+      }
+      if (localMemberId) {
+        setMemberId(Number(localMemberId));
+      }
+    }
+    // const localMemberId = localStorage.getItem('memberId');
+    // const localNickname = localStorage.getItem('nickname');
+    // console.log('localMemberId', localMemberId);
+    // console.log('localNickname', localNickname);
+    console.log('isLogin', useMemberStore.getState().isLogin);
+    console.log('nickname', useMemberStore.getState().nickname);
+    console.log('memberId', useMemberStore.getState().memberId);
+  }, [isLogin, setIsLogin]);
+
   return (
-    <nav className="sticky top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
-      <div className="container mx-auto px-6 lg:px-10 ">
+    <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-8 ">
         <div className="flex items-center justify-between h-20">
           {/* 로고 영역 */}
-          <nav className="flex flex-row items-center flex-shrink-0 mr-8">
+          <h1 className="flex flex-row items-center flex-shrink-0 mr-8">
             {' '}
             {/* 오른쪽 여백 추가 */}
             <div className="flex md:hidden">
@@ -38,17 +64,17 @@ export default function Navigation() {
                 height="20"
               />
             </div>
-            <Link href="/" className="text-red-500 font-bold text-2xl ml-6">
+            <Link href="/" className="text-red-500 font-bold text-2xl">
               FitMon
             </Link>
-          </nav>
+          </h1>
 
           {/* 메인 네비게이션 */}
           <nav className="hidden md:flex flex-1 items-center">
             <div className="flex items-center space-x-8">
               <Link
-                href="/meeting"
-                className={`${isActive('/meeting')} hover:text-red-500 px-3 py-2 text-base font-semibold transition-colors`}
+                href="/"
+                className={`${isActive('/')} hover:text-red-500 px-3 py-2 text-base font-semibold transition-colors`}
               >
                 모임 찾기
               </Link>
@@ -69,10 +95,24 @@ export default function Navigation() {
 
           {/* 사용자 프로필 영역 */}
           {isLogin ? (
-            <UserProfile nickname={nickname} />
+            <>
+              <UserProfile nickname={nickname} />
+              <button
+                onClick={() => {
+                  localStorage.removeItem('isLogin');
+                  localStorage.removeItem('email');
+                  localStorage.removeItem('memberId');
+                  localStorage.removeItem('nickname');
+                  useMemberStore.getState().setIsLogin(false);
+                  router.push('/');
+                }}
+              >
+                {'로그아웃'}
+              </button>
+            </>
           ) : (
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => router.push('/login')}
               className="sm:w-[124px] sm:h-[42px] w-[100px] h-[34px] rounded-[10px] text-base bg-primary text-white"
             >
               {'로그인'}
@@ -80,6 +120,6 @@ export default function Navigation() {
           )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

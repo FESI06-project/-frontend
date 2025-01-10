@@ -1,11 +1,8 @@
-import StatusTag from '@/components/tag/StatusTag';
-import OpenStatus from '@/components/tag/OpenStatus';
-import {
-  GatheringChallengeType,
-  GatheringItem,
-  GatheringStateType,
-} from '@/types';
-import Image from 'next/image';
+import MainCard from './MainCard';
+import ChallengeSection from './ChallengeSection';
+import CanceledGathering from '@/components/common/CanceledGathering';
+import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
+import { useState } from 'react';
 
 interface GatheringTabProps {
   gatherings?: GatheringItem[];
@@ -19,99 +16,58 @@ export default function GatheringTab({
   gatherings = [],
   gatheringStates,
   gatheringChallenges,
-  //onGatheringClick, 클릭 시 이동 프롭스
   onCancelReservation,
 }: GatheringTabProps) {
+  const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
+
+  const handleToggleChallenge = (gatheringId: number) => {
+    setOpenChallenges(prev => ({
+      ...prev,
+      [gatheringId]: !prev[gatheringId]
+    }));
+  };
+
   return (
-    <div className="space-y-6">
-      {(gatherings || [])
-        .sort(
-          (a, b) =>
-            new Date(a.gatheringStartDate).getTime() -
-            new Date(b.gatheringStartDate).getTime(),
+    <div className="space-y-6 pb-[50px]">
+    {(gatherings || [])
+        .sort((a, b) =>
+          new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
         )
         .map((gathering) => {
+          // gathering이 유효하지 않은 경우 무시
+          if (!gathering) return null;
+
           const state = gatheringStates[gathering.gatheringId];
+          if (!state) return null;
+
           const challenges = gatheringChallenges[gathering.gatheringId];
+          const isOpen = openChallenges[gathering.gatheringId];
 
           return (
-            <div
-              key={gathering.gatheringId}
-              className="w-[906px] h-[200px] rounded-lg overflow-hidden"
-            >
-              {/* 메인 카드 영역 */}
-              <div className="flex gap-6 p-4">
-                {/* 이미지 영역 */}
-                <div className="relative w-[300px] h-[200px]">
-                  <img
-                    src={
-                      gathering.gatheringImage === 'null' ||
-                      !gathering.gatheringImage
-                        ? '/assets/image/default_img.png'
-                        : gathering.gatheringImage
-                    }
-                    alt={gathering.gatheringTitle}
-                    className="w-full h-full object-cover rounded-lg"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = '/assets/image/default_img.png';
-                    }}
-                  />
-                  {/* StatusTag 컴포넌트로 교체 */}
-                  <div className="absolute bottom-7 left-5">
-                    <StatusTag status={gathering.gatheringStatus} />
-                  </div>
-                </div>
+            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
+              <MainCard 
+                gathering={gathering}
+                state={state}
+                onCancelReservation={onCancelReservation}
+              />
+              
+              <ChallengeSection
+                challenges={challenges}
+                gathering={gathering}
+                isOpen={isOpen}
+                onToggle={() => handleToggleChallenge(gathering.gatheringId)}
+              />
 
-                {/* 정보 영역 */}
-                <div className="flex flex-col flex-1 text-white">
-                  <h3 className="text-xl font-medium mb-2">
-                    {gathering.gatheringTitle}
-                  </h3>
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
-                    <span>
-                      {gathering.gatheringStartDate} ~{' '}
-                      {gathering.gatheringEndDate}
-                    </span>
-                    <Image
-                      src="/assets/image/person.svg" // person.svg 경로
-                      alt="참여자 아이콘"
-                      width={18}
-                      height={18}
-                    />
-                    <span>
-                      {state.gatheringJoinedPeopleCount}/
-                      {state.gatheringMaxPeopleCount}
-                    </span>
-                    <OpenStatus
-                      gatheringJoinedPeopleCount={
-                        state.gatheringJoinedPeopleCount
-                      }
-                    />
-                  </div>
-
-                  {/* 예약 취소 버튼 */}
-                  {gathering.isReservationCancellable && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onCancelReservation(gathering.gatheringId);
-                      }}
-                      className="px-4 py-2 bg-[#FF0844] text-white rounded-lg self-start"
-                    >
-                      참여 취소하기
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* 챌린지 영역 토글 버튼 */}
-              <div
-                className="px-4 py-2 border-t border-gray-700 text-white cursor-pointer hover:bg-gray-800"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // 챌린지 토글 로직
+              <CanceledGathering
+                type="gathering"
+                gatheringStartDate={gathering.gatheringStartDate}
+                gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
+                isReservationCancellable={gathering.isReservationCancellable || false}
+                onOverlay={() => {
+                  setOpenChallenges(prev => ({
+                    ...prev,
+                    [gathering.gatheringId]: false
+                  }));
                 }}
               >
                 <span className="flex items-center gap-2">
