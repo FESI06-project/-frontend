@@ -10,10 +10,16 @@ export default function ListChallenge() {
   const { data, isLoading, error } = useQuery<MainChallenge[]>({
     queryKey: ['mainChallengeList'],
     queryFn: async () => {
-      return await apiRequest<MainChallenge[]>({
-        param: '/api/v1/challenges',
-      });
+      try {
+        return await apiRequest<MainChallenge[]>({
+          param: '/api/v1/challenges',
+        });
+      } catch (err) {
+        console.error('API 호출 에러:', err);
+        throw new Error('데이터를 가져오는 중 오류가 발생했습니다.');
+      }
     },
+    retry: false,
   });
 
   if (error) {
