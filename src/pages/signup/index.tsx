@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Input from '../../components/common/Input';
 import Button from '@/components/common/Button';
-import signupValidation from '@/utils/validation/SignupValidation';
+import signupValidation from '@/utils/validation/signupValidation';
 import postSignup from './components/postSignup';
 import router from 'next/router';
 // 태블릿 24, 모바일 14
