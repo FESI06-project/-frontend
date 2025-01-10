@@ -5,10 +5,11 @@ interface GuestbookTabProps {
   guestbooks?: GuestbookItem[]; // optional로 변경
 }
 
-export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
+export default function GuestbookTab({ guestbooks = [] }: GuestbookTabProps) {
   const [showWritten, setShowWritten] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
+  const [selectedGuestbook, setSelectedGuestbook] =
+    useState<GuestbookItem | null>(null);
 
   const handleEditClick = (guestbook: GuestbookItem) => {
     setSelectedGuestbook(guestbook);
@@ -39,29 +40,31 @@ export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
       </div>
 
       <div className="space-y-6">
-        {(guestbooks || []).map((guestbook) => ( 
-          <div 
-            key={guestbook.guestbookId}
-            className="p-6 bg-whit text-black rounded-lg shadow-sm hover:shadow-md transition-shadow"
+   {(guestbooks || []).map((guestbook) => (
+          <div
+            key={guestbook.reviewId}
+            className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-lg font-semibold text-dark-700">
-                {guestbook.gatheringTitle}
+                {guestbook.content}
               </h3>
               <div className="flex items-center space-x-4">
                 <div className="flex">
                   {[...Array(5)].map((_, index) => (
-                    <span 
+                    <span
                       key={index}
                       className={`text-xl ${
-                        index < guestbook.rating ? 'text-yellow-400' : 'text-gray-200'
+                        index < guestbook.rating
+                          ? 'text-yellow-400'
+                          : 'text-gray-200'
                       }`}
                     >
                       ★
                     </span>
                   ))}
                 </div>
-                <button 
+                <button
                   onClick={() => handleEditClick(guestbook)}
                   className="text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded"
                 >
@@ -73,10 +76,10 @@ export default function GuestbookTab({  guestbooks = []  }: GuestbookTabProps) {
               {guestbook.content}
             </p>
             <div className="text-sm text-dark-500">
-              {new Date(guestbook.createdAt).toLocaleDateString('ko-KR', {
+              {new Date(guestbook.createDate).toLocaleDateString('ko-KR', {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </div>
           </div>

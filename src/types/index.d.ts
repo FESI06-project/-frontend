@@ -36,25 +36,50 @@ export interface GatheringStateType {
 }
 
 export interface GatheringChallengeType {
-  inProgressChallenges: Array<ChallengeType>;
-  doneChallenges: Array<ChallengeType>;
+  inProgressChallenges: Array<ChallengeType>?;
+  doneChallenges: Array<ChallengeType>?;
 }
 
+export interface GatheringChallegeProps {
+  challenges: GatheringChallengeType;
+  captainStatus: boolean;
+}
 export interface ChallengeType {
+  gatheringId: number;
   challengeId: number;
-  challengeImage: string;
-  challengeTitle: string;
-  challengeDescription: string;
-  challengeJoinedPeopleCount: number;
-  challengeSuccessPeopleCount: number;
-  challengeParticipationStatus: boolean;
-  challengeVerificationStatus: boolean;
+  imageUrl: string;
+  title: string;
+  description: string;
+  participantCount: number;
+  successParticipantCount: number;
+  participantStatus: boolean;
+  verificationStatus: boolean;
+  startDate: string;
+  endDate: string;
 }
 export interface GuestbookItem {
-  guestbookId: number;
-  gatheringId: number;
-  gatheringTitle: string;
+  reviewId: number;
   content: string;
   rating: number;
-  createdAt: string;
+  createDate: string;
+  writer: GuestbookWriter;
+  reviewOwnerStatus: boolean;
+}
+
+export interface GuestbookWriter {
+  memberId: number;
+  nickName: string;
+  profileImageUrl: string;
+}
+
+export interface MainChallenge {
+  gatheringId: number;
+  challengeId: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  participantCount: number;
+  successParticipantCount: number;
+  startDate: string;
+  endDate: string;
 }
