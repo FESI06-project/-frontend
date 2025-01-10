@@ -15,7 +15,10 @@ export default function GatheringState({
   }
 
   return (
-    <div className="flex items-center mt-[25px] justify-between">
+    <div
+      id="gathering-state"
+      className="flex items-center mt-[25px] justify-between"
+    >
       {/* 모임 만족도와 평균 평점 */}
       <div id="rating">
         <h3 className="mb-[18px] font-bold">{'모임 만족도'}</h3>
@@ -81,9 +84,8 @@ export default function GatheringState({
         </div>
         <div className="flex mb-auto h-[56px]" id="buttons">
           <Button
-            className="ml-[25px]"
+            className="ml-[25px] w-[242px]"
             style="custom"
-            width="242px"
             height="100%"
             name="참여하기"
           />

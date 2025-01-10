@@ -52,7 +52,7 @@ export default function GatheringInformation({
             )}
           </div>
 
-          <p className="text-[1.125rem] text-dark-700 mt-4">
+          <p className="text-[1.125rem] text-dark-700 mt-[3px]">
             {information.gatheringDescription}
           </p>
           <div id="tags" className="mt-5">
@@ -62,7 +62,7 @@ export default function GatheringInformation({
             id="range-and-place"
             className="w-full mt-[25px] py-[30px] bg-dark-200 rounded-[20px]"
           >
-            <div id="range" className="flex items-center mb-[13px]">
+            <div id="range" className="flex items-center mb-[8px]">
               <Image
                 src="/assets/image/time.svg"
                 width={14}
