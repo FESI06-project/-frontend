@@ -1,7 +1,7 @@
 import BarChart from '@/components/chart/BarChart';
 import Button from '@/components/common/Button';
 import SubTag from '@/components/tag/SubTag';
-import { GatheringChallegeProps, GatheringChallengeType } from '@/types';
+import { GatheringChallegeProps } from '@/types';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -73,21 +73,29 @@ export default function GatheringChallenge({
 
         <div className="flex flex-col mt-[31px] gap-6">
           {currentTag === 'inProgress' &&
-            currentInquiryState === 'list' &&
-            challenges.inProgressChallenges.map((challenge, index) => (
+          currentInquiryState === 'list' &&
+          challenges?.inProgressChallenges ? (
+            challenges?.inProgressChallenges.map((challenge, index) => (
               <Challenge
                 key={index}
                 challenge={{ ...challenge, captainStatus }}
               />
-            ))}
+            ))
+          ) : (
+            <div>{'존재하지 않습니다.'}</div>
+          )}
           {currentTag === 'done' &&
-            currentInquiryState === 'list' &&
+          currentInquiryState === 'list' &&
+          challenges.doneChallenges ? (
             challenges.doneChallenges.map((challenge, index) => (
               <Challenge
                 key={index}
                 challenge={{ ...challenge, captainStatus }}
               />
-            ))}
+            ))
+          ) : (
+            <div>{'존재하지 않습니다.'}</div>
+          )}
         </div>
       </div>
     </div>

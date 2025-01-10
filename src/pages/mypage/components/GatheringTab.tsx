@@ -134,7 +134,7 @@ export default function GatheringTab({
               </div>
 
               {/* 챌린지 그리드 (토글되었을 때 표시) */}
-              {challenges && challenges.inProgressChallenges.length > 0 && (
+              {challenges && challenges?.inProgressChallenges && (
                 <div className="grid grid-cols-3 gap-4 p-4 bg-[#2C2C2C]">
                   {challenges.inProgressChallenges.map((challenge) => (
                     <div
@@ -144,14 +144,14 @@ export default function GatheringTab({
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full overflow-hidden">
                           <img
-                            src={challenge.challengeImage}
-                            alt={challenge.challengeTitle}
+                            src={challenge.imageUrl}
+                            alt={challenge.title}
                             className="w-full h-full object-cover"
                           />
                         </div>
                         <div>
                           <p className="text-white text-sm">
-                            {challenge.challengeTitle}
+                            {challenge.title}
                           </p>
                           <p className="text-gray-400 text-xs mt-1">
                             {gathering.gatheringStartDate} ~{' '}

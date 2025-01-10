@@ -36,8 +36,8 @@ export interface GatheringStateType {
 }
 
 export interface GatheringChallengeType {
-  inProgressChallenges: Array<ChallengeType>;
-  doneChallenges: Array<ChallengeType>;
+  inProgressChallenges: Array<ChallengeType>?;
+  doneChallenges: Array<ChallengeType>?;
 }
 
 export interface GatheringChallegeProps {

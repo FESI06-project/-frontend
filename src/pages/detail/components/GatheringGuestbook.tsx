@@ -9,9 +9,13 @@ export default function GatheringGuestbook({
 }) {
   return (
     <div className="mt-[43px] flex flex-col gap-5">
-      {guestbooks.map((guestbook, index) => (
-        <Guestbook key={index} guestbook={guestbook} />
-      ))}
+      {guestbooks ? (
+        guestbooks.map((guestbook, index) => (
+          <Guestbook key={index} guestbook={guestbook} />
+        ))
+      ) : (
+        <div>존재하지 않습니다</div>
+      )}
     </div>
   );
 }
