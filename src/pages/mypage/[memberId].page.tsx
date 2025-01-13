@@ -12,6 +12,7 @@ import type {
   GatheringItem,
   GatheringStateType,
   GatheringChallengeType,
+  GuestbookItem,
 } from '@/types';
 
 const MY_PAGE_TABS: TabItem[] = [
@@ -179,7 +180,7 @@ export default function MyPage() {
           participantCount: 3,
           successParticipantCount: 2,
           participantStatus: true,
-          verificationStatus: false,
+          verificationStatus: true,
           startDate: 'string',
           endDate: 'string',
         },
@@ -231,6 +232,36 @@ export default function MyPage() {
       doneChallenges: [],
     },
   };
+
+  const userGuestbooks: GuestbookItem[] = [
+    {
+      reviewId: 1,
+      content: '매일 운동하는 습관을 기를 수 있어서 좋았어요. 모임장님도 친절하시고 다른 멤버분들도 다들 열정적이셔서 동기부여가 많이 됐습니다!',
+      rating: 5,
+      createDate: '2024-01-15T09:30:00.000Z',
+      writer: {
+        memberId: 1,
+        nickName: '러닝조아',
+        profileImageUrl: 'null'
+      },
+      reviewOwnerStatus: true,
+      gatheringId: 2  
+    },
+    {
+      reviewId: 2,
+      content: '초보자도 부담없이 참여할 수 있어서 좋았어요. 다음에도 이런 모임이 있다면 또 참여하고 싶네요!',
+      rating: 4,
+      createDate: '2024-01-10T15:20:00.000Z',
+      writer: {
+        memberId: 2,
+        nickName: '헬스왕',
+        profileImageUrl: 'null'
+      },
+      reviewOwnerStatus: true,
+      gatheringId: 2  
+    }
+  ];
+
   const handleTabChange = (id: TabItem['id']) => {
     setCurrentTab(id);
   };
@@ -269,7 +300,14 @@ export default function MyPage() {
               onCancelReservation={handleCancelReservation}
             />
           )}
-          {currentTab === 'guestbook' && <GuestbookTab guestbooks={[]} />}
+          {currentTab === 'guestbook' && (
+            <GuestbookTab
+              guestbooks={userGuestbooks}
+              gatherings={userGatherings}  // hostedGatherings 제외
+              gatheringChallenges={userGatheringChallenges}
+              gatheringStates={userGatheringStates}
+            />
+          )}
           {currentTab === 'myGathering' && (
             <MyGatheringTab
               gatherings={hostedGatherings}

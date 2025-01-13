@@ -149,6 +149,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
+      gatheringId: 0
     },
     {
       reviewId: 0,
@@ -161,6 +162,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
+      gatheringId: 0       
     },
   ];
 
