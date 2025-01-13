@@ -30,10 +30,6 @@ export default function Profile({
     setShowToast(true);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-  };
-
   return (
     <>
       <div className="flex items-start gap-[20px]">
