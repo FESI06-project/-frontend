@@ -1,11 +1,18 @@
+import Cardlist from '@/components/card/gathering/Cardlist';
 import Button from '@/components/common/Button';
 import Tab from '@/components/common/Tab';
-import { LISTPAGE_MAINTYPE } from '@/constants/MainList';
+import SubTag from '@/components/tag/SubTag';
+import {
+  LISTPAGE_MAINTYPE,
+  LISTPAGE_SUBTYPE,
+  MainType,
+} from '@/constants/MainList';
 import ListChallenge from '@/pages/main/components/ListChallenge';
 import { useState } from 'react';
 
 export default function Home() {
-  const [currentTab, setCurrentTab] = useState('전체');
+  const [mainType, setMainType] = useState<MainType>('전체');
+  const [subType, setSubType] = useState('전체');
 
   return (
     <div className="max-w-screen-xl mx-auto px-8 pt-20">
@@ -18,8 +25,11 @@ export default function Home() {
       <div className="mt-20">
         <Tab
           items={LISTPAGE_MAINTYPE}
-          currentTab={currentTab}
-          onTabChange={(newTab) => setCurrentTab(newTab)}
+          currentTab={mainType}
+          onTabChange={(newTab) => {
+            setMainType(newTab as MainType);
+            setSubType('전체');
+          }}
           rightElement={
             <Button
               style="custom"
@@ -28,6 +38,16 @@ export default function Home() {
             />
           }
         />
+      </div>
+      <div className="mt-7">
+        <SubTag
+          tags={LISTPAGE_SUBTYPE[mainType]}
+          currentTag={subType}
+          onTagChange={(newTag) => setSubType(newTag)}
+        />
+      </div>
+      <div className="mt-7">
+        <Cardlist mainType={mainType} />
       </div>
     </div>
   );
