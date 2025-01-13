@@ -29,6 +29,7 @@ export default function Profile({
     setShowModal(false);
     setShowToast(true);
   };
+  
 
   return (
     <>
