@@ -5,7 +5,6 @@ interface ModalInputProps {
   placeholder: string; // 플레이스홀더 텍스트
   value: string; // 입력 값
   onChange: (value: string) => void; // 값 변경 핸들러
-  defaultValue?: string; // 기본 값 (수정 시 기존 데이터)
   className?: string; // 추가 스타일링을 위한 클래스
   maxLength: number; // 최대 글자수 지정
   height?: string; // 텍스트 영역 높이
@@ -17,7 +16,6 @@ const ModalInput: React.FC<ModalInputProps> = ({
   placeholder,
   value,
   onChange,
-  defaultValue = '',
   className = '',
   maxLength,
   height = '76px', // 기본 높이
