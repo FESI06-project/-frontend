@@ -131,7 +131,7 @@ export default function MyPage() {
       gatheringTitle:
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
-      gatheringStatus: '모집중',
+      gatheringStatus: '시작전',
       gatheringStartDate: '2024.12.04',
       gatheringEndDate: '2025.01.23',
       gatheringMainType: '유산소형',

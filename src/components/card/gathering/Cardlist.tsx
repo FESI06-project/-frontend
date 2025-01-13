@@ -7,7 +7,7 @@ import Card from './Card';
 
 interface CardlistProps {
   mainType: MainType;
-  subType: string; // subType은 문자열로 받음
+  subType: string;
 }
 
 export default function Cardlist({ mainType, subType }: CardlistProps) {
@@ -17,7 +17,7 @@ export default function Cardlist({ mainType, subType }: CardlistProps) {
       : `/api/v1/gatherings?sortBy=deadline&sortDirection=ASC&page=0&pageSize=6&mainType=${mainType}&subType=${subType}`;
 
   const { data, isLoading } = useQuery<GatheringList>({
-    queryKey: ['gatheringList', mainType, subType], // subType 포함
+    queryKey: ['gatheringList', mainType, subType],
     queryFn: async () => {
       return await apiRequest<GatheringList>({ param });
     },
@@ -28,8 +28,10 @@ export default function Cardlist({ mainType, subType }: CardlistProps) {
   }
 
   return (
-    <div>
-      {data?.content.map((gathering) => <Card key={gathering.gatheringId} />)}
+    <div className="grid grid-cols-2 gap-5">
+      {data?.content.map((gathering) => (
+        <Card key={gathering.gatheringId} data={gathering} />
+      ))}
     </div>
   );
 }
