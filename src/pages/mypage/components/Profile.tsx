@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserProfile } from "@/types";
+import { UserProfile } from '@/types';
 import Image from 'next/image';
 import useModalStore from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
@@ -16,9 +16,8 @@ export default function Profile({
     memberId: '',
     email: '',
     nickname: '',
-    profileImage: null
+    profileImage: null,
   } as UserProfile,
-
 }: ProfileProps) {
   const [showToast, setShowToast] = useState(false);
   const { showModal, setShowModal } = useModalStore();
@@ -57,7 +56,9 @@ export default function Profile({
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-medium">{user.nickname || '닉네임 없음'}</h1>
-              <p className="text-dark-600 font-light">{user.email || '이메일 없음'}</p>
+              <p className="text-dark-600 font-light">
+                {user.email || '이메일 없음'}
+              </p>
             </div>
             <button onClick={() => setShowModal(true)}>
               <Image
@@ -76,7 +77,7 @@ export default function Profile({
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">
-              <div className="relative h-[130px]">
+                <div className="relative h-[130px]">
                   <Image
                     src={
                       user.profileImage === 'null' || !user.profileImage
@@ -102,7 +103,10 @@ export default function Profile({
                         className="hover:opacity-80"
                       />
                     </button>
-                    <button type="button" className="text-dark-700 font-normal hover:text-primary">
+                    <button
+                      type="button"
+                      className="text-dark-700 font-normal hover:text-primary"
+                    >
                       이미지 삭제
                     </button>
                   </div>
@@ -120,11 +124,7 @@ export default function Profile({
               </div>
 
               <div className="mt-[20px]">
-                <Button
-                  type="submit"
-                  name="확인"
-                  style="default"
-                />
+                <Button type="submit" name="확인" style="default" />
               </div>
             </form>
           </div>
