@@ -47,7 +47,7 @@ export default function Home() {
         />
       </div>
       <div className="mt-7">
-        <Cardlist mainType={mainType} />
+        <Cardlist mainType={mainType} subType={subType} />
       </div>
     </div>
   );
