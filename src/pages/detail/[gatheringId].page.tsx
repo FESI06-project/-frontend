@@ -91,19 +91,6 @@ export default function GatheringDetail() {
         startDate: '2025-01-09T08:12:48.388Z',
         endDate: '2025-01-09T08:12:48.388Z',
       },
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: true,
-        verificationStatus: false,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
     ],
     doneChallenges: [
       {
@@ -148,7 +135,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 1
+      gatheringId: 1,
     },
     {
       reviewId: 0,
@@ -161,7 +148,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 0
+      gatheringId: 0,
     },
   ];
 
@@ -178,7 +165,7 @@ export default function GatheringDetail() {
           items={gatheringTabItems}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
-          className="w-full absolute flex text-lg font-boldㅌ"
+          className="w-full absolute flex text-lg font-bold z-10"
         />
         {gathering.captainStatus && (
           <div className="w-full absolute flex justify-between z-20">
@@ -194,7 +181,10 @@ export default function GatheringDetail() {
       </div>
       {/* 모달 */}
       {showModal && (
-        <Modal title="모임 정보를 입력해주세요." onClose={() => setShowModal(false)}>
+        <Modal
+          title="모임 정보를 입력해주세요."
+          onClose={() => setShowModal(false)}
+        >
           <div>
             <p>{'모임 정보'}</p>
           </div>
@@ -215,4 +205,3 @@ export default function GatheringDetail() {
     </div>
   );
 }
-

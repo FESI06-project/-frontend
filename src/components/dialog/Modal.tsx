@@ -42,6 +42,6 @@ export default function Modal({ children, title, onClose }: ModalProps) {
         </div>
       </div>
     </div>,
-    document.getElementById('aside-root')! // `aside-root`에 모달 렌더링
+    document.getElementById('aside-root')!, // `aside-root`에 모달 렌더링
   );
 }
