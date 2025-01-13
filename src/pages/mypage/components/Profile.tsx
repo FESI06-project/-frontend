@@ -23,7 +23,7 @@ export default function Profile({
   const [showToast, setShowToast] = useState(false);
   const { showModal, setShowModal } = useModalStore();
   const [nickname, setNickname] = useState(user.nickname || '');
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [,setIsDisabled] = useState(false);
 
   const handleValidationFail = () => {
     setIsDisabled(true);

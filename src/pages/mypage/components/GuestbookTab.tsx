@@ -7,8 +7,8 @@ import Button from '@/components/common/Button';
 import Heart from '@/components/common/Heart';
 import Popover from '@/components/common/Popover';
 import SubTag from '@/components/tag/SubTag';
-import Modal from '@/components/dialog/Modal';
-import Toast from '@/components/dialog/Toast';
+// import Modal from '@/components/dialog/Modal';
+// import Toast from '@/components/dialog/Toast';
 import useModalStore from '@/stores/useModalStore';
 
 
@@ -35,8 +35,8 @@ export default function GuestbookTab({
 }: GuestbookTabProps) {
   // 작성 가능한 방명록이 먼저 보이도록 기본값을 false로 설정
   const [showWritten, setShowWritten] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const { showModal, setShowModal } = useModalStore();
+  // const [, setShowToast] = useState(false);
+  // const {, setShowModal } = useModalStore();
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState('');
   const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
@@ -61,26 +61,26 @@ export default function GuestbookTab({
 
   const handleEditClick = (guestbook: GuestbookItem) => {
     setSelectedGuestbook(guestbook);
-    setShowModal(true);
+    // setShowModal(true);
   };
 
   const handleWriteClick = (gatheringId: number) => {
     setSelectedGatheringId(gatheringId);
-    setShowModal(true);
+    // setShowModal(true);
   };
 
-  const handleModalClose = () => {
-    setShowModal(false);
-    setSelectedGatheringId(null);
-    setRating(0);
-    setContent('');
-  };
+  // const handleModalClose = () => {
+  //   setShowModal(false);
+  //   setSelectedGatheringId(null);
+  //   setRating(0);
+  //   setContent('');
+  // };
 
-  const handleSubmit = () => {
-    console.log('submit', { rating, content, gatheringId: selectedGatheringId });
-    handleModalClose();
-    setShowToast(true);
-  };
+  // const handleSubmit = () => {
+  //   console.log('submit', { rating, content, gatheringId: selectedGatheringId });
+  //   handleModalClose();
+  //   setShowToast(true);
+  // };
 
 
   const handleTabChange = (id: TabItem['id']) => {
