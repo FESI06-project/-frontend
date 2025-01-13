@@ -1,3 +1,4 @@
+import StatusTag from '@/components/tag/StatusTag';
 import { GatheringListItem } from '@/types';
 import getDatePart from '@/utils/getDatePart';
 import Image from 'next/image';
@@ -29,11 +30,16 @@ export default function Card({ data }: CardProps) {
   const date = `${getDatePart(startDate)} ~ ${getDatePart(endDate)}`;
 
   return (
-    <Link href={`/detail/${gatheringId}`}>
+    <Link href={`/detail/${gatheringId}`} className="flex gap-5">
       <div>
-        {/* 스테이터스 임시태그 */}
-        <div>{status}</div>
-        <Image src={imageUrl} width={220} height={220} alt="모임 사진"></Image>
+        <StatusTag status={status} />
+        <Image
+          src={imageUrl}
+          width={220}
+          height={220}
+          alt="모임 사진"
+          className="rounded-xl"
+        />
       </div>
       <div>
         <span>
