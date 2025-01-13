@@ -5,8 +5,7 @@ import useModalStore from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
-
+import ModalInput from '@/components/common/ModalInput';
 interface ProfileProps {
   user?: UserProfile;
   onEditClick: () => void;
@@ -113,11 +112,11 @@ export default function Profile({
                 </div>
                 <div className="flex-1 h-[130px] flex flex-col justify-end">
                   <label className="text-base mb-[10px] font-normal block">닉네임</label>
-                  <Input
-                    type="text"
+                  <ModalInput
+                    type="title"
                     value={nickname}
-                    className="bg-dark-400 h-[47px]"
-                    handleInputChange={handleInputChange}
+                    onChange={setNickname}
+                    defaultValue={user.nickname}
                     placeholder="닉네임을 수정해주세요."
                   />
                 </div>
