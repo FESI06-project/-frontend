@@ -37,10 +37,9 @@ export default function GuestbookTab({
   const [showWritten, setShowWritten] = useState(false);
   // const [, setShowToast] = useState(false);
   // const {, setShowModal } = useModalStore();
-  const [rating, setRating] = useState(0);
-  const [content, setContent] = useState('');
+
   const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
-  const [selectedGatheringId, setSelectedGatheringId] = useState<number | null>(null);
+  const [, setSelectedGatheringId] = useState<number | null>(null);
 
 
   // 작성 가능한 방명록 필터링 로직
