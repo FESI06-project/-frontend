@@ -7,31 +7,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
 export default function ListChallenge() {
-  const { data, isLoading, error } = useQuery<MainChallenge[]>({
+  const { data, isLoading } = useQuery<MainChallenge[]>({
     queryKey: ['mainChallengeList'],
     queryFn: async () => {
-      try {
-        return await apiRequest<MainChallenge[]>({
-          param: '/api/v1/challenges',
-        });
-      } catch (err) {
-        console.error('API 호출 에러:', err);
-        throw new Error('데이터를 가져오는 중 오류가 발생했습니다.');
-      }
+      return await apiRequest<MainChallenge[]>({
+        param: '/api/v1/challenges',
+      });
     },
-    retry: false,
   });
-
-  if (error) {
-    return <div>Error: 데이터를 가져오지 못했습니다.</div>;
-  }
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (!data || data.length === 0) {
-    return <div>데이터가 없습니다.</div>;
   }
 
   return (
