@@ -32,7 +32,9 @@ const ModalInput: React.FC<ModalInputProps> = ({
   const validateInput = () => {
     if (!value.trim()) {
       setError(true);
-      onValidationFail && onValidationFail();
+      if (onValidationFail) {
+        onValidationFail(); // 명시적으로 호출
+      }
       return false;
     }
     setError(false);
