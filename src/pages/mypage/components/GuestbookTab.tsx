@@ -4,6 +4,7 @@ import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateTyp
 // import GuestbookModal from './GuestbookModal';
 import Null from '@/components/common/Null';
 import Button from '@/components/common/Button';
+import Heart from '@/components/common/Heart';
 
 interface GuestbookTabProps {
   guestbooks: GuestbookItem[];
@@ -25,20 +26,20 @@ export default function GuestbookTab({
   const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
   const [, setSelectedGatheringId] = useState<number | null>(null);
 
-// 작성 가능한 방명록 필터링 로직
-const eligibleGatherings = gatherings.filter((gathering) => {
-  // 모임장인 경우는 제외
-  if (gathering.captainStatus) return false;
+  // 작성 가능한 방명록 필터링 로직
+  const eligibleGatherings = gatherings.filter((gathering) => {
+    // 모임장인 경우는 제외
+    if (gathering.captainStatus) return false;
 
-  const challenges = gatheringChallenges[gathering.gatheringId];
-  // 1. 내가 참여한 모임이어야 함 (gatherings에 포함된 모임)
-  // 2. 모임장이 아니어야 함 (captainStatus가 false)
-  // 3. 진행중인 챌린지가 있어야 함
-  // 4. 그 중 하나라도 인증이 완료된 챌린지가 있어야 함
-  return challenges?.inProgressChallenges?.some(
-    challenge => challenge.verificationStatus === true
-  );
-});
+    const challenges = gatheringChallenges[gathering.gatheringId];
+    // 1. 내가 참여한 모임이어야 함 (gatherings에 포함된 모임)
+    // 2. 모임장이 아니어야 함 (captainStatus가 false)
+    // 3. 진행중인 챌린지가 있어야 함
+    // 4. 그 중 하나라도 인증이 완료된 챌린지가 있어야 함
+    return challenges?.inProgressChallenges?.some(
+      challenge => challenge.verificationStatus === true
+    );
+  });
 
 
   const handleEditClick = (guestbook: GuestbookItem) => {
@@ -78,54 +79,52 @@ const eligibleGatherings = gatherings.filter((gathering) => {
             guestbooks.map((guestbook) => (
               <div
                 key={guestbook.reviewId}
-                className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                className="flex gap-[30px] bg-dark-900 rounded-lg"
               >
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={guestbook.writer.profileImageUrl === 'null'
-                        ? '/assets/image/default_img.png'
-                        : guestbook.writer.profileImageUrl}
-                      alt="프로필"
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                    <span className="font-semibold">{guestbook.writer.nickName}</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex">
-                      {[...Array(5)].map((_, index) => (
-                        <span
-                          key={index}
-                          className={`text-xl ${index < guestbook.rating
-                              ? 'text-yellow-400'
-                              : 'text-gray-200'
-                            }`}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                    {guestbook.reviewOwnerStatus && (
-                      <button
-                        onClick={() => handleEditClick(guestbook)}
-                        className="text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded"
-                      >
-                        수정
-                      </button>
-                    )}
-                  </div>
+                <div className="relative w-[300px] h-[200px]">
+                  <Image
+                    src="/assets/image/default_img.png"
+                    alt="모임 이미지"
+                    width={300}
+                    height={200}
+                    className="rounded-[20px] object-cover"
+                  />
                 </div>
-                <p className="text-dark-600 mb-3 leading-relaxed whitespace-pre-wrap">
-                  {guestbook.content}
-                </p>
-                <div className="text-sm text-dark-500">
-                  {new Date(guestbook.createDate).toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+
+                <div className="flex-1 py-6 pr-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <Heart rating={guestbook.rating} />
+                    <div className="flex gap-2">
+                      <button className="w-[85px] h-[35px] rounded-full bg-dark-700 text-white text-sm">
+                        수정하기
+                      </button>
+                      <button className="w-[85px] h-[35px] rounded-full bg-dark-700 text-white text-sm">
+                        삭제하기
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="mb-4 break-all line-clamp-4">
+                    {guestbook.content}
+                  </p>
+
+                  <div className="flex items-end justify-between">
+                    {(() => {
+                      const gathering = gatherings.find(g => g.gatheringId === guestbook.gatheringId);
+                      return (
+                        <>
+                          <p className="text-primary font-normal">
+                            {gathering?.gatheringTitle} | 
+                            {gathering?.gatheringSi}
+                            {gathering?.gatheringGu}
+                          </p>
+                          <p className="text-dark-700 font-medium">
+                            {gathering?.gatheringStartDate} ~ {gathering?.gatheringEndDate}
+                          </p>
+                        </>
+                      );
+                    })()}
+                  </div>
                 </div>
               </div>
             ))

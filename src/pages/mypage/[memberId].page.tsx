@@ -244,7 +244,8 @@ export default function MyPage() {
         nickName: '러닝조아',
         profileImageUrl: 'null'
       },
-      reviewOwnerStatus: true
+      reviewOwnerStatus: true,
+      gatheringId: 2  
     },
     {
       reviewId: 2,
@@ -256,7 +257,8 @@ export default function MyPage() {
         nickName: '헬스왕',
         profileImageUrl: 'null'
       },
-      reviewOwnerStatus: true
+      reviewOwnerStatus: true,
+      gatheringId: 2  
     }
   ];
 

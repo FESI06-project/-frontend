@@ -64,6 +64,7 @@ export interface GuestbookItem {
   createDate: string;
   writer: GuestbookWriter;
   reviewOwnerStatus: boolean;
+  gatheringId: number; 
 }
 
 export interface GuestbookWriter {
