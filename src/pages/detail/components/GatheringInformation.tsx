@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import TagList from './tag';
 import { GatheringItem } from '@/types';
+import Popover from '@/components/common/Popover';
 
 export default function GatheringInformation({
   information,
@@ -10,6 +11,17 @@ export default function GatheringInformation({
   if (!information) {
     return <div>{'Loading..'}</div>;
   }
+
+  const popoverItems = [
+    {
+      id: 'edit',
+      label: '수정하기',
+      onClick: () => {
+        console.log('수정하기 버튼 클릭');
+      },
+    },
+    { id: 'delete', label: '삭제하기' },
+  ];
   return (
     <div id="gathering-information" className="w-full">
       <div id="type-information">
@@ -43,12 +55,13 @@ export default function GatheringInformation({
               {information.gatheringTitle}
             </h3>
             {information.captainStatus && (
-              <Image
-                src="/assets/image/setting.svg"
-                alt="setting"
-                width={28}
-                height={28}
-              />
+              <Popover items={popoverItems} type="setting" />
+              // <Image
+              //   src="/assets/image/setting.svg"
+              //   alt="setting"
+              //   width={28}
+              //   height={28}
+              // />
             )}
           </div>
 

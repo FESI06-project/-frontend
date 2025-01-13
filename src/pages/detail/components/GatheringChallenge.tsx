@@ -1,5 +1,6 @@
 import BarChart from '@/components/chart/BarChart';
 import Button from '@/components/common/Button';
+import Popover from '@/components/common/Popover';
 import SubTag from '@/components/tag/SubTag';
 import { GatheringChallegeProps } from '@/types';
 import Image from 'next/image';
@@ -155,11 +156,9 @@ function Challenge({ challenge }: { challenge: ChallengeProps }) {
               </p>
               {/* 모임장만 보이는 설정 버튼 */}
               {challenge.captainStatus && (
-                <Image
-                  src="/assets/image/three-dots.svg"
-                  alt="dots"
-                  width={20}
-                  height={21}
+                <Popover
+                  items={[{ id: 'delete', label: '삭제하기' }]}
+                  type="dot"
                 />
               )}
             </div>
