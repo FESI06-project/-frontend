@@ -2,11 +2,8 @@
 import MainCard from './MainCard';
 import ChallengeSection from './ChallengeSection';
 import CanceledGathering from '@/components/common/CanceledGathering';
-import {
-  GatheringChallengeType,
-  GatheringItem,
-  GatheringStateType,
-} from '@/types';
+import Null from '@/components/common/Null';
+import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
 
 interface MyGatheringTabProps {
@@ -33,7 +30,15 @@ export default function MyGatheringTab({
       [gatheringId]: !prev[gatheringId],
     }));
   };
+  const validGatherings = (gatherings || []).filter(gathering => {
+    const state = gatheringStates[gathering?.gatheringId];
+    return gathering && state;
+  });
 
+  if (validGatherings.length === 0) {
+    return <Null message="아직 참여한 모임이 없습니다." />;
+  }
+  
   return (
     <div className="space-y-6 pb-[50px]">
       {(gatherings || [])
