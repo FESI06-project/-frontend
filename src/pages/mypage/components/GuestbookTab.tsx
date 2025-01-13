@@ -8,8 +8,8 @@ import Heart from '@/components/common/Heart';
 import Popover from '@/components/common/Popover';
 import SubTag from '@/components/tag/SubTag';
 // import Modal from '@/components/dialog/Modal';
-// import Toast from '@/components/dialog/Toast';
-import useModalStore from '@/stores/useModalStore';
+// // import Toast from '@/components/dialog/Toast';
+// import useModalStore from '@/stores/useModalStore';
 
 
 // GUESTBOOK_TABS 정의 추가
