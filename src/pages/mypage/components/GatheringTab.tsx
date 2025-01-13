@@ -2,7 +2,11 @@
 import MainCard from './MainCard';
 import ChallengeSection from './ChallengeSection';
 import CanceledGathering from '@/components/common/CanceledGathering';
-import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
+import {
+  GatheringChallengeType,
+  GatheringItem,
+  GatheringStateType,
+} from '@/types';
 import { useState } from 'react';
 
 interface MyGatheringTabProps {
@@ -19,20 +23,24 @@ export default function MyGatheringTab({
   gatheringChallenges,
   onCancelReservation,
 }: MyGatheringTabProps) {
-  const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
+  const [openChallenges, setOpenChallenges] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   const handleToggleChallenge = (gatheringId: number) => {
-    setOpenChallenges(prev => ({
+    setOpenChallenges((prev) => ({
       ...prev,
-      [gatheringId]: !prev[gatheringId]
+      [gatheringId]: !prev[gatheringId],
     }));
   };
 
   return (
     <div className="space-y-6 pb-[50px]">
       {(gatherings || [])
-        .sort((a, b) =>
-          new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
+        .sort(
+          (a, b) =>
+            new Date(b.gatheringStartDate).getTime() -
+            new Date(a.gatheringStartDate).getTime(),
         )
         .map((gathering) => {
           if (!gathering) return null;
@@ -44,7 +52,10 @@ export default function MyGatheringTab({
           const isOpen = openChallenges[gathering.gatheringId];
 
           return (
-            <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
+            <div
+              key={gathering.gatheringId}
+              className="relative rounded-lg overflow-hidden mb-[50px]"
+            >
               <MainCard
                 gathering={gathering}
                 state={state}
@@ -62,11 +73,13 @@ export default function MyGatheringTab({
                 type="gathering"
                 gatheringStartDate={gathering.gatheringStartDate}
                 gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
-                isReservationCancellable={gathering.isReservationCancellable || false}
+                isReservationCancellable={
+                  gathering.isReservationCancellable || false
+                }
                 onOverlay={() => {
-                  setOpenChallenges(prev => ({
+                  setOpenChallenges((prev) => ({
                     ...prev,
-                    [gathering.gatheringId]: false
+                    [gathering.gatheringId]: false,
                   }));
                 }}
               />

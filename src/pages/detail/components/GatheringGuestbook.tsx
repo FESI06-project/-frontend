@@ -1,11 +1,15 @@
 import Heart from '@/components/common/Heart';
+import Pagination from '@/components/common/Pagination';
 import { GuestbookItem } from '@/types';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function GatheringGuestbook({
   guestbooks,
+  gatheringGuestbookCount,
 }: {
   guestbooks: Array<GuestbookItem>;
+  gatheringGuestbookCount: number;
 }) {
   return (
     <div className="mt-[43px] flex flex-col gap-5">
