@@ -8,6 +8,7 @@ import useDebounce from '@/utils/validation/useDebounce';
 
 // 회원가입 폼 컴포넌트
 export default function SignupForm() {
+  // 입력 값 저장
   const [signupForm, setSignupForm] = useState({
     nickName: '',
     email: '',
@@ -15,6 +16,7 @@ export default function SignupForm() {
     passwordCheck: '',
   });
 
+  // 유효성 검사 결과 저장
   const [signupFormError, setSignupFormError] = useState({
     nickName: false,
     email: false,
@@ -22,7 +24,7 @@ export default function SignupForm() {
     passwordCheck: false,
   });
 
-  // 인풋 값 변경 시 formData 업데이트
+  // 입력 값 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignupForm((prev) => ({
@@ -33,7 +35,7 @@ export default function SignupForm() {
 
   const debouncedSignupForm = useDebounce(signupForm, 1000);
 
-  // 포커스 아웃 시 유효성 검사
+  // 포커스 아웃 시 특정 필드 유효성 검사
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     signupValidation({
       name: e.target.name,
@@ -43,7 +45,7 @@ export default function SignupForm() {
     });
   };
 
-  // 폼 전체 유효성 검사 (포커스 후 입력값 없을 때)
+  // 폼 전체 유효성 검사 (포커스 후 입력값 없는 경우)
   useEffect(() => {
     Object.entries(debouncedSignupForm).forEach(([name, value]) => {
       if (value === '') return;
