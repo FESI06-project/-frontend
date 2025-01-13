@@ -1,21 +1,38 @@
 import Heart from '@/components/common/Heart';
+import Pagination from '@/components/common/Pagination';
 import { GuestbookItem } from '@/types';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function GatheringGuestbook({
   guestbooks,
+  gatheringGuestbookCount,
 }: {
   guestbooks: Array<GuestbookItem>;
+  gatheringGuestbookCount: number;
 }) {
+  const [page, setPage] = useState(0);
   return (
-    <div className="mt-[43px] flex flex-col gap-5">
-      {guestbooks ? (
-        guestbooks.map((guestbook, index) => (
-          <Guestbook key={index} guestbook={guestbook} />
-        ))
-      ) : (
-        <div>존재하지 않습니다</div>
-      )}
+    <div className="mt-[43px] mb-[130px] w-full">
+      {/* 방명록 리스트 */}
+      <div className=" flex flex-col gap-5 mb-[33px]">
+        {guestbooks ? (
+          guestbooks.map((guestbook, index) => (
+            <Guestbook key={index} guestbook={guestbook} />
+          ))
+        ) : (
+          <div>존재하지 않습니다</div>
+        )}
+      </div>
+
+      {/* 페이지네이션 */}
+      <div className="mt-[33px] bg-yellow flex items-center justify-center">
+        <Pagination
+          page={page}
+          setPage={setPage}
+          totalNumber={gatheringGuestbookCount}
+        />
+      </div>
     </div>
   );
 }

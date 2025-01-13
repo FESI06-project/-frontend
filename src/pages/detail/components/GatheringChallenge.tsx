@@ -72,29 +72,30 @@ export default function GatheringChallenge({
         </div>
 
         <div className="flex flex-col mt-[31px] gap-6">
-          {currentTag === 'inProgress' &&
-          currentInquiryState === 'list' &&
-          challenges?.inProgressChallenges ? (
-            challenges?.inProgressChallenges.map((challenge, index) => (
-              <Challenge
-                key={index}
-                challenge={{ ...challenge, captainStatus }}
-              />
-            ))
+          {currentInquiryState === 'list' ? (
+            currentTag === 'inProgress' ? (
+              challenges.inProgressChallenges ? (
+                challenges?.inProgressChallenges.map((challenge, index) => (
+                  <Challenge
+                    key={index}
+                    challenge={{ ...challenge, captainStatus }}
+                  />
+                ))
+              ) : (
+                <div>진행중인 챌린지가 없습니다.</div>
+              )
+            ) : challenges.doneChallenges ? (
+              challenges?.doneChallenges.map((challenge, index) => (
+                <Challenge
+                  key={index}
+                  challenge={{ ...challenge, captainStatus }}
+                />
+              ))
+            ) : (
+              <div>진행중인 챌린지가 없습니다.</div>
+            )
           ) : (
-            <div>{'존재하지 않습니다.'}</div>
-          )}
-          {currentTag === 'done' &&
-          currentInquiryState === 'list' &&
-          challenges.doneChallenges ? (
-            challenges.doneChallenges.map((challenge, index) => (
-              <Challenge
-                key={index}
-                challenge={{ ...challenge, captainStatus }}
-              />
-            ))
-          ) : (
-            <div>{'존재하지 않습니다.'}</div>
+            <div>calendar</div>
           )}
         </div>
       </div>
