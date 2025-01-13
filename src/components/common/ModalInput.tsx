@@ -41,6 +41,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
     return true;
   };
 
+
   return (
     <div className={`relative w-full ${className}`}>
       {type === 'title' ? (
@@ -76,3 +77,4 @@ const ModalInput: React.FC<ModalInputProps> = ({
 };
 
 export default ModalInput;
+
