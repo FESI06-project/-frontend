@@ -13,6 +13,7 @@ interface FormFieldProps {
   errorMessage: string;
 }
 
+// 회원가입, 로그인 input 컴포넌트
 export default function FormField({
   label,
   type,
@@ -25,7 +26,7 @@ export default function FormField({
   errorMessage,
 }: FormFieldProps) {
   return (
-    <>
+    <div className="flex flex-col w-full">
       <p className="mb-2.5 text-[1rem]">{label}</p>
       <Input
         type={type}
@@ -39,6 +40,6 @@ export default function FormField({
       {hasError && (
         <p className="mt-3 text-[0.875rem] text-error">{errorMessage}</p>
       )}
-    </>
+    </div>
   );
 }
