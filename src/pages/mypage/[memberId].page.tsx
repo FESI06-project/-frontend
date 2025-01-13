@@ -180,7 +180,7 @@ export default function MyPage() {
           participantCount: 3,
           successParticipantCount: 2,
           participantStatus: true,
-          verificationStatus: false,
+          verificationStatus: true,
           startDate: 'string',
           endDate: 'string',
         },
@@ -301,15 +301,9 @@ export default function MyPage() {
           {currentTab === 'guestbook' && (
             <GuestbookTab
               guestbooks={userGuestbooks}
-              gatherings={[...userGatherings, ...hostedGatherings]}
-              gatheringChallenges={{
-                ...userGatheringChallenges,
-                ...hostedGatheringChallenges
-              }}
-              gatheringStates={{
-                ...userGatheringStates,
-                ...hostedGatheringStates
-              }}
+              gatherings={userGatherings}  // hostedGatherings 제외
+              gatheringChallenges={userGatheringChallenges}
+              gatheringStates={userGatheringStates}
             />
           )}
           {currentTab === 'myGathering' && (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType } from '@/types';
-import GuestbookModal from './GuestbookModal';
+// import GuestbookModal from './GuestbookModal';
 import Null from '@/components/common/Null';
 import Button from '@/components/common/Button';
 
@@ -25,16 +25,20 @@ export default function GuestbookTab({
   const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
   const [, setSelectedGatheringId] = useState<number | null>(null);
 
-  // 작성 가능한 방명록 필터링 로직
-  const eligibleGatherings = gatherings.filter((gathering) => {
-    const challenges = gatheringChallenges[gathering.gatheringId];
-    // 1. 내가 참여한 모임이어야 함 (gatherings에 포함된 모임)
-    // 2. 진행중인 챌린지가 있어야 함
-    // 3. 그 중 하나라도 인증이 완료된 챌린지가 있어야 함
-    return challenges?.inProgressChallenges?.some(
-      challenge => challenge.verificationStatus === true
-    );
-  });
+// 작성 가능한 방명록 필터링 로직
+const eligibleGatherings = gatherings.filter((gathering) => {
+  // 모임장인 경우는 제외
+  if (gathering.captainStatus) return false;
+
+  const challenges = gatheringChallenges[gathering.gatheringId];
+  // 1. 내가 참여한 모임이어야 함 (gatherings에 포함된 모임)
+  // 2. 모임장이 아니어야 함 (captainStatus가 false)
+  // 3. 진행중인 챌린지가 있어야 함
+  // 4. 그 중 하나라도 인증이 완료된 챌린지가 있어야 함
+  return challenges?.inProgressChallenges?.some(
+    challenge => challenge.verificationStatus === true
+  );
+});
 
 
   const handleEditClick = (guestbook: GuestbookItem) => {
