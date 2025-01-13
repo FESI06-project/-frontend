@@ -57,16 +57,15 @@ export default function SignupForm() {
   }, [debouncedSignupForm]);
 
   // 회원가입 요청
-  // 회원가입 쿠키 테스트용 코드, 이후 수정 예정
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!signupFormError.passwordCheck) {
-      console.log(signupForm);
-      console.log(signupForm.password);
+
+    const isValid = Object.values(signupFormError).every((error) => !error);
+    if (isValid) {
       postSignup({
-        email: signupForm.email,
-        nickName: signupForm.nickName,
-        password: signupForm.password,
+        email: signupForm.email.trim(),
+        nickName: signupForm.nickName.trim(),
+        password: signupForm.password.trim(),
       });
     }
   };
