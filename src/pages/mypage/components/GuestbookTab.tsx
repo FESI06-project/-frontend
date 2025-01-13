@@ -40,7 +40,7 @@ export default function GuestbookTab({ guestbooks = [] }: GuestbookTabProps) {
       </div>
 
       <div className="space-y-6">
-        {(guestbooks || []).map((guestbook) => (
+   {(guestbooks || []).map((guestbook) => (
           <div
             key={guestbook.reviewId}
             className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
