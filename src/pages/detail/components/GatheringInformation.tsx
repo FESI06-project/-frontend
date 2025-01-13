@@ -2,12 +2,20 @@ import Image from 'next/image';
 import TagList from './tag';
 import { GatheringItem } from '@/types';
 import Popover from '@/components/common/Popover';
+import { ChangeEvent, useState } from 'react';
+import Alert from '@/components/dialog/Alert';
+import useModalStore from '@/stores/useModalStore';
+import Modal from '@/components/dialog/Modal';
+import Input from '@/components/common/Input';
 
 export default function GatheringInformation({
   information,
 }: {
   information: GatheringItem;
 }) {
+  const [showSelectAlert, setShowSelectAlert] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   if (!information) {
     return <div>{'Loading..'}</div>;
   }
@@ -17,11 +25,24 @@ export default function GatheringInformation({
       id: 'edit',
       label: '수정하기',
       onClick: () => {
-        console.log('수정하기 버튼 클릭');
+        setShowModal(true);
       },
     },
-    { id: 'delete', label: '삭제하기' },
+    {
+      id: 'delete',
+      label: '삭제하기',
+      onClick: () => {
+        setShowSelectAlert(true);
+      },
+    },
   ];
+  const handleDeleteConfirmButtonClick = () => {
+    setShowModal(true);
+  };
+
+  const handleDeleteCancelButtonClick = () => {
+    setShowSelectAlert(false);
+  };
   return (
     <div id="gathering-information" className="w-full">
       <div id="type-information">
@@ -55,13 +76,23 @@ export default function GatheringInformation({
               {information.gatheringTitle}
             </h3>
             {information.captainStatus && (
-              <Popover items={popoverItems} type="setting" />
-              // <Image
-              //   src="/assets/image/setting.svg"
-              //   alt="setting"
-              //   width={28}
-              //   height={28}
-              // />
+              <>
+                <Popover items={popoverItems} type="setting" />
+                <Alert
+                  isOpen={showSelectAlert}
+                  type="select"
+                  message="모임을 삭제하시겠습니까?"
+                  onConfirm={handleDeleteConfirmButtonClick}
+                  onCancel={handleDeleteCancelButtonClick}
+                />
+                <Modal
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  title="모임 정보를 입력해주세요."
+                >
+                  <GatheringEditModal />
+                </Modal>
+              </>
             )}
           </div>
 
@@ -102,6 +133,55 @@ export default function GatheringInformation({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function GatheringEditModal() {
+  const [title, setTitle] = useState('기존 모임의 이름이 들어와 있습니다.');
+  const [description, setDescription] = useState(
+    '기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다.',
+  );
+
+  const handleGatheringTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setTitle(e.target.value);
+  };
+  const handleGatheringDescriptionChange = (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    console.log(e.target.value);
+    setDescription(e.target.value);
+  };
+  return (
+    <div>
+      {/* 모임 정보 */}
+      <div id="information">
+        <div className="mt-[30px] mb-[10px]">모임 정보</div>
+        <div className="flex gap-[10px]">
+          <Image
+            className="rounded-[10px] border-dark-500 border-[1px]"
+            src="/assets/image/fitmon.png"
+            width={130}
+            height={130}
+            alt="edit-image"
+          />
+          <div className="w-[360px]">
+            <Input
+              handleInputChange={(e) => handleGatheringTitleChange(e)}
+              value={title}
+              className="bg-dark-400 mb-[7px]"
+            />
+            <Input
+              handleInputChange={(e) => handleGatheringDescriptionChange(e)}
+              value={description}
+              className="flex h-[76px] bg-dark-400 overflow-x-visible"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 모임 태그 */}
     </div>
   );
 }
