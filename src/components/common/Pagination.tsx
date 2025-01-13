@@ -2,16 +2,15 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface PaginationProps {
-  selectNumber: number;
-  setSelectNumber: (selectNumber: number) => void;
+  page: number;
+  setPage: (page: number) => void;
   totalNumber: number;
 }
 export default function Pagination({
-  selectNumber,
-  setSelectNumber,
+  page,
+  setPage,
   totalNumber,
 }: PaginationProps) {
-  const [page, setPage] = useState<number>(0);
   const [index, setIndex] = useState<number>(0);
   const lastPage: number = Math.floor(totalNumber / 4); // 총 4개로 구성된 페이지 수
   const lastCount = totalNumber % 4; // 페이지 이외에 나오는 수

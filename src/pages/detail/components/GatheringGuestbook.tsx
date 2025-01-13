@@ -11,7 +11,7 @@ export default function GatheringGuestbook({
   guestbooks: Array<GuestbookItem>;
   gatheringGuestbookCount: number;
 }) {
-  const [selectNumber, setSelectNumber] = useState(1);
+  const [page, setPage] = useState(0);
   return (
     <div className="mt-[43px] w-full">
       {/* 방명록 리스트 */}
@@ -28,8 +28,8 @@ export default function GatheringGuestbook({
       {/* 페이지네이션 */}
       <div className="mt-[33px] bg-yellow flex items-center justify-center">
         <Pagination
-          selectNumber={selectNumber}
-          setSelectNumber={setSelectNumber}
+          page={page}
+          setPage={setPage}
           totalNumber={gatheringGuestbookCount}
         />
       </div>
