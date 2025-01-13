@@ -44,7 +44,7 @@ export default function GatheringDetail() {
     gatheringEndDate: '2022-23-23',
     gatheringSi: '대전',
     gatheringGu: '서구',
-    gatheringStatus: '모집중',
+    gatheringStatus: '시작전',
     isReservationCancellable: false,
   };
 

@@ -13,7 +13,7 @@ export interface GatheringItem {
   gatheringId: number;
   gatheringTitle: string;
   gatheringImage: string;
-  gatheringStatus: '모집중' | '진행중' | '완료';
+  gatheringStatus: '시작전' | '진행중' | '종료됨' | '취소됨';
   gatheringMainType: string;
   gatheringSubType: string;
   gatheringStartDate: string;
