@@ -5,6 +5,7 @@ import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateTyp
 import Null from '@/components/common/Null';
 import Button from '@/components/common/Button';
 import Heart from '@/components/common/Heart';
+import Popover from '@/components/common/Popover';
 
 interface GuestbookTabProps {
   guestbooks: GuestbookItem[];
@@ -94,14 +95,21 @@ export default function GuestbookTab({
                 <div className="flex-1 py-6 pr-6">
                   <div className="flex justify-between items-start mb-4">
                     <Heart rating={guestbook.rating} />
-                    <div className="flex gap-2">
-                      <button className="w-[85px] h-[35px] rounded-full bg-dark-700 text-white text-sm">
-                        수정하기
-                      </button>
-                      <button className="w-[85px] h-[35px] rounded-full bg-dark-700 text-white text-sm">
-                        삭제하기
-                      </button>
-                    </div>
+                    <Popover
+                      type="dot"
+                      items={[
+                        {
+                          id: 'edit',
+                          label: '수정하기',
+                          onClick: () => handleEditClick(guestbook)
+                        },
+                        {
+                          id: 'delete',
+                          label: '삭제하기',
+                          onClick: () => console.log('delete clicked')  // 삭제 핸들러 추가 필요
+                        }
+                      ]}
+                    />
                   </div>
 
                   <p className="mb-4 break-all line-clamp-4">
@@ -114,7 +122,7 @@ export default function GuestbookTab({
                       return (
                         <>
                           <p className="text-primary font-normal">
-                            {gathering?.gatheringTitle} | 
+                            {gathering?.gatheringTitle} |
                             {gathering?.gatheringSi}
                             {gathering?.gatheringGu}
                           </p>
