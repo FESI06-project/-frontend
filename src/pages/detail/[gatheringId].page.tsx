@@ -172,15 +172,15 @@ export default function GatheringDetail() {
     <div className="w-[1200px] flex flex-col place-self-center ">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
-      <div className="flex mt-[50px] w-[1200px] ">
+      <div className="flex mt-[50px] w-full h-[49px] relative items-center justify-center">
         <Tab
           items={gatheringTabItems}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
-          className="w-[1200px] h-[31px] text-lg font-bold pb-[15px] "
+          className="w-full absolute flex text-lg font-boldㅌ"
         />
         {gathering.captainStatus && (
-          <div className="w-full relative flex justify-between ">
+          <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
               onClick={() => setShowModal(!showModal)}
