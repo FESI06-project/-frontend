@@ -1,11 +1,23 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType } from '@/types';
+import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType, TabItem } from '@/types';
 // import GuestbookModal from './GuestbookModal';
 import Null from '@/components/common/Null';
 import Button from '@/components/common/Button';
 import Heart from '@/components/common/Heart';
 import Popover from '@/components/common/Popover';
+import SubTag from '@/components/tag/SubTag';
+import Modal from '@/components/dialog/Modal';
+import Toast from '@/components/dialog/Toast';
+import useModalStore from '@/stores/useModalStore';
+
+
+// GUESTBOOK_TABS 정의 추가
+const GUESTBOOK_TABS: TabItem[] = [
+  { id: 'available', label: '작성 가능한 방명록' },
+  { id: 'written', label: '작성한 방명록' },
+];
+
 
 interface GuestbookTabProps {
   guestbooks: GuestbookItem[];
@@ -23,9 +35,13 @@ export default function GuestbookTab({
 }: GuestbookTabProps) {
   // 작성 가능한 방명록이 먼저 보이도록 기본값을 false로 설정
   const [showWritten, setShowWritten] = useState(false);
-  const [, setModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const { showModal, setShowModal } = useModalStore();
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState('');
   const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
-  const [, setSelectedGatheringId] = useState<number | null>(null);
+  const [selectedGatheringId, setSelectedGatheringId] = useState<number | null>(null);
+
 
   // 작성 가능한 방명록 필터링 로직
   const eligibleGatherings = gatherings.filter((gathering) => {
@@ -45,33 +61,41 @@ export default function GuestbookTab({
 
   const handleEditClick = (guestbook: GuestbookItem) => {
     setSelectedGuestbook(guestbook);
-    setModalOpen(true);
+    setShowModal(true);
   };
 
   const handleWriteClick = (gatheringId: number) => {
     setSelectedGatheringId(gatheringId);
-    setModalOpen(true);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedGatheringId(null);
+    setRating(0);
+    setContent('');
+  };
+
+  const handleSubmit = () => {
+    console.log('submit', { rating, content, gatheringId: selectedGatheringId });
+    handleModalClose();
+    setShowToast(true);
+  };
+
+
+  const handleTabChange = (id: TabItem['id']) => {
+    setShowWritten(id === 'written');
   };
 
   return (
     <div className="pb-[50px]">
       <div className="flex justify-between items-center mb-[37px]">
-        <div className="flex space-x-2 font-bold">
-          <button
-            onClick={() => setShowWritten(false)}
-            className={`px-4 py-2 rounded-full ${showWritten ? 'bg-dark-500' : 'bg-primary'
-              }`}
-          >
-            작성 가능한 방명록
-          </button>
-          <button
-            onClick={() => setShowWritten(true)}
-            className={`px-4 py-2 rounded-full ${!showWritten ? 'bg-dark-500' : 'bg-primary'
-              }`}
-          >
-            작성한 방명록
-          </button>
-        </div>
+        <SubTag
+          tags={GUESTBOOK_TABS}
+          currentTag={showWritten ? 'written' : 'available'}
+          onTagChange={handleTabChange}
+          className="flex"
+        />
       </div>
 
       <div className="space-y-6">

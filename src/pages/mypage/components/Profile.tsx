@@ -6,6 +6,7 @@ import Modal from '@/components/dialog/Modal';
 import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
 import ModalInput from '@/components/common/ModalInput';
+
 interface ProfileProps {
   user?: UserProfile;
   onEditClick: () => void;
@@ -22,13 +23,22 @@ export default function Profile({
   const [showToast, setShowToast] = useState(false);
   const { showModal, setShowModal } = useModalStore();
   const [nickname, setNickname] = useState(user.nickname || '');
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleValidationFail = () => {
+    setIsDisabled(true);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!nickname.trim()) {
+      handleValidationFail();
+      return;
+    }
     setShowModal(false);
     setShowToast(true);
+    setIsDisabled(false);
   };
-  
 
   return (
     <>
@@ -112,13 +122,17 @@ export default function Profile({
                   </div>
                 </div>
                 <div className="flex-1 h-[130px] flex flex-col justify-end">
-                <label className="text-base mb-[10px] font-normal block">닉네임</label>
+                  <label className="text-base mb-[10px] font-normal block">닉네임</label>
                   <ModalInput
                     type="title"
                     value={nickname}
-                    onChange={setNickname}
-                    defaultValue={user.nickname}
+                    onChange={(value) => {
+                      setNickname(value);
+                      setIsDisabled(!value.trim());
+                    }}
                     placeholder="닉네임을 수정해주세요."
+                    maxLength={25}
+                    onValidationFail={handleValidationFail}
                   />
                 </div>
               </div>
@@ -140,4 +154,3 @@ export default function Profile({
     </>
   );
 }
-
