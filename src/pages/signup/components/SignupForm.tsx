@@ -5,15 +5,16 @@ import signupValidation from '@/utils/validation/signupValidation';
 import router from 'next/router';
 import FormField from './FormField';
 
+// 회원가입 폼 컴포넌트
 export default function SignupForm() {
-  const [formData, setFormData] = useState({
+  const [signupForm, setSignupForm] = useState({
     nickName: '',
     email: '',
     password: '',
     passwordCheck: '',
   });
 
-  const [formDataError, setFormDataError] = useState({
+  const [signupFormError, setSignupFormError] = useState({
     nickName: false,
     email: false,
     password: false,
@@ -23,7 +24,7 @@ export default function SignupForm() {
   // 인풋 값 변경 시 formData 업데이트
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setSignupForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -34,8 +35,8 @@ export default function SignupForm() {
     signupValidation({
       name: e.target.name,
       value: e.target.value,
-      password: formData.password,
-      setFormDataError,
+      password: signupForm.password,
+      setSignupFormError,
     });
   };
 
@@ -43,13 +44,13 @@ export default function SignupForm() {
   // 회원가입 쿠키 테스트용 코드, 이후 수정 예정
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formDataError.passwordCheck) {
-      console.log(formData);
-      console.log(formData.password);
+    if (!signupFormError.passwordCheck) {
+      console.log(signupForm);
+      console.log(signupForm.password);
       postSignup({
-        email: formData.email,
-        nickName: formData.nickName,
-        password: formData.password,
+        email: signupForm.email,
+        nickName: signupForm.nickName,
+        password: signupForm.password,
       });
     }
   };
@@ -60,44 +61,44 @@ export default function SignupForm() {
         label="닉네임"
         type="text"
         name="nickName"
-        value={formData.nickName}
+        value={signupForm.nickName}
         placeholder="닉네임을 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
-        hasError={formDataError.nickName}
+        hasError={signupFormError.nickName}
         errorMessage="닉네임은 2자 이상 10자 이하로 입력해주세요."
       />
       <FormField
         label="이메일"
         type="email"
         name="email"
-        value={formData.email}
+        value={signupForm.email}
         placeholder="이메일을 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
-        hasError={formDataError.email}
+        hasError={signupFormError.email}
         errorMessage="유효한 이메일 주소를 입력해주세요."
       />
       <FormField
         label="비밀번호"
         type="password"
         name="password"
-        value={formData.password}
+        value={signupForm.password}
         placeholder="비밀번호를 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
-        hasError={formDataError.password}
+        hasError={signupFormError.password}
         errorMessage="비밀번호는 최소 8자 이상이어야 합니다."
       />
       <FormField
         label="비밀번호 확인"
         type="password"
         name="passwordCheck"
-        value={formData.passwordCheck}
+        value={signupForm.passwordCheck}
         placeholder="비밀번호를 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
-        hasError={formDataError.passwordCheck}
+        hasError={signupFormError.passwordCheck}
         errorMessage="비밀번호가 일치하지 않습니다."
       />
       <Button type="submit" name="회원가입" />
