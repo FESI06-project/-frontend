@@ -1,3 +1,4 @@
+import Button from '@/components/common/Button';
 import Tab from '@/components/common/Tab';
 import { LISTPAGE_MAINTYPE } from '@/constants/MainList';
 import ListChallenge from '@/pages/main/components/ListChallenge';
@@ -19,6 +20,13 @@ export default function Home() {
           items={LISTPAGE_MAINTYPE}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
+          rightElement={
+            <Button
+              style="custom"
+              name="모임 만들기"
+              className="text-base my-2 h-10 w-32"
+            />
+          }
         />
       </div>
     </div>

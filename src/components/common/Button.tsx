@@ -24,7 +24,7 @@ export default function Button({
   const buttonStyles = {
     default:
       'w-full h-16 rounded-[10px] bg-primary text-[1.125rem] font-semibold',
-    register: 'w-40 h-10 rounded-[10px] bg-primary text-[1rem]',
+    register: 'w-40 h-10 rounded-[10px] bg-primary text-base',
     cancel:
       'w-40 h-10 rounded-[10px] opacity-100 outline outline-1 outline-primary text-[1rem]',
     custom: `rounded-[10px] bg-primary text-[1.125rem] font-semibold`,
