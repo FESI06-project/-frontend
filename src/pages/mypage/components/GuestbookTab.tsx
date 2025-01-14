@@ -1,16 +1,12 @@
-import { useState } from 'react';
-import Image from 'next/image';
-import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType, TabItem } from '@/types';
-// import GuestbookModal from './GuestbookModal';
-import Null from '@/components/common/Null';
-import Button from '@/components/common/Button';
-import Heart from '@/components/common/Heart';
-import Popover from '@/components/common/Popover';
-import SubTag from '@/components/tag/SubTag';
-// import Modal from '@/components/dialog/Modal';
-// // import Toast from '@/components/dialog/Toast';
-// import useModalStore from '@/stores/useModalStore';
+import { useState, useEffect } from 'react';
 
+import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType, TabItem } from '@/types';
+import SubTag from '@/components/tag/SubTag';
+import Toast from '@/components/dialog/Toast';
+import useModalStore from '@/stores/useModalStore';
+import GuestbookModal from './guestbook/GuestbookModal';
+import WrittenGuestbooks from './guestbook/WrittenGuestbooks';
+import AvailableGuestbooks from './guestbook/AvailableGuestbooks';
 
 // GUESTBOOK_TABS 정의 추가
 const GUESTBOOK_TABS: TabItem[] = [
@@ -35,12 +31,13 @@ export default function GuestbookTab({
 }: GuestbookTabProps) {
   // 작성 가능한 방명록이 먼저 보이도록 기본값을 false로 설정
   const [showWritten, setShowWritten] = useState(false);
-  // const [, setShowToast] = useState(false);
-  // const {, setShowModal } = useModalStore();
+  const { showModal, setShowModal } = useModalStore();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
-  const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
-  const [, setSelectedGatheringId] = useState<number | null>(null);
-
+  const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
+  const [selectedGatheringId, setSelectedGatheringId] = useState<number | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // 작성 가능한 방명록 필터링 로직
   const eligibleGatherings = gatherings.filter((gathering) => {
@@ -58,34 +55,33 @@ export default function GuestbookTab({
   });
 
 
+  // useEffect 수정 - 취소 시에만 토스트 표시
+  useEffect(() => {
+    if (!showModal && selectedGatheringId) { // 모달이 닫히고 작업 중이었던 경우에만
+      setToastMessage(`방명록 ${isEditMode ? '수정' : '작성'}이 취소되었습니다.`);
+      setShowToast(true);
+      setSelectedGuestbook(null);
+      setSelectedGatheringId(null);
+      setIsEditMode(false);
+    }
+  }, [showModal]);
+
   const handleEditClick = (guestbook: GuestbookItem) => {
     setSelectedGuestbook(guestbook);
-    // setShowModal(true);
+    setIsEditMode(true);
+    setShowModal(true);
   };
 
   const handleWriteClick = (gatheringId: number) => {
     setSelectedGatheringId(gatheringId);
-    // setShowModal(true);
+    setIsEditMode(false);
+    setShowModal(true);
   };
-
-  // const handleModalClose = () => {
-  //   setShowModal(false);
-  //   setSelectedGatheringId(null);
-  //   setRating(0);
-  //   setContent('');
-  // };
-
-  // const handleSubmit = () => {
-  //   console.log('submit', { rating, content, gatheringId: selectedGatheringId });
-  //   handleModalClose();
-  //   setShowToast(true);
-  // };
 
 
   const handleTabChange = (id: TabItem['id']) => {
     setShowWritten(id === 'written');
   };
-
   return (
     <div className="pb-[50px]">
       <div className="flex justify-between items-center mb-[37px]">
@@ -97,135 +93,42 @@ export default function GuestbookTab({
         />
       </div>
 
-      <div className="space-y-6">
-        {showWritten ? (
-          guestbooks.length > 0 ? (
-            guestbooks.map((guestbook) => (
-              <div
-                key={guestbook.reviewId}
-                className="flex gap-[30px] bg-dark-900 rounded-lg"
-              >
-                <div className="relative w-[300px] h-[200px]">
-                  <Image
-                    src="/assets/image/default_img.png"
-                    alt="모임 이미지"
-                    width={300}
-                    height={200}
-                    className="rounded-[20px] object-cover"
-                  />
-                </div>
+      {showWritten ? (
+        <WrittenGuestbooks
+          guestbooks={guestbooks}
+          gatherings={gatherings}
+          onEditClick={handleEditClick}
+        />
+      ) : (
+        <AvailableGuestbooks
+          gatherings={eligibleGatherings}
+          gatheringStates={gatheringStates}
+          onWriteClick={handleWriteClick}
+        />
+      )}
 
-                <div className="flex-1 py-6 pr-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <Heart rating={guestbook.rating} />
-                    <Popover
-                      type="dot"
-                      items={[
-                        {
-                          id: 'edit',
-                          label: '수정하기',
-                          onClick: () => handleEditClick(guestbook)
-                        },
-                        {
-                          id: 'delete',
-                          label: '삭제하기',
-                          onClick: () => console.log('delete clicked')  // 삭제 핸들러 추가 필요
-                        }
-                      ]}
-                    />
-                  </div>
+      {showModal && (
+        <GuestbookModal
+          isEditMode={isEditMode}
+          initialData={selectedGuestbook}
+          onSubmit={({ content, rating }) => {
+            setShowModal(false);
+            setToastMessage(`방명록이 ${isEditMode ? '수정' : '작성'}되었습니다.`);
+            setShowToast(true);
+          }}
+          onValidationFail={() => {
+            setToastMessage("방명록 내용을 입력해주세요.");
+            setShowToast(true);
+          }}
+        />
+      )}
 
-                  <p className="mb-4 break-all line-clamp-4">
-                    {guestbook.content}
-                  </p>
-
-                  <div className="flex items-end justify-between">
-                    {(() => {
-                      const gathering = gatherings.find(g => g.gatheringId === guestbook.gatheringId);
-                      return (
-                        <>
-                          <p className="text-primary font-normal">
-                            {gathering?.gatheringTitle} |
-                            {gathering?.gatheringSi}
-                            {gathering?.gatheringGu}
-                          </p>
-                          <p className="text-dark-700 font-medium">
-                            {gathering?.gatheringStartDate} ~ {gathering?.gatheringEndDate}
-                          </p>
-                        </>
-                      );
-                    })()}
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <Null message="아직 작성된 방명록이 없습니다." />
-          )
-        ) : eligibleGatherings.length > 0 ? (
-          eligibleGatherings.map((gathering) => (
-            <div key={gathering.gatheringId} className="flex gap-[30px]">
-              <div className="relative w-[300px] h-[200px]">
-                <Image
-                  src={gathering.gatheringImage === "null"
-                    ? '/assets/image/default_img.png'
-                    : gathering.gatheringImage}
-                  alt={gathering.gatheringTitle}
-                  width={300}
-                  height={200}
-                  className="rounded-[20px] object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = '/assets/image/default_img.png';
-                  }}
-                />
-              </div>
-
-              <div className="flex flex-col flex-1 py-[19px]">
-                <h3 className="text-primary font-normal mb-3.5">
-                  {gathering.gatheringSubType} | {gathering.gatheringSi} {gathering.gatheringGu}
-                </h3>
-                <h2 className="text-xl font-bold mb-3.5">{gathering.gatheringTitle}</h2>
-                <div className="flex items-center gap-[13px] text-dark-700 mb-[21px]">
-                  <h4>{gathering.gatheringStartDate} ~ {gathering.gatheringEndDate}</h4>
-                  <div className="flex items-center font-normal gap-2 text-white">
-                    <Image
-                      src="/assets/image/person.svg"
-                      alt="참여자 아이콘"
-                      width={18}
-                      height={18}
-                    />
-                    <span>
-                      {gatheringStates[gathering.gatheringId]?.gatheringJoinedPeopleCount}/
-                      {gatheringStates[gathering.gatheringId]?.gatheringMaxPeopleCount}
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  name="방명록 작성하기"
-                  style="custom"
-                  className="w-[163px] h-[43px] text-base"
-                  handleButtonClick={() => handleWriteClick(gathering.gatheringId)}
-                />
-              </div>
-            </div>
-          ))
-        ) : (
-          <Null message="작성 가능한 방명록이 없습니다." />
-        )}
-      </div>
-
-      {/* <GuestbookModal
-        isOpen={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedGuestbook(null);
-          setSelectedGatheringId(null);
-        }}
-        initialData={selectedGuestbook}
-        gatheringId={selectedGatheringId}
-      /> */}
+      <Toast
+        isOpen={showToast}
+        setIsOpen={setShowToast}
+        type="check"
+        message={toastMessage}
+      />
     </div>
   );
 }
