@@ -53,3 +53,4 @@ export default function Heart({ rating, onChange }: HeartProps) {
     </div>
   );
 }
+
