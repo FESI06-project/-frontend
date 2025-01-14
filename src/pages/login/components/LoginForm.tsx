@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
 import postLogin from './postLogin';
 import router from 'next/router';
 import FormField from '@/pages/signup/components/FormField';
+import useDebounce from '@/hooks/useDebounce';
 
 export default function LoginForm() {
   const [loginFormData, setLoginFormData] = useState({
@@ -25,6 +26,8 @@ export default function LoginForm() {
     }));
   };
 
+  const debouncedLoginForm = useDebounce(loginFormData, 1000);
+
   // 포커스 아웃 시 특정 필드 유효성 검사
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,6 +44,25 @@ export default function LoginForm() {
       }));
     }
   };
+
+  // 폼 전체 유효성 검사 (포커스 후 입력값 없는 경우)
+  useEffect(() => {
+    Object.entries(debouncedLoginForm).forEach(([name, value]) => {
+      if (value === '') return;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (name === 'email') {
+        setLoginFormError((prev) => ({
+          ...prev,
+          [name]: value.trim() === '' || !emailRegex.test(value.trim()),
+        }));
+      } else if (name === 'password') {
+        setLoginFormError((prev) => ({
+          ...prev,
+          [name]: value.trim() === '',
+        }));
+      }
+    });
+  }, [debouncedLoginForm]);
 
   // 로그인 요청
   // 로그인 쿠키 테스트용 코드, 이후 수정 예정
