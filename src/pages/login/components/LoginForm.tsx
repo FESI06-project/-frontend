@@ -7,7 +7,7 @@ import useDebounce from '@/hooks/useDebounce';
 import { useMutation } from '@tanstack/react-query';
 
 export default function LoginForm() {
-  const [loginFormData, setLoginFormData] = useState({
+  const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
@@ -21,13 +21,13 @@ export default function LoginForm() {
   // 로그인 정보 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginFormData((prev) => ({
+    setLoginForm((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const debouncedLoginForm = useDebounce(loginFormData, 1000);
+  const debouncedLoginForm = useDebounce(loginForm, 1000);
 
   // 포커스 아웃 시 특정 필드 유효성 검사
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -89,10 +89,10 @@ export default function LoginForm() {
   // 로그인 쿠키 테스트용 코드, 이후 수정 예정
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginFormData);
+    console.log(loginForm);
     postLogin({
-      email: loginFormData.email,
-      password: loginFormData.password,
+      email: loginForm.email,
+      password: loginForm.password,
     });
   };
 
@@ -105,7 +105,7 @@ export default function LoginForm() {
         label="이메일"
         type="email"
         name="email"
-        value={loginFormData.email}
+        value={loginForm.email}
         placeholder="이메일을 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
@@ -117,7 +117,7 @@ export default function LoginForm() {
         label="비밀번호"
         type="password"
         name="password"
-        value={loginFormData.password}
+        value={loginForm.password}
         placeholder="비밀번호를 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
