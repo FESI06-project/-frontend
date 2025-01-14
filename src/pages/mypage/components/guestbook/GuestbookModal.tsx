@@ -33,42 +33,31 @@ export default function GuestbookModal({
   };
 
   return (
-    <Modal title={isEditMode ? "방명록 수정" : "방명록 작성"}>
-      <div className="w-[500px] h-[300px] p-4">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4 flex items-center gap-4">
-            <Heart rating={rating} />
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setRating(value)}
-                  className="px-2 py-1 text-white hover:text-primary"
-                >
-                  {value}
-                </button>
-              ))}
-            </div>
-          </div>
-          <ModalInput
-            type="description"
-            value={content}
-            onChange={setContent}
-            placeholder="방명록을 작성해주세요."
-            maxLength={300}
-            height="225px"
-            onValidationFail={onValidationFail}
-          />
-          <div className="mt-4">
-            <Button
-              type="submit"
-              name="확인"
-              style="default"
-            />
-          </div>
-        </form>
-      </div>
-    </Modal>
+    <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'}>
+    <div className="w-[500px] h-[300px] p-4">
+      <form onSubmit={handleSubmit}>
+        {/* 별점 선택 */}
+        <div className="mb-4 flex items-center gap-4">
+          <Heart rating={rating} onChange={setRating} /> {/* Heart 컴포넌트와 연결 */}
+        </div>
+
+        {/* 방명록 내용 입력 */}
+        <ModalInput
+          type="description"
+          value={content}
+          onChange={setContent}
+          placeholder="방명록을 작성해주세요."
+          maxLength={300}
+          height="225px"
+          onValidationFail={onValidationFail}
+        />
+
+        {/* 제출 버튼 */}
+        <div className="mt-4">
+          <Button type="submit" name="확인" style="default" />
+        </div>
+      </form>
+    </div>
+  </Modal>
   );
 }
