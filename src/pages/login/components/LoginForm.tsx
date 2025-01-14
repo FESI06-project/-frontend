@@ -10,6 +10,12 @@ export default function LoginForm() {
     password: '',
   });
 
+  // 유효성 검사 결과 저장
+  const [loginFormError, setLoginFormError] = useState({
+    email: false,
+    password: false,
+  });
+
   // 로그인 정보 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,6 +23,23 @@ export default function LoginForm() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  // 포커스 아웃 시 특정 필드 유효성 검사
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (name === 'email') {
+      setLoginFormError((prev) => ({
+        ...prev,
+        [name]: value.trim() === '' || !emailRegex.test(value.trim()),
+      }));
+    } else if (name === 'password') {
+      setLoginFormError((prev) => ({
+        ...prev,
+        [name]: value.trim() === '',
+      }));
+    }
   };
 
   // 로그인 요청
@@ -43,6 +66,7 @@ export default function LoginForm() {
         placeholder="이메일을 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
+        hasError={loginFormError.email}
         errorMessage="유효한 이메일 주소를 입력해주세요."
       />
 
@@ -54,7 +78,8 @@ export default function LoginForm() {
         placeholder="비밀번호를 입력해주세요"
         handleInputChange={handleInputChange}
         handleBlur={handleBlur}
-        errorMessage="비밀번호는 최소 8자 이상이어야 합니다."
+        hasError={loginFormError.password}
+        errorMessage="비밀번호를 입력해주세요."
       />
 
       <Button type="submit" name="로그인" />
