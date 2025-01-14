@@ -1,10 +1,12 @@
 import Button from '@/components/common/Button';
 import { useEffect, useState } from 'react';
-import postSignup from './postSignup';
+import postSignup, { postSignupProps, postSignupResponse } from './postSignup';
 import signupValidation from '@/utils/validation/signupValidation';
 import router from 'next/router';
 import FormField from './FormField';
-import useDebounce from '@/utils/validation/useDebounce';
+import useDebounce from '@/hooks/useDebounce';
+import { useMutation } from '@tanstack/react-query';
+import Alert from '@/components/dialog/Alert';
 
 // 회원가입 폼 컴포넌트
 export default function SignupForm() {
@@ -23,6 +25,10 @@ export default function SignupForm() {
     password: false,
     passwordCheck: false,
   });
+
+  // 회원가입 성공, 실패 메시지 및 표시
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   // 입력 값 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,16 +65,46 @@ export default function SignupForm() {
   }, [debouncedSignupForm]);
 
   // 회원가입 요청
+  const useSignupMutation = useMutation<
+    postSignupResponse,
+    Error,
+    postSignupProps,
+    unknown
+  >({
+    mutationFn: postSignup,
+    onSuccess: (data: postSignupResponse) => {
+      if (data.message === '사용자 생성 성공') {
+        setAlertMessage('회원가입이 완료되었습니다.');
+        setShowConfirmAlert(true);
+      }
+    },
+    onError: (error: Error) => {
+      if (error.message === 'Request failed with status code 400') {
+        console.log('이미 존재하는 이메일입니다.');
+        setShowConfirmAlert(true);
+        setAlertMessage('이미 존재하는 이메일입니다.');
+      }
+    },
+  });
+
+  // 회원가입 요청
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValid = Object.values(signupFormError).every((error) => !error);
     if (isValid) {
-      postSignup({
+      useSignupMutation.mutate({
         email: signupForm.email.trim(),
         nickName: signupForm.nickName.trim(),
         password: signupForm.password.trim(),
       });
+    }
+  };
+
+  const handleConfirm = () => {
+    if (alertMessage === '회원가입이 완료되었습니다.') {
+      setShowConfirmAlert(false);
+      router.push('/login');
     }
   };
 
@@ -131,6 +167,12 @@ export default function SignupForm() {
           {'로그인하기'}
         </p>
       </div>
+      <Alert
+        isOpen={showConfirmAlert}
+        type="confirm"
+        message={alertMessage}
+        onConfirm={handleConfirm}
+      />
     </form>
   );
 }
