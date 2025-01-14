@@ -1,4 +1,6 @@
+import DatePickerCalendar from '@/components/common/DatePicker';
 import Input from '@/components/common/Input';
+import NumberSelect from '@/components/common/NumberSelect';
 import Select from '@/components/common/Select';
 import { GatheringItem } from '@/types';
 import Image from 'next/image';
@@ -15,7 +17,9 @@ export default function GatheringEditModal({
   );
   const [selectedPlaceSi, setSelectedPlaceSi] = useState('seoul');
   const [selectedPlaceGu, setSelectedPlaceGu] = useState('dongjak');
-
+  const [maxPeopleCount, setMaxPeopleCount] = useState(0);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
   const placeSiItems = [
     {
       value: 'seoul',
@@ -52,6 +56,13 @@ export default function GatheringEditModal({
   return (
     <div>
       {/* 모임 정보 */}
+      <DatePickerCalendar
+        selectedDate={startDate}
+        setSelectedDate={setStartDate}
+        className="w-[245px] h-[47px]"
+        width="245px"
+        height="47px"
+      />
       <div id="information">
         <div className="mt-[30px] mb-[10px]">모임 정보</div>
         <div className="flex gap-[10px]">
@@ -123,9 +134,8 @@ export default function GatheringEditModal({
               items={placeSiItems}
               selectedItem={selectedPlaceSi}
               setSelectedItem={setSelectedPlaceSi}
-              width="175px"
               height="47px"
-              className="mr-[10px]"
+              className="mr-[10px] w-[175px]"
             />
             <Select
               items={placeGuItems}
@@ -139,6 +149,22 @@ export default function GatheringEditModal({
 
         <div id="max-people-count">
           <div className="mt-[20px] mb-[10px]">최대인원</div>
+          <NumberSelect
+            width="130px"
+            height="47px"
+            targetNumber={maxPeopleCount}
+            setTargetNumber={setMaxPeopleCount}
+          />
+        </div>
+      </div>
+
+      <div className="flex gap-[10px]">
+        <div>
+          <div className="mt-[20px] mb-[10px]">시작 날짜</div>
+        </div>
+
+        <div>
+          <div className="mt-[20px] mb-[10px]">시작 날짜</div>
         </div>
       </div>
     </div>

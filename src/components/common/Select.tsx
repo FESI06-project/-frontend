@@ -30,18 +30,19 @@ export default function Select({
   const currentLabel = items.filter((item) => item.value === selectedItem)[0]
     .label;
   const itemStyle = (value: string) => {
-    let style =
-      'relative flex items-center top-full bg-dark-400 rounded-[8px] border-[1px] border-dark-500 px-5';
+    let style = ` w-[${width}] h-[${height}] relative flex items-center top-full bg-dark-400 rounded-[8px] border-[1px]  px-5`;
     if (value === selectedItem) {
       style += ' border-[#FF7487]';
+    } else {
+      style += ' border-dark-500';
     }
     return style;
   };
   return (
-    <div className={`w-[${width}] h-[${height}] ${className}`}>
+    <div className={`${className} w-[${width}] h-[${height}] `}>
       <div
         onClick={() => setOpen(!open)}
-        className="w-full h-full flex items-center bg-dark-400 rounded-[8px] border-[1px] border-dark-500 px-5 justify-between"
+        className={`w-full h-[${height}] flex items-center justify-between bg-dark-400 rounded-[8px] border-[1px] border-dark-500 px-5  ${className}`}
       >
         <p>{currentLabel}</p>
         <Image
