@@ -48,7 +48,7 @@ export default function Home() {
           />
         )}
       </div>
-      <div className="mt-7">
+      <div className="mt-7 pb-20">
         <Cardlist mainType={mainType} subType={subType} />
       </div>
     </div>
