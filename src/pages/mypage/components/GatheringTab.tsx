@@ -11,14 +11,14 @@ interface MyGatheringTabProps {
   gatheringStates: { [key: number]: GatheringStateType };
   gatheringChallenges: { [key: number]: GatheringChallengeType };
   onGatheringClick: (gatheringId: number) => void;
-  onCancelReservation: (gatheringId: number) => void;
+  onCancelParticipation: (gatheringId: number) => void;
 }
 
 export default function MyGatheringTab({
   gatherings = [],
   gatheringStates,
   gatheringChallenges,
-  onCancelReservation,
+  onCancelParticipation,
 }: MyGatheringTabProps) {
   const [openChallenges, setOpenChallenges] = useState<{
     [key: number]: boolean;
@@ -64,7 +64,7 @@ export default function MyGatheringTab({
               <MainCard
                 gathering={gathering}
                 state={state}
-                onCancelReservation={onCancelReservation}
+                onCancelParticipation={onCancelParticipation}
               />
 
               <ChallengeSection

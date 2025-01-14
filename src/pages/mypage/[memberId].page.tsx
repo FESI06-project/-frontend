@@ -270,9 +270,14 @@ export default function MyPage() {
     console.log('모임 클릭:', gatheringId);
   };
 
+  const handleCancelGathering = async (gatheringId: number) => {
+    // 모임장이 모임을 취소하는 API 호출
+    console.log('모임 취소:', gatheringId);
+  };
 
-  const handleCancelReservation = async () => {
-    // API 호출로 예약 취소 처리
+  const handleCancelParticipation = async (gatheringId: number) => {
+    // 참여자가 참여를 취소하는 API 호출
+    console.log('참여 취소:', gatheringId);
   };
 
   return (
@@ -293,7 +298,7 @@ export default function MyPage() {
               gatheringStates={userGatheringStates}
               gatheringChallenges={userGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelReservation={handleCancelReservation}
+              onCancelParticipation={handleCancelParticipation}  
             />
           )}
           {currentTab === 'guestbook' && (
@@ -310,7 +315,7 @@ export default function MyPage() {
               gatheringStates={hostedGatheringStates}
               gatheringChallenges={hostedGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelReservation={handleCancelReservation}
+              onCancelGathering={handleCancelGathering} 
             />
           )}
           {currentTab === 'calendar' && <CalendarTab events={[]} />}
