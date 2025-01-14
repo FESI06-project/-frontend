@@ -70,7 +70,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
         />
       )}
       {error && (
-        <p className="text-primary text-sm mt-1">빈 칸으로 완료할 수 없습니다.</p>
+        <p className="text-primary text-sm">빈 칸으로 완료할 수 없습니다.</p>
       )}
     </div>
   );
