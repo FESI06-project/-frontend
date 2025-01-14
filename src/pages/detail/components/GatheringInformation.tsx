@@ -2,11 +2,10 @@ import Image from 'next/image';
 import TagList from './tag';
 import { GatheringItem } from '@/types';
 import Popover from '@/components/common/Popover';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import Alert from '@/components/dialog/Alert';
-import useModalStore from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
-import Input from '@/components/common/Input';
+import GatheringEditModal from './GatheringEditModal';
 
 export default function GatheringInformation({
   information,
@@ -90,7 +89,7 @@ export default function GatheringInformation({
                   setShowModal={setShowModal}
                   title="모임 정보를 입력해주세요."
                 >
-                  <GatheringEditModal />
+                  <GatheringEditModal information={information} />
                 </Modal>
               </>
             )}
@@ -133,55 +132,6 @@ export default function GatheringInformation({
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function GatheringEditModal() {
-  const [title, setTitle] = useState('기존 모임의 이름이 들어와 있습니다.');
-  const [description, setDescription] = useState(
-    '기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다.',
-  );
-
-  const handleGatheringTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setTitle(e.target.value);
-  };
-  const handleGatheringDescriptionChange = (
-    e: ChangeEvent<HTMLInputElement>,
-  ) => {
-    console.log(e.target.value);
-    setDescription(e.target.value);
-  };
-  return (
-    <div>
-      {/* 모임 정보 */}
-      <div id="information">
-        <div className="mt-[30px] mb-[10px]">모임 정보</div>
-        <div className="flex gap-[10px]">
-          <Image
-            className="rounded-[10px] border-dark-500 border-[1px]"
-            src="/assets/image/fitmon.png"
-            width={130}
-            height={130}
-            alt="edit-image"
-          />
-          <div className="w-[360px]">
-            <Input
-              handleInputChange={(e) => handleGatheringTitleChange(e)}
-              value={title}
-              className="bg-dark-400 mb-[7px]"
-            />
-            <Input
-              handleInputChange={(e) => handleGatheringDescriptionChange(e)}
-              value={description}
-              className="flex h-[76px] bg-dark-400 overflow-x-visible"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 모임 태그 */}
     </div>
   );
 }
