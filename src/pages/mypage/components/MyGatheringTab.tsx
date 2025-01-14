@@ -5,6 +5,7 @@ import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
+import { sortGatheringsByDate } from '@/utils/sortGatherings';
 
 interface MyGatheringTabProps {
   gatherings?: GatheringItem[];
@@ -37,20 +38,17 @@ export default function MyGatheringTab({
     return <Null message="아직 생성한 모임이 없습니다." />;
   }
   
+
+  const sortedGatherings = sortGatheringsByDate(validGatherings);
+
   return (
     <div className="space-y-6 pb-[50px]">
-      {(gatherings || [])
-        .sort((a, b) =>
-          new Date(b.gatheringStartDate).getTime() - new Date(a.gatheringStartDate).getTime()
-        )
-        .map((gathering) => {
-          if (!gathering) return null;
+      {sortedGatherings.map((gathering) => {
+        const state = gatheringStates[gathering.gatheringId];
+        if (!state) return null;
 
-          const state = gatheringStates[gathering.gatheringId];
-          if (!state) return null;
-
-          const challenges = gatheringChallenges[gathering.gatheringId];
-          const isOpen = openChallenges[gathering.gatheringId];
+        const challenges = gatheringChallenges[gathering.gatheringId];
+        const isOpen = openChallenges[gathering.gatheringId];
 
           return (
             <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
