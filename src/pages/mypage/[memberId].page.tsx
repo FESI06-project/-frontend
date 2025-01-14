@@ -28,7 +28,6 @@ export default function MyPage() {
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(
     MY_PAGE_TABS[0].id,
   );
-  const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
     memberId: 'defaultMemberId',
@@ -271,9 +270,6 @@ export default function MyPage() {
     console.log('모임 클릭:', gatheringId);
   };
 
-  const handleProfileEdit = () => {
-    setIsEditModalOpen(true);
-  };
 
   const handleCancelReservation = async () => {
     // API 호출로 예약 취소 처리
@@ -281,7 +277,7 @@ export default function MyPage() {
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-      <Profile user={user} onEditClick={handleProfileEdit} />
+      <Profile user={user} />
 
       <div className="mt-14">
         <Tab
