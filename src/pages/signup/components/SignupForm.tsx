@@ -6,6 +6,7 @@ import router from 'next/router';
 import FormField from './FormField';
 import useDebounce from '@/hooks/useDebounce';
 import { useMutation } from '@tanstack/react-query';
+import Alert from '@/components/dialog/Alert';
 
 // 회원가입 폼 컴포넌트
 export default function SignupForm() {
@@ -24,6 +25,10 @@ export default function SignupForm() {
     password: false,
     passwordCheck: false,
   });
+
+  // 회원가입 성공, 실패 메시지 및 표시
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   // 입력 값 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,12 +74,15 @@ export default function SignupForm() {
     mutationFn: postSignup,
     onSuccess: (data: postSignupResponse) => {
       if (data.message === '사용자 생성 성공') {
-        console.log('회원가입이 완료되었습니다.');
+        setAlertMessage('회원가입이 완료되었습니다.');
+        setShowConfirmAlert(true);
       }
     },
     onError: (error: Error) => {
       if (error.message === 'Request failed with status code 400') {
         console.log('이미 존재하는 이메일입니다.');
+        setShowConfirmAlert(true);
+        setAlertMessage('이미 존재하는 이메일입니다.');
       }
     },
   });
@@ -90,6 +98,13 @@ export default function SignupForm() {
         nickName: signupForm.nickName.trim(),
         password: signupForm.password.trim(),
       });
+    }
+  };
+
+  const handleConfirm = () => {
+    if (alertMessage === '회원가입이 완료되었습니다.') {
+      setShowConfirmAlert(false);
+      router.push('/login');
     }
   };
 
@@ -152,6 +167,12 @@ export default function SignupForm() {
           {'로그인하기'}
         </p>
       </div>
+      <Alert
+        isOpen={showConfirmAlert}
+        type="confirm"
+        message={alertMessage}
+        onConfirm={handleConfirm}
+      />
     </form>
   );
 }
