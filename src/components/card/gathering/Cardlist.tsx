@@ -71,14 +71,20 @@ export default function Cardlist({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-5">
-        {data?.pages.map((page) =>
-          page.content.map((gathering) => (
-            <Card key={gathering.gatheringId} data={gathering} />
-          )),
-        )}
-      </div>
-      <div ref={observerRef} style={{ height: '1px' }} />
+      {data?.pages.every((page) => page.content.length === 0) ? (
+        <Null message="모임 정보가 없습니다." />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-5">
+            {data?.pages.map((page) =>
+              page.content.map((gathering) => (
+                <Card key={gathering.gatheringId} data={gathering} />
+              )),
+            )}
+          </div>
+          {hasNextPage && <div ref={observerRef} style={{ height: '1px' }} />}
+        </>
+      )}
     </>
   );
 }
