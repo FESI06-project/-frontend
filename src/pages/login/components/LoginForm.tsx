@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
-import postLogin from './postLogin';
+import postLogin, { postLoginProps, postLoginResponse } from './postLogin';
 import router from 'next/router';
 import FormField from '@/pages/signup/components/FormField';
 import useDebounce from '@/hooks/useDebounce';
+import { useMutation } from '@tanstack/react-query';
 
 export default function LoginForm() {
   const [loginFormData, setLoginFormData] = useState({
@@ -63,6 +64,26 @@ export default function LoginForm() {
       }
     });
   }, [debouncedLoginForm]);
+
+  // 로그인 요청 Mutation 함수
+  const useLoginMutation = useMutation<
+    postLoginResponse,
+    Error,
+    postLoginProps,
+    unknown
+  >({
+    mutationFn: postLogin,
+    onSuccess: (data: postLoginResponse) => {
+      if (data.email) {
+        console.log('로그인 성공');
+      }
+    },
+    onError: (error: Error) => {
+      if (error.message === '아이디 또는 비밀번호가 올바르지 않습니다.') {
+        console.log('아이디 또는 비밀번호가 올바르지 않습니다.');
+      }
+    },
+  });
 
   // 로그인 요청
   // 로그인 쿠키 테스트용 코드, 이후 수정 예정
