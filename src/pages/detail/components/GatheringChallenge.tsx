@@ -1,5 +1,6 @@
 import BarChart from '@/components/chart/BarChart';
 import Button from '@/components/common/Button';
+import Popover from '@/components/common/Popover';
 import SubTag from '@/components/tag/SubTag';
 import { GatheringChallegeProps } from '@/types';
 import Image from 'next/image';
@@ -72,36 +73,36 @@ export default function GatheringChallenge({
         </div>
 
         <div className="flex flex-col mt-[31px] gap-6">
-          {currentTag === 'inProgress' &&
-          currentInquiryState === 'list' &&
-          challenges?.inProgressChallenges ? (
-            challenges?.inProgressChallenges.map((challenge, index) => (
-              <Challenge
-                key={index}
-                challenge={{ ...challenge, captainStatus }}
-              />
-            ))
+          {currentInquiryState === 'list' ? (
+            currentTag === 'inProgress' ? (
+              challenges.inProgressChallenges ? (
+                challenges?.inProgressChallenges.map((challenge, index) => (
+                  <Challenge
+                    key={index}
+                    challenge={{ ...challenge, captainStatus }}
+                  />
+                ))
+              ) : (
+                <div>진행중인 챌린지가 없습니다.</div>
+              )
+            ) : challenges.doneChallenges ? (
+              challenges?.doneChallenges.map((challenge, index) => (
+                <Challenge
+                  key={index}
+                  challenge={{ ...challenge, captainStatus }}
+                />
+              ))
+            ) : (
+              <div>진행중인 챌린지가 없습니다.</div>
+            )
           ) : (
-            <div>{'존재하지 않습니다.'}</div>
-          )}
-          {currentTag === 'done' &&
-          currentInquiryState === 'list' &&
-          challenges.doneChallenges ? (
-            challenges.doneChallenges.map((challenge, index) => (
-              <Challenge
-                key={index}
-                challenge={{ ...challenge, captainStatus }}
-              />
-            ))
-          ) : (
-            <div>{'존재하지 않습니다.'}</div>
+            <div>calendar</div>
           )}
         </div>
       </div>
     </div>
   );
 }
-
 
 function Challenge({ challenge }: { challenge: ChallengeProps }) {
   const button = () => {
@@ -155,11 +156,9 @@ function Challenge({ challenge }: { challenge: ChallengeProps }) {
               </p>
               {/* 모임장만 보이는 설정 버튼 */}
               {challenge.captainStatus && (
-                <Image
-                  src="/assets/image/three-dots.svg"
-                  alt="dots"
-                  width={20}
-                  height={21}
+                <Popover
+                  items={[{ id: 'delete', label: '삭제하기' }]}
+                  type="dot"
                 />
               )}
             </div>

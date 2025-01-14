@@ -4,7 +4,6 @@ import Button from '@/components/common/Button';
 import postLogin from './components/postLogin';
 import router from 'next/router';
 
-
 export default function Login() {
   const [loginFormData, setLoginFormData] = useState({
     email: '',
@@ -32,7 +31,7 @@ export default function Login() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full h-[calc(100vh-81px)] flex justify-center items-center">
       <div className="flex flex-col justify-center items-center max-w-[640px] w-1/3">
         <h1 className="mb-12 text-[2.25rem] font-medium">{'로그인'}</h1>
 

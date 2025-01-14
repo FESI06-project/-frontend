@@ -1,3 +1,4 @@
+import { GatheringChallegeProps } from './index.d';
 export interface TabItem {
   id: string;
   label: string;
@@ -12,7 +13,7 @@ export interface GatheringItem {
   gatheringId: number;
   gatheringTitle: string;
   gatheringImage: string;
-  gatheringStatus: '모집중' | '진행중' | '완료';
+  gatheringStatus: '시작전' | '진행중' | '종료됨' | '취소됨';
   gatheringMainType: string;
   gatheringSubType: string;
   gatheringStartDate: string;
@@ -64,6 +65,7 @@ export interface GuestbookItem {
   createDate: string;
   writer: GuestbookWriter;
   reviewOwnerStatus: boolean;
+  gatheringId: number; 
 }
 
 export interface GuestbookWriter {
@@ -82,4 +84,27 @@ export interface MainChallenge {
   successParticipantCount: number;
   startDate: string;
   endDate: string;
+}
+
+export interface GatheringList {
+  content: GatheringListItem[];
+  hasNext: boolean;
+}
+
+export interface GatheringListItem {
+  gatheringId: number;
+  title: string;
+  description: string;
+  mainType: '전체' | '유산소형' | '무산소형' | '경기형';
+  subType: string;
+  imageUrl: string;
+  startDate: string;
+  endDate: string;
+  mainLocation: string;
+  subLocation: string;
+  minCount: number;
+  totalCount: number;
+  participantCount: number;
+  status: '시작전' | '진행중' | '종료됨' | '취소됨';
+  tags: string[];
 }

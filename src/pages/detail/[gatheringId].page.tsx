@@ -11,13 +11,13 @@ import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
-import useModalStore from '@/stores/useModalStore';
+import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
-  const { showModal, setShowModal } = useModalStore();
+  const { openModal, activeModal } = useModalStore();
   const gatheringTabItems = [
     {
       id: 'challenge',
@@ -44,7 +44,7 @@ export default function GatheringDetail() {
     gatheringEndDate: '2022-23-23',
     gatheringSi: '대전',
     gatheringGu: '서구',
-    gatheringStatus: '모집중',
+    gatheringStatus: '시작전',
     isReservationCancellable: false,
   };
 
@@ -57,7 +57,7 @@ export default function GatheringDetail() {
       'www.www.ww.w.w.w.w',
     ],
     gatheringAverageRating: 4.5,
-    gatheringGuestbookCount: 333,
+    gatheringGuestbookCount: 100,
     gatheringMaxPeopleCount: 10,
     gatheringMinPeopleCount: 3,
     gatheringJoinedPeopleCount: 6,
@@ -149,6 +149,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
+      gatheringId: 0
     },
     {
       reviewId: 0,
@@ -161,29 +162,33 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
+      gatheringId: 0       
     },
   ];
 
   useEffect(() => {
     console.log(gatheringId);
   }, []);
-
+  const handleAddChallenge = () => {
+    openModal(ModalType.CHALLENGE_CREATE, { gatheringId });
+  };
+  
   return (
-    <div className="w-[1200px] flex flex-col place-self-center overflow-auto">
+    <div className="w-[1200px] flex flex-col place-self-center ">
       <GatheringInformation information={gathering} />
       <GatheringState state={gatheringState} />
-      <div className="flex mt-[50px] w-[1200px] ">
+      <div className="flex mt-[50px] w-full h-[49px] relative items-center justify-center">
         <Tab
           items={gatheringTabItems}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
-          className="w-[1200px] h-[31px] text-lg font-bold pb-[15px] "
+          className="w-full absolute flex text-lg font-boldㅌ"
         />
         {gathering.captainStatus && (
-          <div className="w-full relative flex justify-between ">
+          <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
-              onClick={() => setShowModal(!showModal)}
+              onClick={handleAddChallenge}
               className="text-lg"
             >
               {'+ 챌린지 추가하기'}
@@ -191,7 +196,7 @@ export default function GatheringDetail() {
           </div>
         )}
       </div>
-      {showModal && (
+      {activeModal === ModalType.CHALLENGE_CREATE && (
         <Modal title="모임 정보를 입력해주세요.">
           <div>
             <p>{'모임 정보'}</p>
@@ -205,7 +210,10 @@ export default function GatheringDetail() {
           captainStatus={gathering.captainStatus ?? false}
         />
       ) : (
-        <GatheringGuestbook guestbooks={gatheringGuestbook} />
+        <GatheringGuestbook
+          guestbooks={gatheringGuestbook}
+          gatheringGuestbookCount={gatheringState.gatheringGuestbookCount}
+        />
       )}
     </div>
   );

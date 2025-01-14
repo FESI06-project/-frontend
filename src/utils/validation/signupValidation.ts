@@ -2,7 +2,7 @@ export interface SignupValidationProps {
   name: string;
   value: string;
   password: string;
-  setFormDataError: React.Dispatch<
+  setSignupFormError: React.Dispatch<
     React.SetStateAction<{
       email: boolean;
       nickName: boolean;
@@ -17,11 +17,11 @@ export default function signupValidation({
   name,
   value,
   password,
-  setFormDataError,
+  setSignupFormError,
 }: SignupValidationProps) {
   // 닉네임 유효성 검사
   const NicknameValidation = () => {
-    setFormDataError((prev) => ({
+    setSignupFormError((prev) => ({
       ...prev,
       [name]: value.length < 2 || value.length > 10,
     }));
@@ -30,21 +30,21 @@ export default function signupValidation({
   // 이메일 유효성 검사
   const EmailValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setFormDataError((prev) => ({
+    setSignupFormError((prev) => ({
       ...prev,
       [name]: !emailRegex.test(value),
     }));
   };
   // 비밀번호 유효성 검사
   const PasswordValidation = () => {
-    setFormDataError((prev) => ({
+    setSignupFormError((prev) => ({
       ...prev,
       [name]: value.length < 8,
     }));
   };
   // 비밀번호 확인 검사
   const PasswordCheckValidation = () => {
-    setFormDataError((prev) => ({
+    setSignupFormError((prev) => ({
       ...prev,
       [name]: value.length == 0 || value !== password,
     }));

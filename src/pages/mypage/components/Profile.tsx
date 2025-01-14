@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { UserProfile } from "@/types";
+import { UserProfile } from '@/types';
 import Image from 'next/image';
-import useModalStore from '@/stores/useModalStore';
+import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
+import ModalInput from '@/components/common/ModalInput';
 
 interface ProfileProps {
   user?: UserProfile;
-  onEditClick: () => void;
 }
 
 export default function Profile({
@@ -17,28 +16,39 @@ export default function Profile({
     memberId: '',
     email: '',
     nickname: '',
-    profileImage: null
+    profileImage: null,
   } as UserProfile,
-
 }: ProfileProps) {
-  const [showToast, setShowToast] = useState(false);
-  const { showModal, setShowModal } = useModalStore();
-  const [nickname, setNickname] = useState(user.nickname || '');
+  const [showToast, setShowToast] = useState(false); // 성공 토스트 표시 여부
+  const { openModal, activeModal, closeModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
+  const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
+  const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
+
+  // 닉네임 유효성 검사 실패 시 처리
+  const handleValidationFail = () => {
+    setIsDisabled(true); // 버튼 비활성화
+  };
+
+  const handleEditClick = () => {
+    openModal(ModalType.PROFILE, { nickname: user.nickname });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setShowModal(false);
+    if (!nickname.trim()) {
+      handleValidationFail();
+      return;
+    }
+    closeModal();
     setShowToast(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
   };
 
   return (
     <>
+      {/* 프로필 정보 섹션 */}
       <div className="flex items-start gap-[20px]">
         <div className="flex-shrink-0">
+          {/* 프로필 이미지 */}
           <Image
             src={
               user.profileImage === 'null' || !user.profileImage
@@ -58,12 +68,15 @@ export default function Profile({
         </div>
 
         <div className="flex-grow">
+          {/* 사용자 정보와 수정 버튼 */}
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-medium">{user.nickname || '닉네임 없음'}</h1>
-              <p className="text-dark-600 font-light">{user.email || '이메일 없음'}</p>
+              <p className="text-dark-600 font-light">
+                {user.email || '이메일 없음'}
+              </p>
             </div>
-            <button onClick={() => setShowModal(true)}>
+            <button onClick={handleEditClick}>
               <Image
                 src="/assets/image/profile_edit.svg"
                 alt="프로필 수정"
@@ -74,13 +87,14 @@ export default function Profile({
           </div>
         </div>
       </div>
-
-      {showModal && (
+      {/* 모달 표시 */}
+      {activeModal === ModalType.PROFILE && (
         <Modal title="회원 정보를 입력해주세요.">
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">
-              <div className="relative h-[130px]">
+                <div className="relative h-[130px]">
+                  {/* 모달 내부 프로필 이미지 */}
                   <Image
                     src={
                       user.profileImage === 'null' || !user.profileImage
@@ -106,35 +120,39 @@ export default function Profile({
                         className="hover:opacity-80"
                       />
                     </button>
-                    <button type="button" className="text-dark-700 font-normal hover:text-primary">
+                    <button
+                      type="button"
+                      className="text-dark-700 font-normal hover:text-primary"
+                    >
                       이미지 삭제
                     </button>
                   </div>
                 </div>
                 <div className="flex-1 h-[130px] flex flex-col justify-end">
+                  {/* 닉네임 수정 입력란 */}
                   <label className="text-base mb-[10px] font-normal block">닉네임</label>
-                  <Input
-                    type="text"
+                  <ModalInput
+                    type="title"
                     value={nickname}
-                    className="bg-dark-400 h-[47px]"
-                    handleInputChange={handleInputChange}
+                    onChange={(value) => {
+                      setNickname(value);
+                      setIsDisabled(!value.trim());
+                    }}
                     placeholder="닉네임을 수정해주세요."
+                    maxLength={25}
+                    onValidationFail={handleValidationFail}
                   />
                 </div>
               </div>
 
               <div className="mt-[20px]">
-                <Button
-                  type="submit"
-                  name="확인"
-                  style="default"
-                />
+                <Button type="submit" name="확인" style="default" />
               </div>
             </form>
           </div>
         </Modal>
       )}
-
+      {/* 성공 토스트 메시지 */}
       <Toast
         isOpen={showToast}
         setIsOpen={setShowToast}

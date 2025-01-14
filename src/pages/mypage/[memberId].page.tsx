@@ -12,6 +12,7 @@ import type {
   GatheringItem,
   GatheringStateType,
   GatheringChallengeType,
+  GuestbookItem,
 } from '@/types';
 
 const MY_PAGE_TABS: TabItem[] = [
@@ -27,7 +28,6 @@ export default function MyPage() {
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(
     MY_PAGE_TABS[0].id,
   );
-  const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
     memberId: 'defaultMemberId',
@@ -130,7 +130,7 @@ export default function MyPage() {
       gatheringTitle:
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
-      gatheringStatus: '모집중',
+      gatheringStatus: '시작전',
       gatheringStartDate: '2024.12.04',
       gatheringEndDate: '2025.01.23',
       gatheringMainType: '유산소형',
@@ -179,7 +179,7 @@ export default function MyPage() {
           participantCount: 3,
           successParticipantCount: 2,
           participantStatus: true,
-          verificationStatus: false,
+          verificationStatus: true,
           startDate: 'string',
           endDate: 'string',
         },
@@ -231,6 +231,36 @@ export default function MyPage() {
       doneChallenges: [],
     },
   };
+
+  const userGuestbooks: GuestbookItem[] = [
+    {
+      reviewId: 1,
+      content: '매일 운동하는 습관을 기를 수 있어서 좋았어요. 모임장님도 친절하시고 다른 멤버분들도 다들 열정적이셔서 동기부여가 많이 됐습니다!',
+      rating: 5,
+      createDate: '2024-01-15T09:30:00.000Z',
+      writer: {
+        memberId: 1,
+        nickName: '러닝조아',
+        profileImageUrl: 'null'
+      },
+      reviewOwnerStatus: true,
+      gatheringId: 2  
+    },
+    {
+      reviewId: 2,
+      content: '초보자도 부담없이 참여할 수 있어서 좋았어요. 다음에도 이런 모임이 있다면 또 참여하고 싶네요!',
+      rating: 4,
+      createDate: '2024-01-10T15:20:00.000Z',
+      writer: {
+        memberId: 2,
+        nickName: '헬스왕',
+        profileImageUrl: 'null'
+      },
+      reviewOwnerStatus: true,
+      gatheringId: 2  
+    }
+  ];
+
   const handleTabChange = (id: TabItem['id']) => {
     setCurrentTab(id);
   };
@@ -240,17 +270,19 @@ export default function MyPage() {
     console.log('모임 클릭:', gatheringId);
   };
 
-  const handleProfileEdit = () => {
-    setIsEditModalOpen(true);
+  const handleCancelGathering = async (gatheringId: number) => {
+    // 모임장이 모임을 취소하는 API 호출
+    console.log('모임 취소:', gatheringId);
   };
 
-  const handleCancelReservation = async () => {
-    // API 호출로 예약 취소 처리
+  const handleCancelParticipation = async (gatheringId: number) => {
+    // 참여자가 참여를 취소하는 API 호출
+    console.log('참여 취소:', gatheringId);
   };
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-      <Profile user={user} onEditClick={handleProfileEdit} />
+      <Profile user={user} />
 
       <div className="mt-14">
         <Tab
@@ -266,17 +298,24 @@ export default function MyPage() {
               gatheringStates={userGatheringStates}
               gatheringChallenges={userGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelReservation={handleCancelReservation}
+              onCancelParticipation={handleCancelParticipation}  
             />
           )}
-          {currentTab === 'guestbook' && <GuestbookTab guestbooks={[]} />}
+          {currentTab === 'guestbook' && (
+            <GuestbookTab
+              guestbooks={userGuestbooks}
+              gatherings={userGatherings}  // hostedGatherings 제외
+              gatheringChallenges={userGatheringChallenges}
+              gatheringStates={userGatheringStates}
+            />
+          )}
           {currentTab === 'myGathering' && (
             <MyGatheringTab
               gatherings={hostedGatherings}
               gatheringStates={hostedGatheringStates}
               gatheringChallenges={hostedGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelReservation={handleCancelReservation}
+              onCancelGathering={handleCancelGathering} 
             />
           )}
           {currentTab === 'calendar' && <CalendarTab events={[]} />}
