@@ -40,11 +40,13 @@ export default function Home() {
         />
       </div>
       <div className="mt-7">
-        <SubTag
-          tags={LISTPAGE_SUBTYPE[mainType]}
-          currentTag={subType}
-          onTagChange={(newTag) => setSubType(newTag)}
-        />
+        {mainType !== '전체' && (
+          <SubTag
+            tags={LISTPAGE_SUBTYPE[mainType]}
+            currentTag={subType}
+            onTagChange={(newTag) => setSubType(newTag)}
+          />
+        )}
       </div>
       <div className="mt-7">
         <Cardlist mainType={mainType} subType={subType} />
