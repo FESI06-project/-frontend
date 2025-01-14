@@ -36,7 +36,7 @@ export default function GuestbookTab({
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
+  const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
   const [selectedGatheringId, setSelectedGatheringId] = useState<number | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
