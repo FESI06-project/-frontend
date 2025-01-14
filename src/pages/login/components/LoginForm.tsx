@@ -86,14 +86,16 @@ export default function LoginForm() {
   });
 
   // 로그인 요청
-  // 로그인 쿠키 테스트용 코드, 이후 수정 예정
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginForm);
-    postLogin({
-      email: loginForm.email,
-      password: loginForm.password,
-    });
+
+    const isValid = Object.values(loginFormError).every((error) => !error);
+    if (isValid) {
+      useLoginMutation.mutate({
+        email: loginForm.email.trim(),
+        password: loginForm.password.trim(),
+      });
+    }
   };
 
   return (
