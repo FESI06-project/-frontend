@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UserProfile } from '@/types';
 import Image from 'next/image';
-import useModalStore from '@/stores/useModalStore';
+import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
@@ -20,7 +20,7 @@ export default function Profile({
   } as UserProfile,
 }: ProfileProps) {
   const [showToast, setShowToast] = useState(false); // 성공 토스트 표시 여부
-  const { showModal, setShowModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
+  const { openModal, activeModal, closeModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
   const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
   const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
 
@@ -29,23 +29,19 @@ export default function Profile({
     setIsDisabled(true); // 버튼 비활성화
   };
 
-  // 프로필 수정 버튼 클릭 핸들러
   const handleEditClick = () => {
-    setShowModal(true); // 모달 표시
+    openModal(ModalType.PROFILE, { nickname: user.nickname });
   };
 
-  // 폼 제출 핸들러
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // 기본 동작 방지
-    if (!nickname.trim()) { // 닉네임이 비어 있으면 유효성 검사 실패
+    e.preventDefault();
+    if (!nickname.trim()) {
       handleValidationFail();
       return;
     }
-    setShowModal(false); // 모달 닫기
-    setShowToast(true); // 성공 토스트 표시
-    setIsDisabled(false); // 버튼 활성화
+    closeModal();
+    setShowToast(true);
   };
-
 
   return (
     <>
@@ -92,7 +88,7 @@ export default function Profile({
         </div>
       </div>
       {/* 모달 표시 */}
-      {showModal && (
+      {activeModal === ModalType.PROFILE && (
         <Modal title="회원 정보를 입력해주세요.">
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { GuestbookItem, GatheringItem, GatheringChallengeType, GatheringStateType, TabItem } from '@/types';
 import SubTag from '@/components/tag/SubTag';
 import Toast from '@/components/dialog/Toast';
-import useModalStore from '@/stores/useModalStore';
+import useModalStore, { ModalType } from '@/stores/useModalStore';
 import GuestbookModal from './guestbook/GuestbookModal';
 import WrittenGuestbooks from './guestbook/WrittenGuestbooks';
 import AvailableGuestbooks from './guestbook/AvailableGuestbooks';
@@ -18,6 +18,7 @@ const GUESTBOOK_TABS: TabItem[] = [
 interface GuestbookTabProps {
   guestbooks: GuestbookItem[];
   gatherings?: GatheringItem[];
+  gatheringId?: number;
   gatheringChallenges?: { [key: number]: GatheringChallengeType };
   gatheringStates?: { [key: number]: GatheringStateType };
 }
@@ -31,7 +32,7 @@ export default function GuestbookTab({
 }: GuestbookTabProps) {
   // 작성 가능한 방명록이 먼저 보이도록 기본값을 false로 설정
   const [showWritten, setShowWritten] = useState(false);
-  const { showModal, setShowModal } = useModalStore();
+  const { openModal, activeModal, closeModal, modalProps } = useModalStore();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -55,27 +56,26 @@ export default function GuestbookTab({
   });
 
 
-  // useEffect 수정 - 취소 시에만 토스트 표시
   useEffect(() => {
-    if (!showModal && selectedGatheringId) { // 모달이 닫히고 작업 중이었던 경우에만
+    if (activeModal === null && selectedGatheringId) { // 모달이 닫히고 작업 중이었던 경우에만
       setToastMessage(`방명록 ${isEditMode ? '수정' : '작성'}이 취소되었습니다.`);
       setShowToast(true);
       setSelectedGuestbook(null);
       setSelectedGatheringId(null);
       setIsEditMode(false);
     }
-  }, [showModal]);
-
-  const handleEditClick = (guestbook: GuestbookItem) => {
-    setSelectedGuestbook(guestbook);
-    setIsEditMode(true);
-    setShowModal(true);
-  };
+  }, [activeModal, isEditMode, selectedGatheringId]);
 
   const handleWriteClick = (gatheringId: number) => {
-    setSelectedGatheringId(gatheringId);
+    setSelectedGatheringId(gatheringId);  // 아직 필요한 경우를 위해 유지
     setIsEditMode(false);
-    setShowModal(true);
+    openModal(ModalType.GUESTBOOK_WRITE, { gatheringId });
+  };
+
+  const handleEditClick = (guestbook: GuestbookItem) => {
+    setSelectedGuestbook(guestbook);  // 아직 필요한 경우를 위해 유지
+    setIsEditMode(true);
+    openModal(ModalType.GUESTBOOK_EDIT, { guestbook });
   };
 
 
@@ -106,14 +106,29 @@ export default function GuestbookTab({
           onWriteClick={handleWriteClick}
         />
       )}
-
-      {showModal && (
+      {activeModal === ModalType.GUESTBOOK_WRITE && (
         <GuestbookModal
-          isEditMode={isEditMode}
-          initialData={selectedGuestbook}
-          onSubmit={({ content, rating }) => {
-            setShowModal(false);
-            setToastMessage(`방명록이 ${isEditMode ? '수정' : '작성'}되었습니다.`);
+          isEditMode={false}
+          gatheringId={modalProps.gatheringId}
+          onSubmit={() => {
+            closeModal();
+            setToastMessage("방명록이 작성되었습니다.");
+            setShowToast(true);
+          }}
+          onValidationFail={() => {
+            setToastMessage("방명록 내용을 입력해주세요.");
+            setShowToast(true);
+          }}
+        />
+      )}
+
+      {activeModal === ModalType.GUESTBOOK_EDIT && (
+        <GuestbookModal
+          isEditMode={true}
+          initialData={modalProps.guestbook}
+          onSubmit={() => {
+            closeModal();
+            setToastMessage("방명록이 수정되었습니다.");
             setShowToast(true);
           }}
           onValidationFail={() => {

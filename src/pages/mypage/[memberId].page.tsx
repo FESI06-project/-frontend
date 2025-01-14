@@ -28,7 +28,6 @@ export default function MyPage() {
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(
     MY_PAGE_TABS[0].id,
   );
-  const [, setIsEditModalOpen] = useState(false);
 
   const user: UserProfile = {
     memberId: 'defaultMemberId',
@@ -270,6 +269,7 @@ export default function MyPage() {
     // router.push(`/detail/${gatheringId}`);
     console.log('모임 클릭:', gatheringId);
   };
+
 
   const handleCancelReservation = async () => {
     // API 호출로 예약 취소 처리

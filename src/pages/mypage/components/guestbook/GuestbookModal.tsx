@@ -9,6 +9,7 @@ import { GuestbookItem } from '@/types';
 interface GuestbookModalProps {
   isEditMode: boolean;
   initialData?: GuestbookItem | null;
+  gatheringId?: number; 
   onSubmit: (data: { content: string; rating: number }) => void;
   onValidationFail: () => void;
 }
