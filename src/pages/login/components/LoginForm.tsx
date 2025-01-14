@@ -104,8 +104,8 @@ export default function LoginForm() {
         errorMessage="비밀번호를 입력해주세요."
       />
 
-      <Button type="submit" name="로그인" />
-      <div className="flex flex-row justify-end mt-9">
+      <Button type="submit" name="로그인" className="h-16 mt-3" />
+      <div className="flex flex-row justify-end mt-3">
         <p className="mr-4 text-[1rem]">{'아직 회원이 아니신가요?'}</p>
         <p
           onClick={() => router.push('/signup')}
