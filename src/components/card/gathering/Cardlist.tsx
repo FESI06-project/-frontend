@@ -10,9 +10,14 @@ import { MainType } from '@/constants/MainList';
 interface CardlistProps {
   mainType: MainType;
   subType: string;
+  initialData: GatheringList;
 }
 
-export default function Cardlist({ mainType, subType }: CardlistProps) {
+export default function Cardlist({
+  mainType,
+  subType,
+  initialData,
+}: CardlistProps) {
   const pageSize = 6;
 
   const fetchGatherings = async ({ pageParam = 0 }: QueryFunctionContext) => {
@@ -44,6 +49,10 @@ export default function Cardlist({ mainType, subType }: CardlistProps) {
       return lastPage.content.length > 0 ? allPages.length : undefined;
     },
     initialPageParam: 0,
+    initialData: {
+      pages: [initialData],
+      pageParams: [0],
+    },
   });
 
   const observerRef = useInfiniteScroll({

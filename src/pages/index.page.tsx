@@ -8,9 +8,36 @@ import {
   MainType,
 } from '@/constants/MainList';
 import ListChallenge from '@/pages/main/components/ListChallenge';
+import { GatheringList } from '@/types';
+import apiRequest from '@/utils/apiRequest';
+import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
-export default function Home() {
+interface HomeProps {
+  initialData: GatheringList;
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const pageSize = 6;
+  const apiEndpoint = '/api/v1/gatherings';
+  const queryParams = {
+    sortBy: 'deadline',
+    sortDirection: 'ASC',
+    page: '0',
+    pageSize: String(pageSize),
+  };
+
+  const param = `${apiEndpoint}?${new URLSearchParams(queryParams).toString()}`;
+  const initialData = await apiRequest<GatheringList>({ param });
+
+  return {
+    props: {
+      initialData,
+    },
+  };
+};
+
+export default function Home({ initialData }: HomeProps) {
   const [mainType, setMainType] = useState<MainType>('전체');
   const [subType, setSubType] = useState('전체');
 
@@ -49,7 +76,11 @@ export default function Home() {
         )}
       </div>
       <div className="mt-7 pb-20">
-        <Cardlist mainType={mainType} subType={subType} />
+        <Cardlist
+          mainType={mainType}
+          subType={subType}
+          initialData={initialData}
+        />
       </div>
     </div>
   );
