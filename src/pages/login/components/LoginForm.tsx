@@ -5,6 +5,7 @@ import router from 'next/router';
 import FormField from '@/pages/signup/components/FormField';
 import useDebounce from '@/hooks/useDebounce';
 import { useMutation } from '@tanstack/react-query';
+import Alert from '@/components/dialog/Alert';
 
 export default function LoginForm() {
   const [loginForm, setLoginForm] = useState({
@@ -17,6 +18,10 @@ export default function LoginForm() {
     email: false,
     password: false,
   });
+
+  // 로그인 성공, 실패 메시지 및 표시
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   // 로그인 정보 저장
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,12 +80,14 @@ export default function LoginForm() {
     mutationFn: postLogin,
     onSuccess: (data: postLoginResponse) => {
       if (data.email) {
-        console.log('로그인 성공');
+        setAlertMessage('회원가입이 완료되었습니다.');
+        setShowConfirmAlert(true);
       }
     },
     onError: (error: Error) => {
       if (error.message === '아이디 또는 비밀번호가 올바르지 않습니다.') {
-        console.log('아이디 또는 비밀번호가 올바르지 않습니다.');
+        setAlertMessage('아이디 또는 비밀번호가 올바르지 않습니다.');
+        setShowConfirmAlert(true);
       }
     },
   });
@@ -95,6 +102,14 @@ export default function LoginForm() {
         email: loginForm.email.trim(),
         password: loginForm.password.trim(),
       });
+    }
+  };
+
+  // 로그인 성공 여부 표시
+  const handleConfirm = () => {
+    if (alertMessage === '회원가입이 완료되었습니다.') {
+      setShowConfirmAlert(false);
+      router.push('/login');
     }
   };
 
@@ -137,6 +152,12 @@ export default function LoginForm() {
           {'회원가입하기'}
         </p>
       </div>
+      <Alert
+        isOpen={showConfirmAlert}
+        type="confirm"
+        message={alertMessage}
+        onConfirm={handleConfirm}
+      />
     </form>
   );
 }
