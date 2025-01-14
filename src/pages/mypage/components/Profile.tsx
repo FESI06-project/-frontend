@@ -9,7 +9,6 @@ import ModalInput from '@/components/common/ModalInput';
 
 interface ProfileProps {
   user?: UserProfile;
-  onEditClick: () => void;
 }
 
 export default function Profile({
@@ -20,30 +19,40 @@ export default function Profile({
     profileImage: null,
   } as UserProfile,
 }: ProfileProps) {
-  const [showToast, setShowToast] = useState(false);
-  const { showModal, setShowModal } = useModalStore();
-  const [nickname, setNickname] = useState(user.nickname || '');
-  const [,setIsDisabled] = useState(false);
+  const [showToast, setShowToast] = useState(false); // 성공 토스트 표시 여부
+  const { showModal, setShowModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
+  const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
+  const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
 
+  // 닉네임 유효성 검사 실패 시 처리
   const handleValidationFail = () => {
-    setIsDisabled(true);
+    setIsDisabled(true); // 버튼 비활성화
   };
 
+  // 프로필 수정 버튼 클릭 핸들러
+  const handleEditClick = () => {
+    setShowModal(true); // 모달 표시
+  };
+
+  // 폼 제출 핸들러
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nickname.trim()) {
+    e.preventDefault(); // 기본 동작 방지
+    if (!nickname.trim()) { // 닉네임이 비어 있으면 유효성 검사 실패
       handleValidationFail();
       return;
     }
-    setShowModal(false);
-    setShowToast(true);
-    setIsDisabled(false);
+    setShowModal(false); // 모달 닫기
+    setShowToast(true); // 성공 토스트 표시
+    setIsDisabled(false); // 버튼 활성화
   };
+
 
   return (
     <>
+      {/* 프로필 정보 섹션 */}
       <div className="flex items-start gap-[20px]">
         <div className="flex-shrink-0">
+          {/* 프로필 이미지 */}
           <Image
             src={
               user.profileImage === 'null' || !user.profileImage
@@ -63,6 +72,7 @@ export default function Profile({
         </div>
 
         <div className="flex-grow">
+          {/* 사용자 정보와 수정 버튼 */}
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-medium">{user.nickname || '닉네임 없음'}</h1>
@@ -70,7 +80,7 @@ export default function Profile({
                 {user.email || '이메일 없음'}
               </p>
             </div>
-            <button onClick={() => setShowModal(true)}>
+            <button onClick={handleEditClick}>
               <Image
                 src="/assets/image/profile_edit.svg"
                 alt="프로필 수정"
@@ -81,13 +91,14 @@ export default function Profile({
           </div>
         </div>
       </div>
-
+      {/* 모달 표시 */}
       {showModal && (
         <Modal title="회원 정보를 입력해주세요.">
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">
                 <div className="relative h-[130px]">
+                  {/* 모달 내부 프로필 이미지 */}
                   <Image
                     src={
                       user.profileImage === 'null' || !user.profileImage
@@ -122,6 +133,7 @@ export default function Profile({
                   </div>
                 </div>
                 <div className="flex-1 h-[130px] flex flex-col justify-end">
+                  {/* 닉네임 수정 입력란 */}
                   <label className="text-base mb-[10px] font-normal block">닉네임</label>
                   <ModalInput
                     type="title"
@@ -144,7 +156,7 @@ export default function Profile({
           </div>
         </Modal>
       )}
-
+      {/* 성공 토스트 메시지 */}
       <Toast
         isOpen={showToast}
         setIsOpen={setShowToast}

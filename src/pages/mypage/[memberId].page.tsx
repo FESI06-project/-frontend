@@ -271,17 +271,13 @@ export default function MyPage() {
     console.log('모임 클릭:', gatheringId);
   };
 
-  const handleProfileEdit = () => {
-    setIsEditModalOpen(true);
-  };
-
   const handleCancelReservation = async () => {
     // API 호출로 예약 취소 처리
   };
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-      <Profile user={user} onEditClick={handleProfileEdit} />
+      <Profile user={user} />
 
       <div className="mt-14">
         <Tab
