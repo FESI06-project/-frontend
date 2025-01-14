@@ -1,10 +1,11 @@
 import Button from '@/components/common/Button';
 import { useEffect, useState } from 'react';
-import postSignup from './postSignup';
+import postSignup, { postSignupProps, postSignupResponse } from './postSignup';
 import signupValidation from '@/utils/validation/signupValidation';
 import router from 'next/router';
 import FormField from './FormField';
-import useDebounce from '@/utils/validation/useDebounce';
+import useDebounce from '@/hooks/useDebounce';
+import { useMutation } from '@tanstack/react-query';
 
 // 회원가입 폼 컴포넌트
 export default function SignupForm() {
@@ -59,12 +60,32 @@ export default function SignupForm() {
   }, [debouncedSignupForm]);
 
   // 회원가입 요청
+  const useSignupMutation = useMutation<
+    postSignupResponse,
+    Error,
+    postSignupProps,
+    unknown
+  >({
+    mutationFn: postSignup,
+    onSuccess: (data: postSignupResponse) => {
+      if (data.message === '사용자 생성 성공') {
+        console.log('회원가입이 완료되었습니다.');
+      }
+    },
+    onError: (error: Error) => {
+      if (error.message === 'Request failed with status code 400') {
+        console.log('이미 존재하는 이메일입니다.');
+      }
+    },
+  });
+
+  // 회원가입 요청
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValid = Object.values(signupFormError).every((error) => !error);
     if (isValid) {
-      postSignup({
+      useSignupMutation.mutate({
         email: signupForm.email.trim(),
         nickName: signupForm.nickName.trim(),
         password: signupForm.password.trim(),
