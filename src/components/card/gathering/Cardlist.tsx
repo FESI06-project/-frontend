@@ -18,8 +18,9 @@ export default function Cardlist({
   subType,
   initialData,
 }: CardlistProps) {
-  const pageSize = 6;
+  const pageSize = 6; // 한 페이지당 아이템 수
 
+  // 데이터 페치 함수
   const fetchGatherings = async ({ pageParam = 0 }: QueryFunctionContext) => {
     const apiEndpoint = '/api/v1/gatherings';
     const queryParams = {
@@ -35,6 +36,7 @@ export default function Cardlist({
     return await apiRequest<GatheringList>({ param });
   };
 
+  // React Query를 사용한 무한 스크롤 데이터 처리
   const {
     data,
     fetchNextPage,
@@ -55,36 +57,39 @@ export default function Cardlist({
     },
   });
 
+  // 무한 스크롤 옵저버 연결
   const observerRef = useInfiniteScroll({
     onIntersect: fetchNextPage,
     isLoading: isFetchingNextPage,
     hasNextPage: !!hasNextPage,
   });
 
+  // 로딩 상태 처리
   if (isLoading) {
     return <Loading />;
   }
 
+  // 오류 상태 처리
   if (error) {
     return <Null message="데이터를 불러오는 중 오류가 발생했습니다." />;
   }
 
   return (
     <>
-      {data?.pages.every((page) => page.content.length === 0) ? (
-        <Null message="모임 정보가 없습니다." />
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-5">
-            {data?.pages.map((page) =>
-              page.content.map((gathering) => (
-                <Card key={gathering.gatheringId} data={gathering} />
-              )),
-            )}
-          </div>
-          {hasNextPage && <div ref={observerRef} style={{ height: '1px' }} />}
-        </>
-      )}
+      <div className="grid grid-cols-2 gap-5">
+        {data?.pages.map((page, pageIndex) =>
+          page.content.length === 0 ? (
+            <div key={`null-${pageIndex}`} className="col-span-2">
+              <Null message="모임 정보가 없습니다." />
+            </div>
+          ) : (
+            page.content.map((gathering) => (
+              <Card key={gathering.gatheringId} data={gathering} />
+            ))
+          ),
+        )}
+      </div>
+      {hasNextPage && <div ref={observerRef} style={{ height: '1px' }} />}
     </>
   );
 }
