@@ -1,10 +1,11 @@
+import { useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Loading from '@/components/dialog/Loading';
+import Null from '@/components/common/Null';
+import Card from './Card';
 import { GatheringList } from '@/types';
 import apiRequest from '@/utils/apiRequest';
-import { useQuery } from '@tanstack/react-query';
 import { MainType } from '@/constants/MainList';
-import Card from './Card';
-import Null from '@/components/common/Null';
 
 interface CardlistProps {
   mainType: MainType;
@@ -12,27 +13,43 @@ interface CardlistProps {
 }
 
 export default function Cardlist({ mainType, subType }: CardlistProps) {
-  const apiEndpoint = '/api/v1/gatherings';
-  const queryParams = {
-    sortBy: 'deadline',
-    sortDirection: 'ASC',
-    page: String(0),
-    pageSize: String(6),
-    ...(mainType !== '전체' && { mainType }),
-    ...(subType !== '전체' && { subType }),
+  const pageSize = 6;
+
+  const fetchGatherings = async ({ pageParam = 0 }: QueryFunctionContext) => {
+    const apiEndpoint = '/api/v1/gatherings';
+    const queryParams = {
+      sortBy: 'deadline',
+      sortDirection: 'ASC',
+      page: String(pageParam),
+      pageSize: String(pageSize),
+      ...(mainType !== '전체' && { mainType }),
+      ...(subType !== '전체' && { subType }),
+    };
+
+    const param = `${apiEndpoint}?${new URLSearchParams(queryParams).toString()}`;
+    return await apiRequest<GatheringList>({ param });
   };
 
-  const param = `${apiEndpoint}?${new URLSearchParams(queryParams).toString()}`;
-
   const {
-    data = { content: [] },
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     isLoading,
     error,
-  } = useQuery<GatheringList>({
+  } = useInfiniteQuery<GatheringList, Error>({
     queryKey: ['gatheringList', mainType, subType],
-    queryFn: async () => {
-      return await apiRequest<GatheringList>({ param });
+    queryFn: fetchGatherings,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.content.length > 0 ? allPages.length : undefined;
     },
+    initialPageParam: 0,
+  });
+
+  const observerRef = useInfiniteScroll({
+    onIntersect: fetchNextPage,
+    isLoading: isFetchingNextPage,
+    hasNextPage: !!hasNextPage,
   });
 
   if (isLoading) {
@@ -45,15 +62,14 @@ export default function Cardlist({ mainType, subType }: CardlistProps) {
 
   return (
     <>
-      {data?.content.length > 0 ? (
-        <div className="grid grid-cols-2 gap-5">
-          {data.content.map((gathering) => (
+      <div className="grid grid-cols-2 gap-5">
+        {data?.pages.map((page) =>
+          page.content.map((gathering) => (
             <Card key={gathering.gatheringId} data={gathering} />
-          ))}
-        </div>
-      ) : (
-        <Null message="아직 모임이 없습니다." />
-      )}
+          )),
+        )}
+      </div>
+      <div ref={observerRef} style={{ height: '1px' }} />
     </>
   );
 }
