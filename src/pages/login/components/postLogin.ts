@@ -1,6 +1,4 @@
-import useMemberStore from '@/stores/useMemberStore';
 import axiosInstance from '@/utils/axios';
-import router from 'next/router';
 
 export interface postLoginProps {
   email: string;
@@ -17,7 +15,7 @@ export interface postLoginResponse {
 export default async function postLogin(
   data: postLoginProps,
 ): Promise<postLoginResponse> {
-  const response = await axiosInstance.post<postLoginProps>(
+  const response = await axiosInstance.post<postLoginResponse>(
     'api/v1/login',
     data,
   );
