@@ -20,7 +20,7 @@ export default function WrittenGuestbooks({
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [selectedGuestbook, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
+  const [, setSelectedGuestbook] = useState<GuestbookItem | null>(null);
 
   if (guestbooks.length === 0) {
     return <Null message="아직 작성된 방명록이 없습니다." />;
