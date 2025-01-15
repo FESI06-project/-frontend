@@ -1,5 +1,5 @@
+import useSelectStore, { SelectType } from '@/stores/useSelectStore';
 import Image from 'next/image';
-import { useState } from 'react';
 
 interface SelectProps {
   items: Array<SelectItem>;
@@ -8,6 +8,7 @@ interface SelectProps {
   className?: string;
   width: string;
   height: string;
+  currentSelectType: SelectType | null;
 }
 
 interface SelectItem {
@@ -21,11 +22,24 @@ export default function Select({
   width,
   height,
   className = '',
+  currentSelectType,
 }: SelectProps) {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const { selectType, setSelectType, open, setOpen } = useSelectStore();
   const handleOptionClick = (value: string) => {
+    setSelectType(null);
     setOpen(false);
     setSelectedItem(value);
+  };
+
+  const handleOptionLabelClick = () => {
+    if (selectType === currentSelectType) {
+      setOpen(!open);
+      return;
+    }
+    setOpen(false);
+    setSelectType(currentSelectType);
+    setOpen(true);
   };
   const currentLabel = items.filter((item) => item.value === selectedItem)[0]
     .label;
@@ -38,23 +52,26 @@ export default function Select({
     }
     return style;
   };
+
   return (
-    <div className={`${className} w-[${width}] h-[${height}] `}>
+    <div className={`${className} w-[${width}] h-[${height}] z-[100] `}>
       <div
-        onClick={() => setOpen(!open)}
+        onClick={() => handleOptionLabelClick()}
         className={`w-full h-[${height}] flex items-center justify-between bg-dark-400 rounded-[8px] border-[1px] border-dark-500 px-5  ${className}`}
       >
         <p>{currentLabel}</p>
         <Image
           src={
-            open ? '/assets/image/arrow-up.svg' : '/assets/image/arrow-down.svg'
+            open && currentSelectType === selectType
+              ? '/assets/image/arrow-up.svg'
+              : '/assets/image/arrow-down.svg'
           }
           alt="arrow"
           width={16}
           height={16}
         />
       </div>
-      {open && (
+      {open && selectType === currentSelectType && (
         <ul>
           {items.map((item, index) => (
             <li
