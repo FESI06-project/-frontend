@@ -79,7 +79,7 @@ export default function Home() {
           currentTab={mainType}
           onTabChange={(newTab) => {
             setMainType(newTab as MainType);
-            setSubType('전체'); // 메인 타입 변경 시 서브 타입 초기화
+            setSubType('전체');
           }}
           rightElement={
             <Button

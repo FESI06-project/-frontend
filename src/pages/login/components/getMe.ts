@@ -8,6 +8,6 @@ export interface getMeResponse {
 }
 
 export default async function getMe(): Promise<getMeResponse> {
-  const response = await axiosInstance.get<getMeResponse>('api/v1/members/me');
+  const response = await axiosInstance.get<getMeResponse>('/api/v1/members/me');
   return response.data;
 }
