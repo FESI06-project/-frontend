@@ -10,8 +10,6 @@ interface CardProps {
 }
 
 export default function Card({ data }: CardProps) {
-  console.log(data);
-
   const {
     gatheringId,
     title,
