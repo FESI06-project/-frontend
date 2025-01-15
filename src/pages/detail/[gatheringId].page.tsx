@@ -190,7 +190,7 @@ export default function GatheringDetail() {
           title="챌린지 정보를 입력해주세요."
           onClose={() => setShowModal(false)}
         >
-          <ChallengeAddModal />
+          <ChallengeAddModal onClose={() => setShowModal(false)} />
         </Modal>
       )}
 

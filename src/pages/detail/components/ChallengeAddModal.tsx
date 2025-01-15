@@ -1,12 +1,18 @@
+import Button from '@/components/common/Button';
+import DatePickerCalendar from '@/components/common/DatePicker';
 import Input from '@/components/common/Input';
+import NumberSelect from '@/components/common/NumberSelect';
 import TextArea from '@/components/common/TextArea';
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 
-export default function ChallengeAddModal() {
+export default function ChallengeAddModal({ onClose }) {
   const [challengeTitle, setChallengeTitle] = useState('');
   const [challengeDescription, setChallengeDescription] = useState('');
   const [challengeImageUrl, setChallengeImageUrl] = useState('');
+  const [maxPeopleCount, setMaxPeopleCount] = useState(0);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
 
   const handleChallengeTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChallengeTitle(e.target.value);
@@ -37,8 +43,21 @@ export default function ChallengeAddModal() {
     setChallengeImageUrl('');
   };
 
+  const handleChallengeAddButtonClick = () => {
+    onClose();
+    const newChallenge = {
+      title: challengeTitle,
+      description: challengeDescription,
+      imageUrl: challengeImageUrl,
+      maxPeopleCount: maxPeopleCount,
+      startDate: startDate,
+      endDate: endDate,
+    };
+    console.log(newChallenge);
+  };
+
   return (
-    <div>
+    <>
       {/* 챌린지 정보 */}
       <div id="information">
         <div className="mt-[30px] mb-[10px]">챌린지 정보</div>
@@ -106,12 +125,47 @@ export default function ChallengeAddModal() {
           </div>
         </div>
 
-        <div className="flex gap-[10px]">
+        {/* 하단 정보 */}
+        <div className="flex gap-[10px] mt-[30px] mb-[10px]">
+          {/* 최대 인원 */}
           <div>
-            <div className="mt-[30px] mb-[10px]">챌린지 정보</div>
+            <p className="mb-[10px]">최대 인원</p>
+            <NumberSelect
+              targetNumber={maxPeopleCount}
+              setTargetNumber={setMaxPeopleCount}
+              className="w-[90px] h-[47px]"
+            />
+          </div>
+
+          {/* 시작 날짜 */}
+          <div>
+            <p className="mb-[10px]">시작 날짜</p>
+            <DatePickerCalendar
+              className="w-[195px] h-[47px]"
+              selectedDate={startDate}
+              setSelectedDate={setStartDate}
+            />
+          </div>
+
+          {/* 마감 날짜 */}
+          <div>
+            <p className="mb-[10px]">마감 날짜</p>
+            <DatePickerCalendar
+              className="w-[195px] h-[47px]"
+              selectedDate={endDate}
+              setSelectedDate={setEndDate}
+              minDate={startDate!}
+            />
           </div>
         </div>
+
+        {/* 챌린지 추가 버튼 */}
+        <Button
+          name="확인"
+          className="w-[500px] h-[52px] mt-[30px]"
+          handleButtonClick={handleChallengeAddButtonClick}
+        />
       </div>
-    </div>
+    </>
   );
 }
