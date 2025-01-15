@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getMe from '@/pages/login/components/getMe';
 import Loading from '../dialog/Loading';
@@ -38,6 +39,26 @@ export default function Navigation() {
     queryFn: getMe,
     enabled: isLogin,
   });
+
+  // 로그인 여부 확인해 사용자 정보 초기화
+  useEffect(() => {
+    const localIsLogin = localStorage.getItem('isLogin') === 'true';
+    setIsLogin(localIsLogin);
+    if (localIsLogin && data) {
+      setMemberId(data.memberId);
+      setNickname(data.nickName);
+      setEmail(data.email);
+      setProfileImageUrl(data.profileImageUrl);
+    }
+  }, [
+    data,
+    isLogin,
+    setEmail,
+    setIsLogin,
+    setMemberId,
+    setNickname,
+    setProfileImageUrl,
+  ]);
 
   // 에러 발생
   if (isError) {
