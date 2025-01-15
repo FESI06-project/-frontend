@@ -148,7 +148,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 1
+      gatheringId: 1,
     },
     {
       reviewId: 0,
@@ -161,7 +161,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 0
+      gatheringId: 0,
     },
   ];
 
@@ -194,7 +194,10 @@ export default function GatheringDetail() {
       </div>
       {/* 모달 */}
       {showModal && (
-        <Modal title="모임 정보를 입력해주세요." onClose={() => setShowModal(false)}>
+        <Modal
+          title="모임 정보를 입력해주세요."
+          onClose={() => setShowModal(false)}
+        >
           <div>
             <p>{'모임 정보'}</p>
           </div>
@@ -215,4 +218,3 @@ export default function GatheringDetail() {
     </div>
   );
 }
-

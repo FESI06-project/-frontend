@@ -17,6 +17,7 @@ import {
 } from '@tanstack/react-query';
 import { GatheringList } from '@/types';
 import apiRequest from '@/utils/apiRequest';
+import CreateGathering from './main/components/CreateGathering';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const pageSize = 6; // 한 페이지당 불러올 데이터 수
@@ -57,6 +58,8 @@ export default function Home() {
   const [mainType, setMainType] = useState<MainType>('전체'); // 메인 타입 상태
   const [subType, setSubType] = useState('전체'); // 서브 타입 상태
 
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="max-w-screen-xl mx-auto px-8 pt-20">
       {/* 페이지 제목 */}
@@ -83,9 +86,14 @@ export default function Home() {
               style="custom"
               name="모임 만들기"
               className="text-base my-2 h-10 w-32"
+              handleButtonClick={() => setShowModal(!showModal)}
             />
           }
         />
+
+        {showModal && (
+          <CreateGathering setShowModal={() => setShowModal(false)} />
+        )}
       </div>
 
       {/* 서브 타입 태그 */}
