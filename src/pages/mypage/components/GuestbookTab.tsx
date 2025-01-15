@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import {
   GuestbookItem,
   GatheringItem,
@@ -8,12 +8,10 @@ import {
 } from '@/types';
 import SubTag from '@/components/tag/SubTag';
 import Toast from '@/components/dialog/Toast';
-import useModalStore, { ModalType } from '@/stores/useModalStore';
 import GuestbookModal from './guestbook/GuestbookModal';
 import WrittenGuestbooks from './guestbook/WrittenGuestbooks';
 import AvailableGuestbooks from './guestbook/AvailableGuestbooks';
 
-// GUESTBOOK_TABS 정의 추가
 const GUESTBOOK_TABS: TabItem[] = [
   { id: 'available', label: '작성 가능한 방명록' },
   { id: 'written', label: '작성한 방명록' },
@@ -22,12 +20,10 @@ const GUESTBOOK_TABS: TabItem[] = [
 interface GuestbookTabProps {
   guestbooks: GuestbookItem[];
   gatherings?: GatheringItem[];
-  gatheringId?: number;
   gatheringChallenges?: { [key: number]: GatheringChallengeType };
   gatheringStates?: { [key: number]: GatheringStateType };
 }
 
-// GuestbookTab 컴포넌트
 export default function GuestbookTab({
   guestbooks = [],
   gatherings = [],
@@ -35,77 +31,72 @@ export default function GuestbookTab({
   gatheringStates = {},
 }: GuestbookTabProps) {
   const [showWritten, setShowWritten] = useState(false);
-  const { openModal, activeModal, closeModal, modalProps } = useModalStore();
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    isEditMode: boolean;
+    gatheringId?: number;
+    guestbook?: GuestbookItem;
+  }>({ isOpen: false, isEditMode: false });
 
-  // Toast 상태 관리
   const [toast, setToast] = useState({
     isVisible: false,
     message: '',
     type: 'check' as 'error' | 'check' | 'caution',
   });
 
-  const [selectedGatheringId, setSelectedGatheringId] = useState<number | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const showToast = useCallback((message: string, type: 'error' | 'check' | 'caution') => {
+    setToast({ isVisible: true, message, type });
+  }, []);
 
-  // 작성 가능한 방명록 필터링 로직
+  const closeModal = useCallback(() => {
+    if (modalState.isOpen) {
+      showToast(
+        `방명록 ${modalState.isEditMode ? '수정' : '작성'}이 취소되었습니다.`,
+        'caution',
+      );
+    }
+    setModalState({ isOpen: false, isEditMode: false });
+  }, [modalState.isOpen, modalState.isEditMode, showToast]);
+
+  const handleWriteClick = useCallback((gatheringId: number) => {
+    setModalState({
+      isOpen: true,
+      isEditMode: false,
+      gatheringId,
+    });
+  }, []);
+
+  const handleEditClick = useCallback((guestbook: GuestbookItem) => {
+    setModalState({
+      isOpen: true,
+      isEditMode: true,
+      guestbook,
+    });
+  }, []);
+
+  const handleModalSubmit = useCallback(() => {
+    const message = modalState.isEditMode ? '수정' : '작성';
+    setModalState({ isOpen: false, isEditMode: false });
+    showToast(`방명록이 ${message}되었습니다.`, 'check');
+  }, [modalState.isEditMode, showToast]);
+
+  const handleValidationFail = useCallback(() => {
+    showToast('방명록 내용을 입력해주세요.', 'error');
+  }, [showToast]);
+
+  const handleTabChange = useCallback((id: TabItem['id']) => setShowWritten(id === 'written'), []);
+
   const eligibleGatherings = useCallback(
     () =>
       gatherings.filter((gathering) => {
         if (gathering.captainStatus) return false;
         const challenges = gatheringChallenges[gathering.gatheringId];
         return challenges?.inProgressChallenges?.some(
-          (challenge) => challenge.verificationStatus === true
+          (challenge) => challenge.verificationStatus === true,
         );
       }),
-    [gatherings, gatheringChallenges]
+    [gatherings, gatheringChallenges],
   );
-
-  // Toast 메시지 표시
-  const showToastMessage = useCallback((
-    message: string,
-    type: 'error' | 'check' | 'caution'
-  ) => {
-    setToast({ isVisible: true, message, type });
-  }, []);
-
-  // 모달 상태 초기화
-  const resetModalState = useCallback(() => {
-    setSelectedGatheringId(null);
-    setIsEditMode(false);
-  }, []);
-
-  // 모달 상태 변경 시 처리
-  useEffect(() => {
-    if (activeModal === null && selectedGatheringId && !toast.isVisible) {
-      showToastMessage(
-        `방명록 ${isEditMode ? '수정' : '작성'}이 취소되었습니다.`,
-        'caution'
-      );
-      resetModalState();
-    }
-  }, [activeModal, isEditMode, selectedGatheringId, toast.isVisible, resetModalState, showToastMessage]);
-
-  // 방명록 작성 버튼 핸들러
-  const handleWriteClick = useCallback(
-    (gatheringId: number) => {
-      setSelectedGatheringId(gatheringId);
-      setIsEditMode(false);
-      openModal(ModalType.GUESTBOOK_WRITE, { gatheringId });
-    },
-    [openModal]
-  );
-
-  // 방명록 수정 버튼 핸들러
-  const handleEditClick = useCallback(
-    (guestbook: GuestbookItem) => {
-      setIsEditMode(true);
-      openModal(ModalType.GUESTBOOK_EDIT, { guestbook });
-    },
-    [openModal]
-  );
-
-  // 탭 변경 핸들러
-  const handleTabChange = useCallback((id: TabItem['id']) => setShowWritten(id === 'written'), []);
 
   return (
     <div className="pb-[50px]">
@@ -134,33 +125,15 @@ export default function GuestbookTab({
         />
       )}
 
-      {/* 방명록 작성 모달 */}
-      {activeModal === ModalType.GUESTBOOK_WRITE && (
+      {/* 모달 */}
+      {modalState.isOpen && (
         <GuestbookModal
-          isEditMode={false}
-          gatheringId={modalProps.gatheringId}
-          onSubmit={() => {
-            closeModal();
-            showToastMessage('방명록이 작성되었습니다.', 'check');
-          }}
-          onValidationFail={() => {
-            showToastMessage('방명록 내용을 입력해주세요.', 'error');
-          }}
-        />
-      )}
-
-      {/* 방명록 수정 모달 */}
-      {activeModal === ModalType.GUESTBOOK_EDIT && (
-        <GuestbookModal
-          isEditMode={true}
-          initialData={modalProps.guestbook}
-          onSubmit={() => {
-            closeModal();
-            showToastMessage('방명록이 수정되었습니다.', 'check');
-          }}
-          onValidationFail={() => {
-            showToastMessage('방명록 내용을 입력해주세요.', 'error');
-          }}
+          isEditMode={modalState.isEditMode}
+          gatheringId={modalState.gatheringId}
+          initialData={modalState.guestbook}
+          onSubmit={handleModalSubmit}
+          onValidationFail={handleValidationFail}
+          onClose={closeModal} // 모달 닫기 핸들러
         />
       )}
 

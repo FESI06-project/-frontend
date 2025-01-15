@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { UserProfile } from '@/types';
 import Image from 'next/image';
-import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
@@ -20,7 +19,7 @@ export default function Profile({
   } as UserProfile,
 }: ProfileProps) {
   const [showToast, setShowToast] = useState(false); // 성공 토스트 표시 여부
-  const { openModal, activeModal, closeModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
   const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
 
@@ -30,16 +29,16 @@ export default function Profile({
   };
 
   const handleEditClick = () => {
-    openModal(ModalType.PROFILE, { nickname: user.nickname });
+    setIsModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nickname.trim()) {
-      handleValidationFail();
+      setIsDisabled(true);
       return;
     }
-    closeModal();
+    setIsModalOpen(false);
     setShowToast(true);
   };
 
@@ -88,8 +87,9 @@ export default function Profile({
         </div>
       </div>
       {/* 모달 표시 */}
-      {activeModal === ModalType.PROFILE && (
-        <Modal title="회원 정보를 입력해주세요.">
+      {isModalOpen && (
+        <Modal  title="회원 정보를 입력해주세요."
+        onClose={() => setIsModalOpen(false)}>
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">

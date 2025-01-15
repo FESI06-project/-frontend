@@ -87,7 +87,7 @@ export default function CalendarTab({ events = [] }: CalendarTabProps) {
             {date.toLocaleString('en-US', { weekday: 'short' })}
           </span>
         )}
-        dayCellClassNames={({ date, isToday }) =>
+        dayCellClassNames={({ isToday }) =>
           `text-center align-middle h-16 ${
             isToday ? 'bg-primary bg-opacity-20' : ''
           }`

@@ -11,13 +11,12 @@ import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
-import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
 
 export default function GatheringDetail() {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
-  const { openModal, activeModal } = useModalStore();
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const gatheringTabItems = [
     {
       id: 'challenge',
@@ -162,17 +161,12 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 0       
+      gatheringId: 0
     },
   ];
+  const handleAddChallenge = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-  useEffect(() => {
-    console.log(gatheringId);
-  }, []);
-  const handleAddChallenge = () => {
-    openModal(ModalType.CHALLENGE_CREATE, { gatheringId });
-  };
-  
   return (
     <div className="w-[1200px] flex flex-col place-self-center ">
       <GatheringInformation information={gathering} />
@@ -196,8 +190,9 @@ export default function GatheringDetail() {
           </div>
         )}
       </div>
-      {activeModal === ModalType.CHALLENGE_CREATE && (
-        <Modal title="모임 정보를 입력해주세요.">
+      {/* 모달 */}
+      {isModalOpen && (
+        <Modal title="모임정보를 입력해주세요" onClose={closeModal}>
           <div>
             <p>{'모임 정보'}</p>
           </div>

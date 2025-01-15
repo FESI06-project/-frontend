@@ -12,17 +12,19 @@ interface GuestbookModalProps {
   gatheringId?: number; 
   onSubmit: (data: { content: string; rating: number }) => void;
   onValidationFail: () => void;
+  onClose: () => void;
 }
 
 export default function GuestbookModal({
   isEditMode,
   initialData,
   onSubmit,
-  onValidationFail
+  onValidationFail,
+  onClose,
 }: GuestbookModalProps) {
   const [rating, setRating] = useState(initialData?.rating || 0);
   const [content, setContent] = useState(initialData?.content || '');
-
+ 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) {
@@ -30,34 +32,34 @@ export default function GuestbookModal({
       return;
     }
     onSubmit({ content, rating });
+    onClose(); // 모달 닫기
   };
-
   return (
-    <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'}>
-    <div className="w-[500px] h-[340px]">
-      <form onSubmit={handleSubmit}>
-        {/* 별점 선택 */}
-        <div className="my-[20px] flex items-center gap-4">
-          <Heart rating={rating} onChange={setRating} />
-        </div>
+    <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'} onClose={onClose}>
+      <div className="w-[500px] h-[340px]">
+        <form onSubmit={handleSubmit}>
+          {/* 별점 선택 */}
+          <div className="my-[20px] flex items-center gap-4">
+            <Heart rating={rating} onChange={setRating} />
+          </div>
 
-        {/* 방명록 내용 입력 */}
-        <ModalInput
-          type="description"
-          value={content}
-          onChange={setContent}
-          placeholder="방명록을 작성해주세요."
-          maxLength={300}
-          height="220px"
-          onValidationFail={onValidationFail}
-        />
+          {/* 방명록 내용 입력 */}
+          <ModalInput
+            type="description"
+            value={content}
+            onChange={setContent}
+            placeholder="방명록을 작성해주세요."
+            maxLength={300}
+            height="220px"
+            onValidationFail={onValidationFail}
+          />
 
-        {/* 제출 버튼 */}
-        <div className="mt-[20px]">
-          <Button type="submit" name="작성하기" style="default" />
-        </div>
-      </form>
-    </div>
-  </Modal>
+          {/* 제출 버튼 */}
+          <div className="mt-[20px]">
+            <Button type="submit" name="작성하기" style="default" />
+          </div>
+        </form>
+      </div>
+    </Modal>
   );
 }
