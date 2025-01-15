@@ -5,6 +5,9 @@ import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import getMe from '@/pages/login/components/getMe';
+import Loading from '../dialog/Loading';
 
 export default function Navigation() {
   const router = useRouter();
@@ -15,37 +18,58 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const { isLogin, setIsLogin, setNickname, setMemberId, nickname } =
-    useMemberStore();
+  const {
+    isLogin,
+    nickname,
+    setIsLogin,
+    setMemberId,
+    setNickname,
+    setEmail,
+    setProfileImageUrl,
+  } = useMemberStore();
   const { toggleListExpanded } = useLayoutStore();
 
   const handleListButtonClick = () => {
     toggleListExpanded();
   };
 
+  // 현재 로그인 정보 가져오는 useQuery
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ['me'],
+    queryFn: getMe,
+    enabled: isLogin,
+  });
+
+  // 로그인 여부 확인해 사용자 정보 초기화
   useEffect(() => {
-    const localIsLogin = localStorage.getItem('isLogin');
-    setIsLogin(localIsLogin === 'true');
-    if (localIsLogin === 'true') {
-      const localMemberId = localStorage.getItem('memberId');
-      const localNickname = localStorage.getItem('nickname');
-      // console.log('localMemberId', localMemberId);
-      // console.log('localNickname', localNickname);
-      if (localNickname) {
-        setNickname(localNickname);
-      }
-      if (localMemberId) {
-        setMemberId(Number(localMemberId));
-      }
+    const localIsLogin = localStorage.getItem('isLogin') === 'true';
+    setIsLogin(localIsLogin);
+    if (localIsLogin && data) {
+      setMemberId(data.memberId);
+      setNickname(data.nickName);
+      setEmail(data.email);
+      setProfileImageUrl(data.profileImageUrl);
     }
-    // const localMemberId = localStorage.getItem('memberId');
-    // const localNickname = localStorage.getItem('nickname');
-    // console.log('localMemberId', localMemberId);
-    // console.log('localNickname', localNickname);
-    console.log('isLogin', useMemberStore.getState().isLogin);
-    console.log('nickname', useMemberStore.getState().nickname);
-    console.log('memberId', useMemberStore.getState().memberId);
-  }, [isLogin, setIsLogin]);
+  }, [
+    data,
+    isLogin,
+    setEmail,
+    setIsLogin,
+    setMemberId,
+    setNickname,
+    setProfileImageUrl,
+  ]);
+
+  // 에러 발생
+  if (isError) {
+    setIsLogin(false); // 에러가 발생하면 로그인 상태 초기화
+    console.error('Error fetching user information:', error);
+  }
+
+  // 로딩 중
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
@@ -100,9 +124,6 @@ export default function Navigation() {
               <button
                 onClick={() => {
                   localStorage.removeItem('isLogin');
-                  localStorage.removeItem('email');
-                  localStorage.removeItem('memberId');
-                  localStorage.removeItem('nickname');
                   useMemberStore.getState().setIsLogin(false);
                   router.push('/');
                 }}

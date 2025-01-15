@@ -2,23 +2,28 @@ import { create } from 'zustand';
 
 interface memberStates {
   isLogin: boolean;
+  memberId: number;
   nickname: string;
   email: string;
-  memberId: number;
+  profileImageUrl: string | null;
   setIsLogin: (isLogin: boolean) => void;
+  setMemberId: (memberId: number) => void;
   setNickname: (nickname: string) => void;
   setEmail: (email: string) => void;
-  setMemberId: (memberId: number) => void;
+  setProfileImageUrl: (profileImageUrl: string | null) => void;
 }
 const useMemberStore = create<memberStates>((set) => ({
   isLogin: false,
+  memberId: 0,
   nickname: '',
   email: '',
-  memberId: 0,
+  profileImageUrl: null,
   setIsLogin: (isLogin: boolean) => set({ isLogin: isLogin }),
+  setMemberId: (memberId: number) => set({ memberId: memberId }),
   setNickname: (nickname: string) => set({ nickname: nickname }),
   setEmail: (email: string) => set({ email: email }),
-  setMemberId: (memberId: number) => set({ memberId: memberId }),
+  setProfileImageUrl: (profileImageUrl: string | null) =>
+    set({ profileImageUrl: profileImageUrl }),
 }));
 
 export default useMemberStore;
