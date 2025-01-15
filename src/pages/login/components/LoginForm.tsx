@@ -6,6 +6,7 @@ import FormField from '@/pages/signup/components/FormField';
 import useDebounce from '@/hooks/useDebounce';
 import { useMutation } from '@tanstack/react-query';
 import Alert from '@/components/dialog/Alert';
+import useMemberStore from '@/stores/useMemberStore';
 
 export default function LoginForm() {
   const [loginForm, setLoginForm] = useState({
@@ -80,7 +81,7 @@ export default function LoginForm() {
     mutationFn: postLogin,
     onSuccess: (data: postLoginResponse) => {
       if (data.email) {
-        setAlertMessage('회원가입이 완료되었습니다.');
+        setAlertMessage('로그인에 성공했습니다.');
         setShowConfirmAlert(true);
       }
     },
@@ -107,9 +108,11 @@ export default function LoginForm() {
 
   // 로그인 성공 여부 표시
   const handleConfirm = () => {
-    if (alertMessage === '회원가입이 완료되었습니다.') {
+    if (alertMessage === '로그인에 성공했습니다.') {
+      localStorage.setItem('isLogin', 'true');
+      useMemberStore.getState().setIsLogin(true);
       setShowConfirmAlert(false);
-      router.push('/login');
+      router.push('/');
     }
   };
 
