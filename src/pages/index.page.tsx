@@ -82,12 +82,14 @@ export default function Home() {
             setSubType('전체');
           }}
           rightElement={
-            <Button
-              style="custom"
-              name="모임 만들기"
-              className="text-base my-2 h-10 w-32"
-              handleButtonClick={() => setShowModal(!showModal)}
-            />
+            <div className="w-full flex justify-end">
+              <Button
+                style="custom"
+                name="모임 만들기"
+                className="text-base my-2 h-10 w-32"
+                handleButtonClick={() => setShowModal(!showModal)}
+              />
+            </div>
           }
         />
 

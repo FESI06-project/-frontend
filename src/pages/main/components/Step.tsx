@@ -3,41 +3,44 @@ interface StepProps {
 }
 
 export default function Step({ currentStep }: StepProps) {
-  const steps = ['분류 확인', '세부 정보', '챌린지 선택']; // 각 단계 이름
+  const steps = ['분류 확인', '세부 정보', '챌린지 선택'];
+
   return (
-    <div className="flex items-center">
+    <div className="relative flex items-center justify-between w-full max-w-lg pt-4">
       {steps.map((step, index) => (
-        <div key={index} className="flex items-center">
-          {/* 단계 아이콘 */}
-          <div
-            className={`w-6 h-6 flex items-center justify-center rounded-full ${
-              currentStep > index
-                ? 'bg-red-500 text-white' // 완료된 단계
-                : currentStep === index
-                  ? 'bg-white border-2 border-red-500 text-red-500' // 현재 단계
-                  : 'bg-gray-400 text-white' // 비활성화 단계
-            }`}
-          >
-            {currentStep > index ? '✔' : index + 1}
+        <div key={index} className="flex flex-col items-center w-24">
+          <div className="relative flex items-center">
+            <div
+              className={`w-8 h-8 flex items-center justify-center rounded-full ${
+                currentStep > index
+                  ? 'bg-red-500 text-white'
+                  : currentStep === index
+                    ? 'bg-white border-2 border-red-500 text-red-500'
+                    : 'bg-dark-500 text-white'
+              }`}
+            >
+              {currentStep > index ? '✔' : index + 1}
+            </div>
+
+            {/* 진행선 */}
+            {index < steps.length - 1 && (
+              <div
+                className={`absolute top-1/2 left-1/2 transform translate-x-4 -translate-y-1/2 w-24 h-[2px] ${
+                  currentStep > index
+                    ? 'bg-red-500'
+                    : 'border border-dark-400 border-dashed'
+                }`}
+              ></div>
+            )}
           </div>
 
-          {/* 단계 이름 */}
           <span
-            className={`ml-2 ${
-              currentStep >= index ? 'text-red-500' : 'text-gray-400'
+            className={`mt-2 text-sm ${
+              currentStep >= index ? 'text-red-500' : 'text-dark-600'
             }`}
           >
             {step}
           </span>
-
-          {/* 진행선 */}
-          {index < steps.length - 1 && (
-            <div
-              className={`w-8 h-[2px] ${
-                currentStep > index ? 'bg-red-500' : 'bg-gray-400'
-              }`}
-            ></div>
-          )}
         </div>
       ))}
     </div>
