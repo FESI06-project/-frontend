@@ -17,7 +17,7 @@ import {
 } from '@tanstack/react-query';
 import { GatheringList } from '@/types';
 import apiRequest from '@/utils/apiRequest';
-import CreateGathering from './main/components/CreateGathering';
+import CreateGathering from './main/components/CreateGatheringModal';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const pageSize = 6; // 한 페이지당 불러올 데이터 수
