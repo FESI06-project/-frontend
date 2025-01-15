@@ -84,14 +84,15 @@ export default function GatheringInformation({
                   onConfirm={handleDeleteConfirmButtonClick}
                   onCancel={handleDeleteCancelButtonClick}
                 />
-                <Modal
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                  title="모임 정보를 입력해주세요."
-                >
-                  <GatheringEditModal information={information} />
-                </Modal>
               </>
+            )}
+            {showModal && (
+              <Modal
+                onClose={() => setShowModal(false)}
+                title="모임 정보를 입력해주세요."
+              >
+                <GatheringEditModal information={information} />
+              </Modal>
             )}
           </div>
 

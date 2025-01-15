@@ -17,7 +17,7 @@ export default function Modal({ children, title, onClose }: ModalProps) {
       {/* 모달 배경 */}
       <div
         onClick={handleClose}
-        className="bg-black/50 w-screen h-screen z-[10000] left-0 top-0 absolute flex items-center justify-center"
+        className="bg-black/50 w-full h-screen z-[10000] left-0 top-0 absolute flex items-center justify-center"
       >
         {/* 모달 콘텐츠 */}
         <div
@@ -26,16 +26,19 @@ export default function Modal({ children, title, onClose }: ModalProps) {
           className="bg-dark-300 rounded-[10px] px-[30px] py-[35px]"
         >
           {/* 모달 헤더 */}
-          <div className="z-[10003] flex items-center justify-between">
-            <p className="text-xl font-bold">{title}</p>
-            <Image
-              className="cursor-pointer"
-              onClick={handleClose}
-              src="/assets/image/modal-close.svg"
-              width={24}
-              height={24}
-              alt="modal-close"
-            />
+          <div className="z-[10003] flex items-center justify-center">
+            <p className="absolute text-xl font-bold z-[10004]">{title}</p>
+            <div className="w-full relative flex justify-between">
+              <div></div>
+              <Image
+                className="relative z-[10005]"
+                onClick={handleClose}
+                src="/assets/image/modal-close.svg"
+                width={24}
+                height={24}
+                alt="modal-close"
+              />
+            </div>
           </div>
           {/* 모달 내용 */}
           <div className="mt-4">{children}</div>
