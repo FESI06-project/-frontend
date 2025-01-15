@@ -4,10 +4,10 @@ export interface TabItem {
   label: string;
 }
 export interface UserProfile {
-  memberId: string;
+  memberId: number;
+  nickName: string;
   email: string;
-  nickname: string;
-  profileImage: string | null;
+  profileImageUrl: string;
 }
 export interface GatheringItem {
   gatheringId: number;

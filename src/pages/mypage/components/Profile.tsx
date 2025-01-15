@@ -1,58 +1,80 @@
+// components/Profile.tsx
 import React, { useState } from 'react';
-import { UserProfile } from '@/types';
 import Image from 'next/image';
 import Modal from '@/components/dialog/Modal';
 import Button from '@/components/common/Button';
 import ModalInput from '@/components/common/ModalInput';
 import useToastStore from '@/stores/useToastStore';
+import useMemberStore from '@/stores/useMemberStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface ProfileProps {
-  user?: UserProfile;
-}
+// 프로필 수정 API 함수
+const updateProfile = async (nickname: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/members/me`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ nickname }),
+  });
 
-export default function Profile({
-  user = {
-    memberId: '',
-    email: '',
-    nickname: '',
-    profileImage: null,
-  } as UserProfile,
-}: ProfileProps) {
+  if (!response.ok) {
+    throw new Error('Failed to update profile');
+  }
+
+  return response.json();
+};
+
+export default function Profile() {
+  const { nickname, email, profileImageUrl } = useMemberStore();
   const showToast = useToastStore((state) => state.show);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
-  const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
+  const [editedNickname, setEditedNickname] = useState(nickname || '');
+  const [isDisabled, setIsDisabled] = useState(false);
+  const queryClient = useQueryClient();
 
-  // 닉네임 유효성 검사 실패 시 처리
+  // 프로필 수정 mutation
+  const { mutate: updateProfileMutation } = useMutation({
+    mutationFn: (newNickname: string) => updateProfile(newNickname),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['memberInfo'] });
+      setIsModalOpen(false);
+      showToast('프로필 수정을 성공하였습니다.', 'check');
+    },
+    onError: () => {
+      showToast('프로필 수정에 실패했습니다.', 'error');
+    },
+  });
+
   const handleValidationFail = () => {
-    setIsDisabled(true); // 버튼 비활성화
+    setIsDisabled(true);
   };
 
   const handleEditClick = () => {
     setIsModalOpen(true);
+    setEditedNickname(nickname || '');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nickname.trim()) {
+    if (!editedNickname.trim()) {
       setIsDisabled(true);
       return;
     }
-    setIsModalOpen(false);
-    showToast('프로필 수정을 성공하였습니다.', 'check');
+
+    updateProfileMutation(editedNickname);
   };
 
   return (
     <>
-      {/* 프로필 정보 섹션 */}
       <div className="flex items-start gap-[20px]">
         <div className="flex-shrink-0">
-          {/* 프로필 이미지 */}
           <Image
             src={
-              user.profileImage === 'null' || !user.profileImage
+              !profileImageUrl || profileImageUrl === 'null'
                 ? '/assets/image/mypage_profile.svg'
-                : user.profileImage
+                : profileImageUrl
             }
             alt="프로필 이미지"
             width={50}
@@ -67,12 +89,11 @@ export default function Profile({
         </div>
 
         <div className="flex-grow">
-          {/* 사용자 정보와 수정 버튼 */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-medium">{user.nickname || '닉네임 없음'}</h1>
+              <h1 className="font-medium">{nickname || '닉네임 없음'}</h1>
               <p className="text-dark-600 font-light">
-                {user.email || '이메일 없음'}
+                {email || '이메일 없음'}
               </p>
             </div>
             <button onClick={handleEditClick}>
@@ -86,20 +107,21 @@ export default function Profile({
           </div>
         </div>
       </div>
-      {/* 모달 표시 */}
+
       {isModalOpen && (
-        <Modal title="회원 정보를 입력해주세요."
-          onClose={() => setIsModalOpen(false)}>
+        <Modal
+          title="회원 정보를 입력해주세요."
+          onClose={() => setIsModalOpen(false)}
+        >
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">
                 <div className="relative h-[130px]">
-                  {/* 모달 내부 프로필 이미지 */}
                   <Image
                     src={
-                      user.profileImage === 'null' || !user.profileImage
+                      !profileImageUrl || profileImageUrl === 'null'
                         ? '/assets/image/fitmon.png'
-                        : user.profileImage
+                        : profileImageUrl
                     }
                     alt="프로필 이미지"
                     width={130}
@@ -110,7 +132,7 @@ export default function Profile({
                       target.src = '/assets/image/mypage_profile.svg';
                     }}
                   />
-                  <div className="absolute inset-0  border border-dark_500 bg-dark-500/80 flex flex-col rounded-[10px] items-center justify-center gap-2">
+                  <div className="absolute inset-0 border border-dark_500 bg-dark-500/80 flex flex-col rounded-[10px] items-center justify-center gap-2">
                     <button type="button">
                       <Image
                         src="/assets/image/profile_edit.svg"
@@ -129,13 +151,14 @@ export default function Profile({
                   </div>
                 </div>
                 <div className="flex-1 h-[130px] flex flex-col justify-end">
-                  {/* 닉네임 수정 입력란 */}
-                  <label className="text-base mb-[10px] font-normal block">닉네임</label>
+                  <label className="text-base mb-[10px] font-normal block">
+                    닉네임
+                  </label>
                   <ModalInput
                     type="title"
-                    value={nickname}
+                    value={editedNickname}
                     onChange={(value) => {
-                      setNickname(value);
+                      setEditedNickname(value);
                       setIsDisabled(!value.trim());
                     }}
                     placeholder="닉네임을 수정해주세요."
@@ -146,7 +169,12 @@ export default function Profile({
               </div>
 
               <div className="mt-[20px]">
-                <Button type="submit" name="확인" style="default" />
+                <Button
+                  type="submit"
+                  name="확인"
+                  style="default"
+                  disabled={isDisabled}
+                />
               </div>
             </form>
           </div>

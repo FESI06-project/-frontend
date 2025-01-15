@@ -9,7 +9,7 @@ interface FormFieldProps {
   placeholder: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  hasError: boolean;
+  hasError?: boolean;
   errorMessage: string;
 }
 
@@ -22,7 +22,7 @@ export default function FormField({
   placeholder,
   handleInputChange,
   handleBlur,
-  hasError,
+  hasError = false,
   errorMessage,
 }: FormFieldProps) {
   return (

@@ -1,11 +1,12 @@
-// pages/mypage/[memberId].tsx
+import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
 import Tab from '@/components/common/Tab';
 import Profile from './components/Profile';
 import GatheringTab from './components/GatheringTab';
 import GuestbookTab from './components/GuestbookTab';
 import MyGatheringTab from './components/MyGatheringTab';
 import CalendarTab from './components/CalendarTab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type {
   TabItem,
   UserProfile,
@@ -14,6 +15,7 @@ import type {
   GatheringChallengeType,
   GuestbookItem,
 } from '@/types';
+import useMemberStore from '@/stores/useMemberStore';
 
 const MY_PAGE_TABS: TabItem[] = [
   { id: 'gathering', label: '나의 모임' },
@@ -22,19 +24,32 @@ const MY_PAGE_TABS: TabItem[] = [
   { id: 'calendar', label: '캘린더' },
 ];
 
-export default function MyPage() {
-  // const router = useRouter();
-  // const memberId = router.query.memberId || 'defaultMemberId';
-  const [currentTab, setCurrentTab] = useState<TabItem['id']>(
-    MY_PAGE_TABS[0].id,
-  );
 
-  const user: UserProfile = {
-    memberId: 'defaultMemberId',
-    email: 'fitmon@fitmon.com',
-    nickname: '김핏몬',
-    profileImage: null,
-  };
+export default function MyPage() {
+  const router = useRouter();
+  const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
+  const { 
+    setIsLogin,
+  } = useMemberStore();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLogin') === 'true';
+    console.log('Is logged in:', isLoggedIn);
+    setIsLogin(isLoggedIn);
+
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [setIsLogin, router]);
+
+
+
+  // const handleTabChange = (id: TabItem['id']) => {
+  //   setCurrentTab(id);
+  // };
+
+  
+
   // 핏몬이가 모임장인 모임 데이터
   const hostedGatherings: GatheringItem[] = [
     {
@@ -266,7 +281,7 @@ export default function MyPage() {
   };
 
   const handleGatheringClick = (gatheringId: number) => {
-    // router.push(`/detail/${gatheringId}`);
+    // router.push(/detail/${gatheringId});
     console.log('모임 클릭:', gatheringId);
   };
 
@@ -282,7 +297,7 @@ export default function MyPage() {
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-      <Profile user={user} />
+       <Profile />
 
       <div className="mt-14">
         <Tab
