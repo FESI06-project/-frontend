@@ -1,7 +1,6 @@
 import Modal from '@/components/dialog/Modal';
 import { useState } from 'react';
 import Step from './Step';
-import Button from '@/components/common/Button';
 
 interface CreateGatheringProps {
   setShowModal: () => void;
@@ -12,15 +11,18 @@ export default function CreateGathering({
 }: CreateGatheringProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
+  const stepTitles = [
+    '모임에 오신 걸 환영해요! 🎉', // 0단계
+    '모임 정보를 입력해주세요.', // 1단계
+    '챌린지를 선택해주세요.', // 2단계
+    '모임 생성을 완료했어요!', // 3단계
+  ];
+
   return (
-    <Modal
-      title={currentStep === 3 ? '모임 생성 완료' : '모임 만들기'}
-      onClose={setShowModal}
-    >
-      {/* Step 컴포넌트: 3단계일 때 숨기기 */}
+    <Modal title={stepTitles[currentStep]} onClose={setShowModal}>
       {currentStep < 3 && <Step currentStep={currentStep} />}
 
-      {/* Step 내용 */}
+      {/* 컴포넌트로 대체 예정 */}
       <div className="mt-4">
         {currentStep === 0 && <div>첫 번째 단계 내용</div>}
         {currentStep === 1 && <div>두 번째 단계 내용</div>}
@@ -51,9 +53,7 @@ export default function CreateGathering({
           </button>
         </div>
       ) : (
-        <div className="text-center mt-4">
-          <Button name="닫기" handleButtonClick={() => setShowModal(false)} />
-        </div>
+        <div className="text-center mt-4">완료~</div>
       )}
     </Modal>
   );
