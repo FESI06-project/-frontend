@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   GatheringChallengeType,
   GatheringItem,
@@ -15,8 +15,8 @@ import Modal from '@/components/dialog/Modal';
 
 export default function GatheringDetail() {
   const router = useRouter();
-  // const gatheringId = router.query.gatheringId;
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const gatheringId = router.query.gatheringId;
+  const [showModal, setShowModal] = useState(false);
   const gatheringTabItems = [
     {
       id: 'challenge',
@@ -148,7 +148,7 @@ export default function GatheringDetail() {
         profileImageUrl: 'string',
       },
       reviewOwnerStatus: true,
-      gatheringId: 0
+      gatheringId: 1
     },
     {
       reviewId: 0,
@@ -164,8 +164,10 @@ export default function GatheringDetail() {
       gatheringId: 0
     },
   ];
-  const handleAddChallenge = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  useEffect(() => {
+    console.log(gatheringId);
+  }, []);
 
   return (
     <div className="w-[1200px] flex flex-col place-self-center ">
@@ -182,7 +184,7 @@ export default function GatheringDetail() {
           <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
-              onClick={handleAddChallenge}
+              onClick={() => setShowModal(!showModal)}
               className="text-lg"
             >
               {'+ 챌린지 추가하기'}
@@ -191,8 +193,8 @@ export default function GatheringDetail() {
         )}
       </div>
       {/* 모달 */}
-      {isModalOpen && (
-        <Modal title="모임정보를 입력해주세요" onClose={closeModal}>
+      {showModal && (
+        <Modal title="모임 정보를 입력해주세요." onClose={() => setShowModal(false)}>
           <div>
             <p>{'모임 정보'}</p>
           </div>
