@@ -2,12 +2,19 @@ import Image from 'next/image';
 import TagList from './tag';
 import { GatheringItem } from '@/types';
 import Popover from '@/components/common/Popover';
+import { useState } from 'react';
+import Alert from '@/components/dialog/Alert';
+import Modal from '@/components/dialog/Modal';
+import GatheringEditModal from './GatheringEditModal';
 
 export default function GatheringInformation({
   information,
 }: {
   information: GatheringItem;
 }) {
+  const [showSelectAlert, setShowSelectAlert] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   if (!information) {
     return <div>{'Loading..'}</div>;
   }
@@ -17,11 +24,24 @@ export default function GatheringInformation({
       id: 'edit',
       label: '수정하기',
       onClick: () => {
-        console.log('수정하기 버튼 클릭');
+        setShowModal(true);
       },
     },
-    { id: 'delete', label: '삭제하기' },
+    {
+      id: 'delete',
+      label: '삭제하기',
+      onClick: () => {
+        setShowSelectAlert(true);
+      },
+    },
   ];
+  const handleDeleteConfirmButtonClick = () => {
+    setShowModal(true);
+  };
+
+  const handleDeleteCancelButtonClick = () => {
+    setShowSelectAlert(false);
+  };
   return (
     <div id="gathering-information" className="w-full">
       <div id="type-information">
@@ -55,13 +75,24 @@ export default function GatheringInformation({
               {information.gatheringTitle}
             </h3>
             {information.captainStatus && (
-              <Popover items={popoverItems} type="setting" />
-              // <Image
-              //   src="/assets/image/setting.svg"
-              //   alt="setting"
-              //   width={28}
-              //   height={28}
-              // />
+              <>
+                <Popover items={popoverItems} type="setting" />
+                <Alert
+                  isOpen={showSelectAlert}
+                  type="select"
+                  message="모임을 삭제하시겠습니까?"
+                  onConfirm={handleDeleteConfirmButtonClick}
+                  onCancel={handleDeleteCancelButtonClick}
+                />
+              </>
+            )}
+            {showModal && (
+              <Modal
+                onClose={() => setShowModal(false)}
+                title="모임 정보를 입력해주세요."
+              >
+                <GatheringEditModal information={information} />
+              </Modal>
             )}
           </div>
 

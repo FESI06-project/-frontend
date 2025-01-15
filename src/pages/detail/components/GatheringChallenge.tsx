@@ -72,10 +72,11 @@ export default function GatheringChallenge({
           </div>
         </div>
 
-        <div className="flex flex-col mt-[31px] gap-6">
+        <div className="flex flex-col mt-[31px] mb-[27px] gap-6">
           {currentInquiryState === 'list' ? (
             currentTag === 'inProgress' ? (
-              challenges.inProgressChallenges ? (
+              challenges.inProgressChallenges &&
+              challenges.inProgressChallenges.length > 0 ? (
                 challenges?.inProgressChallenges.map((challenge, index) => (
                   <Challenge
                     key={index}
@@ -83,9 +84,12 @@ export default function GatheringChallenge({
                   />
                 ))
               ) : (
-                <div>진행중인 챌린지가 없습니다.</div>
+                <div className="h-[250px] bg-dark-200 rounded-[10px] flex items-center justify-center">
+                  {'진행중인 챌린지가 없습니다.'}
+                </div>
               )
-            ) : challenges.doneChallenges ? (
+            ) : challenges.doneChallenges &&
+              challenges.doneChallenges.length > 0 ? (
               challenges?.doneChallenges.map((challenge, index) => (
                 <Challenge
                   key={index}
@@ -93,7 +97,9 @@ export default function GatheringChallenge({
                 />
               ))
             ) : (
-              <div>진행중인 챌린지가 없습니다.</div>
+              <div className="h-[250px] bg-dark-200 rounded-[10px] flex items-center justify-center">
+                {'마감된 챌린지가 없습니다.'}
+              </div>
             )
           ) : (
             <div>calendar</div>

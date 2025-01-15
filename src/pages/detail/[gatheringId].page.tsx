@@ -12,6 +12,7 @@ import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
+import ChallengeAddModal from './components/ChallengeAddModal';
 
 export default function GatheringDetail() {
   const router = useRouter();
@@ -91,19 +92,6 @@ export default function GatheringDetail() {
         startDate: '2025-01-09T08:12:48.388Z',
         endDate: '2025-01-09T08:12:48.388Z',
       },
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: true,
-        verificationStatus: false,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
     ],
     doneChallenges: [
       {
@@ -165,6 +153,10 @@ export default function GatheringDetail() {
     },
   ];
 
+  const handleChallengeAddButtonClick = () => {
+    setShowModal(true);
+  };
+
   useEffect(() => {
     console.log(gatheringId);
   }, []);
@@ -178,14 +170,14 @@ export default function GatheringDetail() {
           items={gatheringTabItems}
           currentTab={currentTab}
           onTabChange={(newTab) => setCurrentTab(newTab)}
-          className="w-full absolute flex text-lg font-boldㅌ"
+          className="w-full absolute flex text-lg font-bold z-10"
         />
         {gathering.captainStatus && (
           <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
-              onClick={() => setShowModal(!showModal)}
-              className="text-lg"
+              onClick={() => handleChallengeAddButtonClick()}
+              className="text-lg hover:cursor-pointer"
             >
               {'+ 챌린지 추가하기'}
             </button>
