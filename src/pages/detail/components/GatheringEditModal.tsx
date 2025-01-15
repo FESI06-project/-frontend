@@ -1,3 +1,4 @@
+import Button from '@/components/common/Button';
 import DatePickerCalendar from '@/components/common/DatePicker';
 import Input from '@/components/common/Input';
 import NumberSelect from '@/components/common/NumberSelect';
@@ -5,22 +6,37 @@ import Select from '@/components/common/Select';
 import { SelectType } from '@/stores/useSelectStore';
 import { GatheringItem } from '@/types';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 export default function GatheringEditModal({
   information,
 }: {
   information: GatheringItem;
 }) {
-  const [title, setTitle] = useState('기존 모임의 이름이 들어와 있습니다.');
+  const [title, setTitle] = useState(information.gatheringTitle);
   const [description, setDescription] = useState(
-    '기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다. 기존 모임 설명이 들어와 있습니다.',
+    information.gatheringDescription,
   );
+  const [newTag, setNewTag] = useState('');
+  const [tags, setTags] = useState<Array<string>>(information.gatheringTags);
+  const [imageUrl, setImageUrl] = useState(information.gatheringImage);
   const [selectedPlaceSi, setSelectedPlaceSi] = useState('seoul');
   const [selectedPlaceGu, setSelectedPlaceGu] = useState('dongjak');
   const [maxPeopleCount, setMaxPeopleCount] = useState(0);
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(
+    new Date(
+      information.gatheringStartDate.split('-').map((str) => parseInt(str))[0],
+      information.gatheringStartDate.split('-').map((str) => parseInt(str))[1],
+      information.gatheringStartDate.split('-').map((str) => parseInt(str))[2],
+    ),
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    new Date(
+      information.gatheringEndDate.split('-').map((str) => parseInt(str))[0],
+      information.gatheringEndDate.split('-').map((str) => parseInt(str))[1],
+      information.gatheringEndDate.split('-').map((str) => parseInt(str))[2],
+    ),
+  );
   const placeSiItems = [
     {
       value: 'seoul',
@@ -46,6 +62,7 @@ export default function GatheringEditModal({
     },
     { value: 'mapo', label: '마포구' },
   ];
+
   const handleGatheringTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -53,6 +70,44 @@ export default function GatheringEditModal({
     e: ChangeEvent<HTMLInputElement>,
   ) => {
     setDescription(e.target.value);
+  };
+
+  const handleTagDeleteButtonClick = (tag: string) => {
+    setTags(tags.filter((t) => t !== tag));
+  };
+
+  const handleNewTagOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length >= 6) {
+      alert('태그는 최대 5글자까지 추가 가능합니다.');
+      return;
+    }
+    setNewTag(e.target.value);
+  };
+
+  const handleEnterKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+      console.log(tags.length, newTag);
+      if (tags.length === 3) {
+        alert('태그는 최대 3개까지 추가 가능합니다.');
+        setNewTag('');
+        return;
+      }
+      setTags([...tags, newTag]);
+      setNewTag('');
+    }
+  };
+  const handleEditButtonClick = () => {
+    const editedInformation = {
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+      startDate: startDate,
+      endDate: endDate,
+      mainLocation: '서울시',
+      subLocation: '송파구',
+      tags: tags,
+    };
+    console.log(editedInformation);
   };
   return (
     <div>
@@ -100,23 +155,34 @@ export default function GatheringEditModal({
       {/* 모임 태그 */}
       <div id="tags">
         <div className="mt-[20px] mb-[10px]">모임 태그</div>
-        <div className="h-[47px] bg-dark-400 border-dark-500 rounded-[8px] flex items-center gap-[10px] px-5">
-          {information.gatheringTags.map((tag, index) => (
-            <div
-              className="h-[30px] flex items-center justify-center py-[7px] px-[10px] bg-dark-200 rounded-[10px] gap-2"
-              key={index}
-            >
-              <p className=" text-primary text-sm">{`#${tag}`}</p>
-              <button>
-                <Image
-                  src="/assets/image/cancel-tag.svg"
-                  width={11}
-                  height={11}
-                  alt="tag-delete-button"
-                />
-              </button>
-            </div>
-          ))}
+        <div className="relative">
+          <div className="  h-[47px] bg-dark-400 border-dark-500 rounded-[8px] flex items-center gap-[10px] px-5 ">
+            {tags.map((tag, index) => (
+              <div
+                className=" h-[30px] w-[121px] flex items-center justify-center py-[7px] px-[10px] bg-dark-200 rounded-[10px] gap-2 z-10"
+                key={index}
+              >
+                <p className=" text-primary text-sm">{`#${tag}`}</p>
+                <button onClick={() => handleTagDeleteButtonClick(tag)}>
+                  <Image
+                    src="/assets/image/cancel-tag.svg"
+                    width={11}
+                    height={11}
+                    alt="tag-delete-button"
+                  />
+                </button>
+              </div>
+            ))}
+          </div>
+          <input
+            className={`absolute w-full bg-transparent top-0 h-[47px] outline-none`}
+            style={{
+              paddingLeft: `${tags.length * 121 + 30 + (tags.length - 1) * 10}px`,
+            }}
+            value={newTag}
+            onChange={(e) => handleNewTagOnChange(e)}
+            onKeyDown={(e) => handleEnterKeyDown(e)}
+          />
         </div>
       </div>
 
@@ -180,6 +246,12 @@ export default function GatheringEditModal({
           />
         </div>
       </div>
+
+      <Button
+        handleButtonClick={handleEditButtonClick}
+        name="확인"
+        className="h-[52px] mt-[30px]"
+      />
     </div>
   );
 }
