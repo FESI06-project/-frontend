@@ -43,9 +43,9 @@ export default function MyPage() {
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
       gatheringStatus: '진행중',
-      gatheringStartDate: '2024.12.04',
-      gatheringEndDate: '2025.01.23',
-      gatheringMainType: '유산소형',
+      gatheringStartDate: '2025.01.08',
+      gatheringEndDate: '2025.01.12',
+      gatheringMainType: '경기형',
       gatheringSubType: '런닝',
       gatheringSi: '대전',
       gatheringGu: '서구',
@@ -113,8 +113,8 @@ export default function MyPage() {
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
       gatheringStatus: '진행중',
-      gatheringStartDate: '2025.03.04',
-      gatheringEndDate: '2025.03.23',
+      gatheringStartDate: '2025.01.23',
+      gatheringEndDate: '2025.02.1',
       gatheringMainType: '근력형',
       gatheringSubType: '헬스',
       gatheringSi: '대전',
@@ -132,7 +132,7 @@ export default function MyPage() {
       gatheringImage: 'null',
       gatheringStatus: '시작전',
       gatheringStartDate: '2024.12.04',
-      gatheringEndDate: '2025.01.23',
+      gatheringEndDate: '2025.01.01',
       gatheringMainType: '유산소형',
       gatheringSubType: '수영',
       gatheringSi: '대전',
@@ -244,7 +244,7 @@ export default function MyPage() {
         profileImageUrl: 'null'
       },
       reviewOwnerStatus: true,
-      gatheringId: 2  
+      gatheringId: 2
     },
     {
       reviewId: 2,
@@ -257,7 +257,7 @@ export default function MyPage() {
         profileImageUrl: 'null'
       },
       reviewOwnerStatus: true,
-      gatheringId: 2  
+      gatheringId: 2
     }
   ];
 
@@ -298,7 +298,7 @@ export default function MyPage() {
               gatheringStates={userGatheringStates}
               gatheringChallenges={userGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelParticipation={handleCancelParticipation}  
+              onCancelParticipation={handleCancelParticipation}
             />
           )}
           {currentTab === 'guestbook' && (
@@ -315,10 +315,31 @@ export default function MyPage() {
               gatheringStates={hostedGatheringStates}
               gatheringChallenges={hostedGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelGathering={handleCancelGathering} 
+              onCancelGathering={handleCancelGathering}
             />
           )}
-          {currentTab === 'calendar' && <CalendarTab events={[]} />}
+          {currentTab === 'calendar' && (
+            <CalendarTab
+              events={[
+                ...hostedGatherings.map((gathering) => ({
+                  gatheringId: gathering.gatheringId,
+                  gatheringTitle: gathering.gatheringTitle,
+                  startDate: gathering.gatheringStartDate,
+                  endDate: gathering.gatheringEndDate,
+                  isHost: true, // 호스트 데이터 표시
+                  gatheringMainType: gathering.gatheringMainType,
+                })),
+                ...userGatherings.map((gathering) => ({
+                  gatheringId: gathering.gatheringId,
+                  gatheringTitle: gathering.gatheringTitle,
+                  startDate: gathering.gatheringStartDate,
+                  endDate: gathering.gatheringEndDate,
+                  isHost: false, // 유저 데이터 표시
+                  gatheringMainType: gathering.gatheringMainType,
+                })),
+              ]}
+            />
+          )}
         </div>
       </div>
     </div>
