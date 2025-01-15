@@ -68,7 +68,7 @@ export default function GatheringEditModal({
     setTitle(e.target.value);
   };
   const handleGatheringDescriptionChange = (
-    e: ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setDescription(e.target.value);
   };
@@ -136,7 +136,6 @@ export default function GatheringEditModal({
   return (
     <div>
       {/* 모임 정보 */}
-
       <div id="information">
         <div className="mt-[30px] mb-[10px]">모임 정보</div>
         <div className="flex gap-[10px]">
@@ -181,6 +180,7 @@ export default function GatheringEditModal({
           </div>
           <div className="w-[360px]">
             <Input
+              type="text"
               handleInputChange={(e) => handleGatheringTitleChange(e)}
               value={title}
               className="outline-dark-500 bg-dark-400  mb-[7px] h-[47px]"

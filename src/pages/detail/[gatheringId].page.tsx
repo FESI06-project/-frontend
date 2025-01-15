@@ -12,6 +12,7 @@ import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
+import ChallengeAddModal from './components/ChallengeAddModal';
 
 export default function GatheringDetail() {
   const router = useRouter();
@@ -152,6 +153,10 @@ export default function GatheringDetail() {
     },
   ];
 
+  const handleChallengeAddButtonClick = () => {
+    setShowModal(true);
+  };
+
   useEffect(() => {
     console.log(gatheringId);
   }, []);
@@ -171,8 +176,8 @@ export default function GatheringDetail() {
           <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
-              onClick={() => setShowModal(!showModal)}
-              className="text-lg"
+              onClick={() => handleChallengeAddButtonClick()}
+              className="text-lg hover:cursor-pointer"
             >
               {'+ 챌린지 추가하기'}
             </button>
@@ -182,12 +187,10 @@ export default function GatheringDetail() {
       {/* 모달 */}
       {showModal && (
         <Modal
-          title="모임 정보를 입력해주세요."
+          title="챌린지 정보를 입력해주세요."
           onClose={() => setShowModal(false)}
         >
-          <div>
-            <p>{'모임 정보'}</p>
-          </div>
+          <ChallengeAddModal />
         </Modal>
       )}
 
