@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { UserProfile } from '@/types';
 import Image from 'next/image';
-import useModalStore, { ModalType } from '@/stores/useModalStore';
 import Modal from '@/components/dialog/Modal';
-import Toast from '@/components/dialog/Toast';
 import Button from '@/components/common/Button';
 import ModalInput from '@/components/common/ModalInput';
+import useToastStore from '@/stores/useToastStore';
 
 interface ProfileProps {
   user?: UserProfile;
@@ -19,8 +18,8 @@ export default function Profile({
     profileImage: null,
   } as UserProfile,
 }: ProfileProps) {
-  const [showToast, setShowToast] = useState(false); // 성공 토스트 표시 여부
-  const { openModal, activeModal, closeModal } = useModalStore(); // 모달 표시 상태를 관리하는 커스텀 훅
+  const showToast = useToastStore((state) => state.show);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [nickname, setNickname] = useState(user.nickname || ''); // 닉네임 상태
   const [, setIsDisabled] = useState(false); // 버튼 비활성화 상태
 
@@ -30,17 +29,17 @@ export default function Profile({
   };
 
   const handleEditClick = () => {
-    openModal(ModalType.PROFILE, { nickname: user.nickname });
+    setIsModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nickname.trim()) {
-      handleValidationFail();
+      setIsDisabled(true);
       return;
     }
-    closeModal();
-    setShowToast(true);
+    setIsModalOpen(false);
+    showToast('프로필 수정을 성공하였습니다.', 'check');
   };
 
   return (
@@ -88,8 +87,9 @@ export default function Profile({
         </div>
       </div>
       {/* 모달 표시 */}
-      {activeModal === ModalType.PROFILE && (
-        <Modal title="회원 정보를 입력해주세요.">
+      {isModalOpen && (
+        <Modal title="회원 정보를 입력해주세요."
+          onClose={() => setIsModalOpen(false)}>
           <div className="w-[500px] h-[254px]">
             <form onSubmit={handleSubmit} className="h-full flex flex-col">
               <div className="flex items-center gap-[10px] mt-[30px]">
@@ -152,13 +152,6 @@ export default function Profile({
           </div>
         </Modal>
       )}
-      {/* 성공 토스트 메시지 */}
-      <Toast
-        isOpen={showToast}
-        setIsOpen={setShowToast}
-        type="check"
-        message="프로필 수정을 성공하였습니다."
-      />
     </>
   );
 }
