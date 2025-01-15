@@ -10,14 +10,9 @@ import { MainType } from '@/constants/MainList';
 interface CardlistProps {
   mainType: MainType;
   subType: string;
-  initialData: GatheringList;
 }
 
-export default function Cardlist({
-  mainType,
-  subType,
-  initialData,
-}: CardlistProps) {
+export default function Cardlist({ mainType, subType }: CardlistProps) {
   const pageSize = 6; // 한 페이지당 아이템 수
 
   // 데이터 페치 함수
@@ -51,10 +46,6 @@ export default function Cardlist({
       return lastPage.content.length > 0 ? allPages.length : undefined;
     },
     initialPageParam: 0,
-    initialData: {
-      pages: [initialData],
-      pageParams: [0],
-    },
   });
 
   // 무한 스크롤 옵저버 연결
