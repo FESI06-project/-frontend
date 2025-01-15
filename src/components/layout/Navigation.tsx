@@ -103,10 +103,10 @@ export default function Navigation() {
                 모임 찾기
               </Link>
               <Link
-                href="/popular"
-                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
+                href="/interested-gatherings"
+                className={`${isActive('/interested-gatherings')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
               >
-                평한 모임
+                찜한 모임
               </Link>
               <Link
                 href="/all"

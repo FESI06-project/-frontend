@@ -10,9 +10,10 @@ import { MainType } from '@/constants/MainList';
 interface CardlistProps {
   mainType: MainType;
   subType: string;
+  valid?: boolean;
 }
 
-export default function Cardlist({ mainType, subType }: CardlistProps) {
+export default function Cardlist({ mainType, subType, valid }: CardlistProps) {
   const pageSize = 6; // 한 페이지당 아이템 수
 
   // 데이터 페치 함수
@@ -84,7 +85,11 @@ export default function Cardlist({ mainType, subType }: CardlistProps) {
               ) : (
                 <div className="grid grid-cols-2 gap-5">
                   {page.content.map((gathering) => (
-                    <Card key={gathering.gatheringId} data={gathering} />
+                    <Card
+                      key={gathering.gatheringId}
+                      data={gathering}
+                      valid={valid}
+                    />
                   ))}
                 </div>
               )}
