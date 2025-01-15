@@ -3,7 +3,7 @@ import Null from '@/components/common/Null';
 import GuestbookCard from '@/components/card/guestbook/GuestbookCard';
 import { GatheringItem, GuestbookItem } from '@/types';
 import Alert from '@/components/dialog/Alert';
-import Toast from '@/components/dialog/Toast';
+import useToastStore from '@/stores/useToastStore';
 
 interface WrittenGuestbooksProps {
   guestbooks: GuestbookItem[];
@@ -18,12 +18,10 @@ export default function WrittenGuestbooks({
 }: WrittenGuestbooksProps) {
   const [state, setState] = useState({
     showDeleteAlert: false,
-    showToast: false,
-    toastMessage: '',
-    toastType: 'check' as 'check' | 'caution',
     selectedGuestbook: null as GuestbookItem | null,
   });
-
+  const showToast = useToastStore((state) => state.show);
+  
   const updateState = (updates: Partial<typeof state>) => {
     setState((prev) => ({ ...prev, ...updates }));
   };
@@ -37,24 +35,14 @@ export default function WrittenGuestbooks({
   };
 
   const handleDeleteConfirm = () => {
-    updateState({
-      showDeleteAlert: false,
-      showToast: true,
-      toastMessage: '삭제가 완료되었습니다.',
-      toastType: 'check',
-      selectedGuestbook: null,
-    });
+    setState((prev) => ({ ...prev, showDeleteAlert: false, selectedGuestbook: null }));
+    showToast('삭제가 완료되었습니다.', 'check');
     // TODO: API 호출 로직 추가
   };
 
   const handleDeleteCancel = () => {
-    updateState({
-      showDeleteAlert: false,
-      showToast: true,
-      toastMessage: '삭제가 취소되었습니다.',
-      toastType: 'caution',
-      selectedGuestbook: null,
-    });
+    setState((prev) => ({ ...prev, showDeleteAlert: false, selectedGuestbook: null }));
+    showToast('삭제가 취소되었습니다.', 'caution');
   };
 
   return (
@@ -78,12 +66,6 @@ export default function WrittenGuestbooks({
         onCancel={handleDeleteCancel}
       />
 
-      <Toast
-        isOpen={state.showToast}
-        setIsOpen={(value) => updateState({ showToast: value })}
-        type={state.toastType}
-        message={state.toastMessage}
-      />
     </div>
   );
 }

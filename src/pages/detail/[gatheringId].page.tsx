@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   GatheringChallengeType,
   GatheringItem,
@@ -15,7 +15,7 @@ import Modal from '@/components/dialog/Modal';
 
 export default function GatheringDetail() {
   const router = useRouter();
-  const gatheringId = router.query.gatheringId;
+  // const gatheringId = router.query.gatheringId;
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const gatheringTabItems = [
     {

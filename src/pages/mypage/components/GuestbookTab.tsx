@@ -7,10 +7,10 @@ import {
   TabItem,
 } from '@/types';
 import SubTag from '@/components/tag/SubTag';
-import Toast from '@/components/dialog/Toast';
 import GuestbookModal from './guestbook/GuestbookModal';
 import WrittenGuestbooks from './guestbook/WrittenGuestbooks';
 import AvailableGuestbooks from './guestbook/AvailableGuestbooks';
+import useToastStore from '@/stores/useToastStore';
 
 const GUESTBOOK_TABS: TabItem[] = [
   { id: 'available', label: '작성 가능한 방명록' },
@@ -38,26 +38,28 @@ export default function GuestbookTab({
     guestbook?: GuestbookItem;
   }>({ isOpen: false, isEditMode: false });
 
-  const [toast, setToast] = useState({
-    isVisible: false,
-    message: '',
-    type: 'check' as 'error' | 'check' | 'caution',
-  });
+  const showToast = useToastStore((state) => state.show);
 
-  const showToast = useCallback((message: string, type: 'error' | 'check' | 'caution') => {
-    setToast({ isVisible: true, message, type });
-  }, []);
-
-  const closeModal = useCallback(() => {
-    if (modalState.isOpen) {
-      showToast(
-        `방명록 ${modalState.isEditMode ? '수정' : '작성'}이 취소되었습니다.`,
-        'caution',
-      );
-    }
+  const handleModalSubmit = useCallback(() => {
+    const message = modalState.isEditMode ? '수정' : '작성';
     setModalState({ isOpen: false, isEditMode: false });
-  }, [modalState.isOpen, modalState.isEditMode, showToast]);
+    showToast(`방명록이 ${message}되었습니다.`, 'check');
+  }, [modalState.isEditMode, showToast]);
+  
+  // X 버튼 또는 ESC를 눌렀을 때만 호출되는 함수로 변경
+  const handleModalClose = useCallback(() => {
+    setModalState({ isOpen: false, isEditMode: false });
+    showToast(
+      `방명록 ${modalState.isEditMode ? '수정' : '작성'}이 취소되었습니다.`,
+      'caution'
+    );
+  }, [modalState.isEditMode, showToast]);
+  
 
+  const handleValidationFail = useCallback(() => {
+    showToast('방명록 내용을 입력해주세요.', 'error');
+  }, [showToast]);
+  
   const handleWriteClick = useCallback((gatheringId: number) => {
     setModalState({
       isOpen: true,
@@ -74,15 +76,6 @@ export default function GuestbookTab({
     });
   }, []);
 
-  const handleModalSubmit = useCallback(() => {
-    const message = modalState.isEditMode ? '수정' : '작성';
-    setModalState({ isOpen: false, isEditMode: false });
-    showToast(`방명록이 ${message}되었습니다.`, 'check');
-  }, [modalState.isEditMode, showToast]);
-
-  const handleValidationFail = useCallback(() => {
-    showToast('방명록 내용을 입력해주세요.', 'error');
-  }, [showToast]);
 
   const handleTabChange = useCallback((id: TabItem['id']) => setShowWritten(id === 'written'), []);
 
@@ -133,17 +126,9 @@ export default function GuestbookTab({
           initialData={modalState.guestbook}
           onSubmit={handleModalSubmit}
           onValidationFail={handleValidationFail}
-          onClose={closeModal} // 모달 닫기 핸들러
+          onClose={handleModalClose} // 모달 닫기 핸들러
         />
       )}
-
-      {/* Toast 컴포넌트 */}
-      <Toast
-        isOpen={toast.isVisible}
-        setIsOpen={(isOpen) => setToast((prev) => ({ ...prev, isVisible: isOpen }))}
-        type={toast.type}
-        message={toast.message}
-      />
     </div>
   );
 }

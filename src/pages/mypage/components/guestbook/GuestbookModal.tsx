@@ -9,7 +9,7 @@ import { GuestbookItem } from '@/types';
 interface GuestbookModalProps {
   isEditMode: boolean;
   initialData?: GuestbookItem | null;
-  gatheringId?: number; 
+  gatheringId?: number;
   onSubmit: (data: { content: string; rating: number }) => void;
   onValidationFail: () => void;
   onClose: () => void;
@@ -24,16 +24,16 @@ export default function GuestbookModal({
 }: GuestbookModalProps) {
   const [rating, setRating] = useState(initialData?.rating || 0);
   const [content, setContent] = useState(initialData?.content || '');
- 
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) {
       onValidationFail();
       return;
     }
-    onSubmit({ content, rating });
-    onClose(); // 모달 닫기
+    onSubmit({ content, rating }); // onClose 제거
   };
+
   return (
     <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'} onClose={onClose}>
       <div className="w-[500px] h-[340px]">
