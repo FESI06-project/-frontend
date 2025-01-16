@@ -17,7 +17,7 @@ export default function Modal({ children, title, onClose }: ModalProps) {
       {/* 모달 배경 */}
       <div
         onClick={handleClose}
-        className="bg-black/50 w-full h-screen z-[10000] left-0 top-0 absolute flex items-center justify-center"
+        className="bg-black/50 w-full h-screen z-[10000] left-0 top-0 fixed flex items-center justify-center"
       >
         {/* 모달 콘텐츠 */}
         <div
