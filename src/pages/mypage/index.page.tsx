@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
 import Tab from '@/components/common/Tab';
 import Profile from './components/Profile';
 import GatheringTab from './components/GatheringTab';
@@ -9,7 +8,6 @@ import CalendarTab from './components/CalendarTab';
 import { useEffect, useState } from 'react';
 import type {
   TabItem,
-  UserProfile,
   GatheringItem,
   GatheringStateType,
   GatheringChallengeType,
