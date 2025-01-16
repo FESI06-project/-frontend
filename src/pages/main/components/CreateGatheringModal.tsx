@@ -31,6 +31,7 @@ export default function CreateGathering({
   setShowModal,
 }: CreateGatheringProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formData, setFormDate] = useState<CreateGatheringForm>(initialState);
 
   const stepTitles = [
