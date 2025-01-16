@@ -63,6 +63,8 @@ export default function GatheringInfomationModal() {
     }
   };
 
+  // 기능을 붙이지 않아 임시조치
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCreateButtonClick = () => {
     const newGathering = {
       title,
