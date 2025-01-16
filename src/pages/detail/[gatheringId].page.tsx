@@ -12,7 +12,6 @@ import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
-import ChallengeAddModal from './components/ChallengeAddModal';
 
 export default function GatheringDetail() {
   const router = useRouter();
