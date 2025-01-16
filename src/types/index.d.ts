@@ -4,11 +4,19 @@ export interface TabItem {
   label: string;
 }
 export interface UserProfile {
-  memberId: string;
+  memberId: number;
+  nickName: string;
   email: string;
-  nickname: string;
-  profileImage: string | null;
+  profileImageUrl: string;
 }
+interface ProfileUpdate {
+  nickName: string;
+  profileImageUrl: string | null;
+}
+interface ImageUpload {
+  imageUrl: string;
+}
+
 export interface GatheringItem {
   gatheringId: number;
   gatheringTitle: string;
@@ -65,7 +73,7 @@ export interface GuestbookItem {
   createDate: string;
   writer: GuestbookWriter;
   reviewOwnerStatus: boolean;
-  gatheringId: number; 
+  gatheringId: number;
 }
 
 export interface GuestbookWriter {
@@ -107,4 +115,26 @@ export interface GatheringListItem {
   participantCount: number;
   status: '시작전' | '진행중' | '종료됨' | '취소됨';
   tags: string[];
+}
+
+export interface CreateGatheringForm {
+  title: string;
+  description: string;
+  mainType: string;
+  subType: string;
+  imageUrl: string;
+  startDate: string;
+  endDate: string;
+  mainLocation: string;
+  subLocation: string;
+  totalCount: number;
+  minCount: number;
+  tags: string[];
+  challenges: {
+    title: string;
+    description: string;
+    imageUrl: string;
+    startDate: string;
+    endDate: string;
+  }[];
 }

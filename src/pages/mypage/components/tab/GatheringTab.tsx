@@ -1,7 +1,7 @@
 // MyGatheringTab.tsx
-import MainCard from './gathering-section/MainCard';
 import { sortGatheringsByDate } from '@/utils/sortGatherings';
-import ChallengeSection from './gathering-section/ChallengeSection';
+import ChallengeSection from '../gathering-section/ChallengeSection';
+import MainCard from '../gathering-section/MainCard';
 import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';

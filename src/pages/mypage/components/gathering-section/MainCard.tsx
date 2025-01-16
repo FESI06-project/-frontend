@@ -4,21 +4,19 @@ import StatusTag from '@/components/tag/StatusTag';
 import OpenStatus from '@/components/tag/OpenStatus';
 import Button from '@/components/common/Button';
 import Alert from '@/components/dialog/Alert';
-import Toast from '@/components/dialog/Toast';
 import { GatheringItem, GatheringStateType } from '@/types';
+import useToastStore from '@/stores/useToastStore';
 
 interface MainCardProps {
   gathering: GatheringItem;
   state: GatheringStateType;
   onCancelGathering?: (gatheringId: number) => void;  // 모임장용
-  onCancelParticipation?: (gatheringId: number) => void;  
+  onCancelParticipation?: (gatheringId: number) => void;
 }
 
 export default function MainCard({ gathering, state, onCancelGathering, onCancelParticipation }: MainCardProps) {
   const [showAlert, setShowAlert] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState<'check' | 'caution'>('check');
+  const showToast = useToastStore((state) => state.show);
   // gathering 객체가 유효한지 확인
   if (!gathering || !gathering.gatheringImage) {
     return null; // 또는 기본 UI 렌더링
@@ -27,6 +25,7 @@ export default function MainCard({ gathering, state, onCancelGathering, onCancel
     setShowAlert(true);
   };
 
+
   const handleCancelConfirm = () => {
     if (gathering.captainStatus) {
       onCancelGathering?.(gathering.gatheringId);
@@ -34,18 +33,12 @@ export default function MainCard({ gathering, state, onCancelGathering, onCancel
       onCancelParticipation?.(gathering.gatheringId);
     }
     setShowAlert(false);
-    setToastMessage('취소되었습니다.');
-    setToastType('check');
-    setShowToast(true);
+    showToast('취소되었습니다.', 'check');
   };
-  
   const handleCancelDeny = () => {
     setShowAlert(false);
-    setToastMessage('취소가 중단되었습니다.');
-    setToastType('caution');
-    setShowToast(true);
+    showToast('취소가 중단되었습니다.', 'caution');
   };
-
 
   return (
     <div className="flex w-[906px] h-[200px] gap-[30px]">
@@ -111,12 +104,6 @@ export default function MainCard({ gathering, state, onCancelGathering, onCancel
         onCancel={handleCancelDeny}
       />
 
-      <Toast
-        isOpen={showToast}
-        setIsOpen={setShowToast}
-        type={toastType}
-        message={toastMessage}
-      />
     </div>
   );
 }

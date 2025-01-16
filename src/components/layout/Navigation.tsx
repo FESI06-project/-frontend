@@ -4,7 +4,11 @@ import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import getMe from '@/pages/login/components/getMe';
+import Loading from '../dialog/Loading';
+import Alert from '../dialog/Alert';
 
 export default function Navigation() {
   const router = useRouter();
@@ -15,37 +19,72 @@ export default function Navigation() {
       : 'text-gray-300';
   };
 
-  const { isLogin, setIsLogin, setNickname, setMemberId, nickname } =
-    useMemberStore();
+  const {
+    isLogin,
+    nickname,
+    setIsLogin,
+    setMemberId,
+    setNickname,
+    setEmail,
+    setProfileImageUrl,
+  } = useMemberStore();
   const { toggleListExpanded } = useLayoutStore();
 
   const handleListButtonClick = () => {
     toggleListExpanded();
   };
 
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+
+  // 현재 로그인 정보 가져오는 useQuery
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ['me'],
+    queryFn: getMe,
+    enabled: isLogin,
+  });
+
+  // 로그인 여부 확인해 사용자 정보 초기화
   useEffect(() => {
-    const localIsLogin = localStorage.getItem('isLogin');
-    setIsLogin(localIsLogin === 'true');
-    if (localIsLogin === 'true') {
-      const localMemberId = localStorage.getItem('memberId');
-      const localNickname = localStorage.getItem('nickname');
-      // console.log('localMemberId', localMemberId);
-      // console.log('localNickname', localNickname);
-      if (localNickname) {
-        setNickname(localNickname);
-      }
-      if (localMemberId) {
-        setMemberId(Number(localMemberId));
-      }
+    const localIsLogin = localStorage.getItem('isLogin') === 'true';
+    setIsLogin(localIsLogin);
+    if (localIsLogin && data) {
+      setMemberId(data.memberId);
+      setNickname(data.nickName);
+      setEmail(data.email);
+      setProfileImageUrl(data.profileImageUrl);
     }
-    // const localMemberId = localStorage.getItem('memberId');
-    // const localNickname = localStorage.getItem('nickname');
-    // console.log('localMemberId', localMemberId);
-    // console.log('localNickname', localNickname);
-    console.log('isLogin', useMemberStore.getState().isLogin);
-    console.log('nickname', useMemberStore.getState().nickname);
-    console.log('memberId', useMemberStore.getState().memberId);
-  }, [isLogin, setIsLogin]);
+  }, [
+    data,
+    isLogin,
+    setEmail,
+    setIsLogin,
+    setMemberId,
+    setNickname,
+    setProfileImageUrl,
+  ]);
+
+  // 에러 발생
+  if (isError) {
+    localStorage.removeItem('isLogin');
+    setIsLogin(false); // 에러가 발생하면 로그인 상태 초기화
+    console.error('Navigation Error', error);
+    setAlertMessage(
+      '사용자 정보를 가져오는 중 오류가 발생했습니다. 다시 로그인해주세요.',
+    );
+    setShowConfirmAlert(true);
+  }
+
+  // 로딩 중
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  // 로그인 정보 없을 때 로그인 페이지로 이동
+  const handleConfirm = () => {
+    setShowConfirmAlert(false);
+    router.push('/login');
+  };
 
   return (
     <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
@@ -79,10 +118,10 @@ export default function Navigation() {
                 모임 찾기
               </Link>
               <Link
-                href="/popular"
-                className={`${isActive('/popular')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
+                href="/interested-gatherings"
+                className={`${isActive('/interested-gatherings')} hover:text-red-500 px-3 py-2 text-semibold font-medium transition-colors`}
               >
-                평한 모임
+                찜한 모임
               </Link>
               <Link
                 href="/all"
@@ -100,9 +139,6 @@ export default function Navigation() {
               <button
                 onClick={() => {
                   localStorage.removeItem('isLogin');
-                  localStorage.removeItem('email');
-                  localStorage.removeItem('memberId');
-                  localStorage.removeItem('nickname');
                   useMemberStore.getState().setIsLogin(false);
                   router.push('/');
                 }}
@@ -120,6 +156,12 @@ export default function Navigation() {
           )}
         </div>
       </div>
+      <Alert
+        isOpen={showConfirmAlert}
+        type="confirm"
+        message={alertMessage}
+        onConfirm={handleConfirm}
+      />
     </header>
   );
 }
