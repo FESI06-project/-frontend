@@ -7,9 +7,9 @@ import {
   TabItem,
 } from '@/types';
 import SubTag from '@/components/tag/SubTag';
-import GuestbookModal from './guestbook/GuestbookModal';
-import WrittenGuestbooks from './guestbook/WrittenGuestbooks';
-import AvailableGuestbooks from './guestbook/AvailableGuestbooks';
+import GuestbookModal from '../guestbook/GuestbookModal';
+import WrittenGuestbooks from '../guestbook/WrittenGuestbooks';
+import AvailableGuestbooks from '../guestbook/AvailableGuestbooks';
 import useToastStore from '@/stores/useToastStore';
 
 const GUESTBOOK_TABS: TabItem[] = [

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import Tab from '@/components/common/Tab';
-import Profile from './components/Profile';
-import GatheringTab from './components/GatheringTab';
-import GuestbookTab from './components/GuestbookTab';
-import MyGatheringTab from './components/MyGatheringTab';
-import CalendarTab from './components/CalendarTab';
+import Profile from './components/profile/Profile';
+import GatheringTab from './components/tab/GatheringTab';
+import GuestbookTab from './components/tab/GuestbookTab';
+import MyGatheringTab from './components/tab/MyGatheringTab';
+import CalendarTab from './components/tab/CalendarTab';
 import { useEffect, useState } from 'react';
 import type {
   TabItem,
