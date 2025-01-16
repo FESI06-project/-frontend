@@ -26,7 +26,7 @@ export default function ProfileEditModal({
 }: ProfileEditModalProps) {
   const [editedNickname, setEditedNickname] = useState(initialNickname);
   const [editedImage, setEditedImage] = useState<string | null>(initialImage);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [, setIsDisabled] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const showToast = useToastStore((state) => state.show);
 
