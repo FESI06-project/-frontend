@@ -4,10 +4,11 @@ import { useRouter } from 'next/router';
 import useMemberStore from '@/stores/useMemberStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import UserProfile from './UserProfile';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getMe from '@/pages/login/components/getMe';
 import Loading from '../dialog/Loading';
+import Alert from '../dialog/Alert';
 
 export default function Navigation() {
   const router = useRouter();
@@ -32,6 +33,9 @@ export default function Navigation() {
   const handleListButtonClick = () => {
     toggleListExpanded();
   };
+
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 
   // 현재 로그인 정보 가져오는 useQuery
   const { isLoading, isError, data, error } = useQuery({
@@ -62,14 +66,25 @@ export default function Navigation() {
 
   // 에러 발생
   if (isError) {
+    localStorage.removeItem('isLogin');
     setIsLogin(false); // 에러가 발생하면 로그인 상태 초기화
-    console.error('Error fetching user information:', error);
+    console.error('Navigation Error', error);
+    setAlertMessage(
+      '사용자 정보를 가져오는 중 오류가 발생했습니다. 다시 로그인해주세요.',
+    );
+    setShowConfirmAlert(true);
   }
 
   // 로딩 중
   if (isLoading) {
     return <Loading />;
   }
+
+  // 로그인 정보 없을 때 로그인 페이지로 이동
+  const handleConfirm = () => {
+    setShowConfirmAlert(false);
+    router.push('/login');
+  };
 
   return (
     <header className=" top-0 left-0 w-full bg-dark-100 shadow-lg z-40 border-b-[1px] border-b-dark-300">
@@ -141,6 +156,12 @@ export default function Navigation() {
           )}
         </div>
       </div>
+      <Alert
+        isOpen={showConfirmAlert}
+        type="confirm"
+        message={alertMessage}
+        onConfirm={handleConfirm}
+      />
     </header>
   );
 }
