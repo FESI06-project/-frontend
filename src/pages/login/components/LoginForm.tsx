@@ -86,7 +86,8 @@ export default function LoginForm() {
       }
     },
     onError: (error: Error) => {
-      if (error.message === '아이디 또는 비밀번호가 올바르지 않습니다.') {
+      console.log(error);
+      if (error.message === 'Request failed with status code 401') {
         setAlertMessage('아이디 또는 비밀번호가 올바르지 않습니다.');
         setShowConfirmAlert(true);
       }
@@ -113,6 +114,8 @@ export default function LoginForm() {
       useMemberStore.getState().setIsLogin(true);
       setShowConfirmAlert(false);
       router.push('/');
+    } else {
+      setShowConfirmAlert(false);
     }
   };
 

@@ -9,12 +9,12 @@ interface Input {
 }
 
 export default function Input({
-  type,
-  name,
+  type = 'text',
+  name = 'name',
   value,
-  placeholder,
+  placeholder = value,
   handleInputChange,
-  handleBlur,
+  handleBlur = () => {},
   className = '',
 }: Input) {
   return (

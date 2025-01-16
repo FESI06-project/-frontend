@@ -1,4 +1,5 @@
 import RingChart from '@/components/chart/RingChart';
+import ZzimHeart from '@/components/common/ZzimHeart';
 import StatusTag from '@/components/tag/StatusTag';
 import { GatheringListItem } from '@/types';
 import getDatePart from '@/utils/getDatePart';
@@ -7,11 +8,10 @@ import Link from 'next/link';
 
 interface CardProps {
   data: GatheringListItem;
+  valid?: boolean;
 }
 
-export default function Card({ data }: CardProps) {
-  console.log(data);
-
+export default function Card({ data, valid }: CardProps) {
   const {
     gatheringId,
     title,
@@ -34,6 +34,9 @@ export default function Card({ data }: CardProps) {
       <div className="relative w-[220px] h-[220px]">
         <div className="absolute bottom-2.5 left-2.5 z-10">
           <StatusTag status={status} />
+        </div>
+        <div className="absolute bottom-2.5 right-2.5 z-10">
+          <ZzimHeart valid={valid} />
         </div>
         <Image src={imageUrl} fill alt="모임 사진" className="rounded-xl" />
       </div>
