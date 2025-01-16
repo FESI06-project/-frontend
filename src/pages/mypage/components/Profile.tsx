@@ -105,10 +105,9 @@ export default function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editedNickname, setEditedNickname] = useState(nickname || '');
   const [editedImage, setEditedImage] = useState<string | null>(profileImageUrl);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [, setIsDisabled] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
 
 // mutation 핸들러에도 로그 추가
 const { mutate: uploadImageMutation } = useMutation({
@@ -116,6 +115,7 @@ const { mutate: uploadImageMutation } = useMutation({
   onSuccess: (data) => {
     console.log('이미지 업로드 mutation 성공:', data);
     setEditedImage(data.imageUrl);
+    setProfileImageUrl(data.imageUrl); // store에 즉시 반영
     setIsUploading(false);
     showToast('이미지가 업로드되었습니다.', 'check');
   },
@@ -126,12 +126,16 @@ const { mutate: uploadImageMutation } = useMutation({
   },
 });
 
+const { setNickname, setProfileImageUrl } = useMemberStore();
   // 프로필 수정 mutation
   const { mutate: updateProfileMutation } = useMutation({
     mutationFn: ({ nickname, profileImageUrl }: { nickname: string; profileImageUrl: string | null }) =>
       updateProfile({ nickname, profileImageUrl }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['memberInfo'] });
+    onSuccess: (data) => {
+      // 서버로부터 받은 응답 데이터를 사용하여 store 업데이트
+      setNickname(editedNickname); // 실제 수정한 닉네임으로 업데이트
+      setProfileImageUrl(editedImage); // 실제 수정한 이미지 URL로 업데이트
+      
       setIsModalOpen(false);
       showToast('프로필 수정을 성공하였습니다.', 'check');
     },
@@ -139,7 +143,6 @@ const { mutate: uploadImageMutation } = useMutation({
       showToast('프로필 수정에 실패했습니다.', 'error');
     },
   });
-
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) {
@@ -174,6 +177,7 @@ const { mutate: uploadImageMutation } = useMutation({
 
   const handleImageDelete = () => {
     setEditedImage(null);
+    setProfileImageUrl(null); // store에 즉시 반영
     showToast('이미지가 삭제되었습니다.', 'check');
   };
 
@@ -320,7 +324,6 @@ const { mutate: uploadImageMutation } = useMutation({
                   type="submit"
                   name="확인"
                   style="default"
-                  disabled={isDisabled || isUploading}
                 />
               </div>
             </form>
