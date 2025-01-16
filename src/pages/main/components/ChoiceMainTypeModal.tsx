@@ -22,10 +22,11 @@ export default function ChoiceMainTypeModal({
     <div className="flex gap-3">
       {LISTPAGE_MAINTYPE.map((type) => {
         if (type.id === '전체') return null;
+
         return (
           <div
             key={type.id}
-            className={`w-40 h-44 rounded-xl text-center py-5 px-2 cursor-pointer border ${
+            className={`relative w-40 h-44 rounded-xl text-center py-5 px-2 cursor-pointer border ${
               selectedType === type.id
                 ? 'bg-dark-600 border-dark-700'
                 : 'bg-dark-400 border-transparent'
@@ -35,6 +36,16 @@ export default function ChoiceMainTypeModal({
               onSelect(type.id);
             }}
           >
+            {selectedType === type.id && (
+              <div className="absolute top-2 right-2">
+                <Image
+                  width={16}
+                  height={16}
+                  src="/assets/image/check.svg"
+                  alt="선택됨"
+                />
+              </div>
+            )}
             <Image
               width={45}
               height={72}
