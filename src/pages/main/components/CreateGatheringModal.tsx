@@ -1,6 +1,7 @@
 import Modal from '@/components/dialog/Modal';
 import { useState } from 'react';
 import Step from './Step';
+import ChoiceMainTypeModal from './ChoiceMainTypeModal';
 
 interface CreateGatheringProps {
   setShowModal: () => void;
@@ -12,10 +13,10 @@ export default function CreateGathering({
   const [currentStep, setCurrentStep] = useState(0);
 
   const stepTitles = [
-    '모임에 오신 걸 환영해요! 🎉', // 0단계
-    '모임 정보를 입력해주세요.', // 1단계
-    '챌린지를 선택해주세요.', // 2단계
-    '모임 생성을 완료했어요!', // 3단계
+    '모임에 오신 걸 환영해요! 🎉',
+    '모임 정보를 입력해주세요.',
+    '챌린지를 선택해주세요.',
+    '모임 생성을 완료했어요!',
   ];
 
   return (
@@ -24,7 +25,7 @@ export default function CreateGathering({
 
       {/* 컴포넌트로 대체 예정 */}
       <div className="mt-4">
-        {currentStep === 0 && <div>첫 번째 단계 내용</div>}
+        {currentStep === 0 && <ChoiceMainTypeModal />}
         {currentStep === 1 && <div>두 번째 단계 내용</div>}
         {currentStep === 2 && <div>세 번째 단계 내용</div>}
         {currentStep === 3 && (
