@@ -1,19 +1,19 @@
-// pages/mypage/[memberId].tsx
+import { useRouter } from 'next/router';
 import Tab from '@/components/common/Tab';
-import Profile from './components/Profile';
-import GatheringTab from './components/GatheringTab';
-import GuestbookTab from './components/GuestbookTab';
-import MyGatheringTab from './components/MyGatheringTab';
-import CalendarTab from './components/CalendarTab';
-import { useState } from 'react';
+import Profile from './components/profile/Profile';
+import GatheringTab from './components/tab/GatheringTab';
+import GuestbookTab from './components/tab/GuestbookTab';
+import MyGatheringTab from './components/tab/MyGatheringTab';
+import CalendarTab from './components/tab/CalendarTab';
+import { useEffect, useState } from 'react';
 import type {
   TabItem,
-  UserProfile,
   GatheringItem,
   GatheringStateType,
   GatheringChallengeType,
   GuestbookItem,
 } from '@/types';
+import useMemberStore from '@/stores/useMemberStore';
 
 const MY_PAGE_TABS: TabItem[] = [
   { id: 'gathering', label: '나의 모임' },
@@ -22,19 +22,32 @@ const MY_PAGE_TABS: TabItem[] = [
   { id: 'calendar', label: '캘린더' },
 ];
 
-export default function MyPage() {
-  // const router = useRouter();
-  // const memberId = router.query.memberId || 'defaultMemberId';
-  const [currentTab, setCurrentTab] = useState<TabItem['id']>(
-    MY_PAGE_TABS[0].id,
-  );
 
-  const user: UserProfile = {
-    memberId: 'defaultMemberId',
-    email: 'fitmon@fitmon.com',
-    nickname: '김핏몬',
-    profileImage: null,
-  };
+export default function MyPage() {
+  const router = useRouter();
+  const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
+  const {
+    setIsLogin,
+  } = useMemberStore();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLogin') === 'true';
+    console.log('Is logged in:', isLoggedIn);
+    setIsLogin(isLoggedIn);
+
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [setIsLogin, router]);
+
+
+
+  // const handleTabChange = (id: TabItem['id']) => {
+  //   setCurrentTab(id);
+  // };
+
+
+
   // 핏몬이가 모임장인 모임 데이터
   const hostedGatherings: GatheringItem[] = [
     {
@@ -43,9 +56,9 @@ export default function MyPage() {
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
       gatheringStatus: '진행중',
-      gatheringStartDate: '2024.12.04',
-      gatheringEndDate: '2025.01.23',
-      gatheringMainType: '유산소형',
+      gatheringStartDate: '2025.01.08',
+      gatheringEndDate: '2025.01.12',
+      gatheringMainType: '경기형',
       gatheringSubType: '런닝',
       gatheringSi: '대전',
       gatheringGu: '서구',
@@ -113,8 +126,8 @@ export default function MyPage() {
         '모임은 최대 30자입니다 모임은 최대 30자입니다 모임은 최대 30자',
       gatheringImage: 'null',
       gatheringStatus: '진행중',
-      gatheringStartDate: '2025.03.04',
-      gatheringEndDate: '2025.03.23',
+      gatheringStartDate: '2025.01.23',
+      gatheringEndDate: '2025.02.1',
       gatheringMainType: '근력형',
       gatheringSubType: '헬스',
       gatheringSi: '대전',
@@ -132,7 +145,7 @@ export default function MyPage() {
       gatheringImage: 'null',
       gatheringStatus: '시작전',
       gatheringStartDate: '2024.12.04',
-      gatheringEndDate: '2025.01.23',
+      gatheringEndDate: '2025.01.01',
       gatheringMainType: '유산소형',
       gatheringSubType: '수영',
       gatheringSi: '대전',
@@ -244,7 +257,7 @@ export default function MyPage() {
         profileImageUrl: 'null'
       },
       reviewOwnerStatus: true,
-      gatheringId: 2  
+      gatheringId: 2
     },
     {
       reviewId: 2,
@@ -257,7 +270,7 @@ export default function MyPage() {
         profileImageUrl: 'null'
       },
       reviewOwnerStatus: true,
-      gatheringId: 2  
+      gatheringId: 2
     }
   ];
 
@@ -266,7 +279,7 @@ export default function MyPage() {
   };
 
   const handleGatheringClick = (gatheringId: number) => {
-    // router.push(`/detail/${gatheringId}`);
+    // router.push(/detail/${gatheringId});
     console.log('모임 클릭:', gatheringId);
   };
 
@@ -282,7 +295,7 @@ export default function MyPage() {
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-      <Profile user={user} />
+      <Profile />
 
       <div className="mt-14">
         <Tab
@@ -298,7 +311,7 @@ export default function MyPage() {
               gatheringStates={userGatheringStates}
               gatheringChallenges={userGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelParticipation={handleCancelParticipation}  
+              onCancelParticipation={handleCancelParticipation}
             />
           )}
           {currentTab === 'guestbook' && (
@@ -315,10 +328,31 @@ export default function MyPage() {
               gatheringStates={hostedGatheringStates}
               gatheringChallenges={hostedGatheringChallenges}
               onGatheringClick={handleGatheringClick}
-              onCancelGathering={handleCancelGathering} 
+              onCancelGathering={handleCancelGathering}
             />
           )}
-          {currentTab === 'calendar' && <CalendarTab events={[]} />}
+          {currentTab === 'calendar' && (
+            <CalendarTab
+              events={[
+                ...hostedGatherings.map((gathering) => ({
+                  gatheringId: gathering.gatheringId,
+                  gatheringTitle: gathering.gatheringTitle,
+                  startDate: gathering.gatheringStartDate,
+                  endDate: gathering.gatheringEndDate,
+                  isHost: true, // 호스트 데이터 표시
+                  gatheringMainType: gathering.gatheringMainType,
+                })),
+                ...userGatherings.map((gathering) => ({
+                  gatheringId: gathering.gatheringId,
+                  gatheringTitle: gathering.gatheringTitle,
+                  startDate: gathering.gatheringStartDate,
+                  endDate: gathering.gatheringEndDate,
+                  isHost: false, // 유저 데이터 표시
+                  gatheringMainType: gathering.gatheringMainType,
+                })),
+              ]}
+            />
+          )}
         </div>
       </div>
     </div>

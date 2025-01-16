@@ -4,11 +4,19 @@ export interface TabItem {
   label: string;
 }
 export interface UserProfile {
-  memberId: string;
+  memberId: number;
+  nickName: string;
   email: string;
-  nickname: string;
-  profileImage: string | null;
+  profileImageUrl: string;
 }
+interface ProfileUpdate {
+  nickName: string;
+  profileImageUrl: string | null;
+}
+interface ImageUpload {
+  imageUrl: string;
+}
+
 export interface GatheringItem {
   gatheringId: number;
   gatheringTitle: string;
