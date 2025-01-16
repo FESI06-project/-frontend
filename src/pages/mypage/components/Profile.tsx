@@ -6,98 +6,10 @@ import Button from '@/components/common/Button';
 import ModalInput from '@/components/common/ModalInput';
 import useToastStore from '@/stores/useToastStore';
 import useMemberStore from '@/stores/useMemberStore';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-const uploadImage = async (file: File) => {
-  console.log('이미지 업로드 시작...', {
-    fileType: file.type,
-    fileSize: file.size,
-    fileName: file.name
-  });
+import { useMutation} from '@tanstack/react-query';
+import { profileService } from '@/pages/mypage/api/profileService';
+import { useImageUpload } from '@/hooks/useImageUpload';
 
-  const formData = new FormData();
-  formData.append('file', file);
-  
-  try {
-    const token = localStorage.getItem('token');
-    console.log('토큰 확인:', token ? '토큰 존재' : '토큰 없음');
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/v1/images?type=MEMBER`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    console.log('이미지 업로드 응답:', {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
-    });
-    
-    if (!response.ok) {
-      console.error('업로드 실패:', {
-        status: response.status,
-        statusText: response.statusText
-      });
-      throw new Error('Failed to upload image');
-    }
-
-    const data = await response.json();
-    console.log('업로드 성공 응답 데이터:', data);
-    return data;
-  } catch (error) {
-    console.error('이미지 업로드 에러:', error);
-    throw error;
-  }
-};
-
-const updateProfile = async ({ nickname, profileImageUrl }: { nickname: string; profileImageUrl: string | null }) => {
-  console.log('프로필 수정 시작...', {
-    nickname,
-    profileImageUrl,
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL
-  });
-
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/v1/my-page/profile`, {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nickName: nickname,
-        profileImageUrl,
-      }),
-    });
-
-    console.log('프로필 수정 응답:', {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
-    });
-
-    if (!response.ok) {
-      console.error('프로필 수정 실패:', {
-        status: response.status,
-        statusText: response.statusText
-      });
-      throw new Error('Failed to update profile');
-    }
-
-    const data = await response.json();
-    console.log('프로필 수정 성공 응답 데이터:', data);
-    return data;
-  } catch (error) {
-    console.error('프로필 수정 에러:', error);
-    throw error;
-  }
-};
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function Profile() {
   const { nickname, email, profileImageUrl } = useMemberStore();
@@ -106,36 +18,27 @@ export default function Profile() {
   const [editedNickname, setEditedNickname] = useState(nickname || '');
   const [editedImage, setEditedImage] = useState<string | null>(profileImageUrl);
   const [, setIsDisabled] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-// mutation 핸들러에도 로그 추가
-const { mutate: uploadImageMutation } = useMutation({
-  mutationFn: uploadImage,
-  onSuccess: (data) => {
-    console.log('이미지 업로드 mutation 성공:', data);
-    setEditedImage(data.imageUrl);
-    setProfileImageUrl(data.imageUrl); // store에 즉시 반영
-    setIsUploading(false);
-    showToast('이미지가 업로드되었습니다.', 'check');
-  },
-  onError: (error) => {
-    console.error('이미지 업로드 mutation 에러:', error);
-    setIsUploading(false);
-    showToast('이미지 업로드에 실패했습니다.', 'error');
-  },
-});
-
+  const { handleImageUpload, isUploading } = useImageUpload({
+    uploadFn: profileService.uploadImage,
+    onUploadSuccess: (imageUrl) => {
+      setEditedImage(imageUrl);
+      setProfileImageUrl(imageUrl);
+    }
+  });
+  
 const { setNickname, setProfileImageUrl } = useMemberStore();
   // 프로필 수정 mutation
   const { mutate: updateProfileMutation } = useMutation({
     mutationFn: ({ nickname, profileImageUrl }: { nickname: string; profileImageUrl: string | null }) =>
-      updateProfile({ nickname, profileImageUrl }),
-    onSuccess: (data) => {
-      // 서버로부터 받은 응답 데이터를 사용하여 store 업데이트
-      setNickname(editedNickname); // 실제 수정한 닉네임으로 업데이트
-      setProfileImageUrl(editedImage); // 실제 수정한 이미지 URL로 업데이트
-      
+      profileService.updateProfile({
+        nickName: nickname,
+        profileImageUrl,
+      }),
+    onSuccess: () => {
+      setNickname(editedNickname);
+      setProfileImageUrl(editedImage);
       setIsModalOpen(false);
       showToast('프로필 수정을 성공하였습니다.', 'check');
     },
@@ -143,37 +46,6 @@ const { setNickname, setProfileImageUrl } = useMemberStore();
       showToast('프로필 수정에 실패했습니다.', 'error');
     },
   });
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      console.log('선택된 파일 없음');
-      return;
-    }
-  
-    console.log('파일 선택됨:', {
-      name: file.name,
-      type: file.type,
-      size: file.size
-    });
-  
-    // 파일 타입 검증
-    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      console.log('잘못된 파일 타입:', file.type);
-      showToast('JPEG/JPG/PNG 파일만 업로드 가능합니다.', 'error');
-      return;
-    }
-  
-    // 파일 크기 검증
-    if (file.size > MAX_FILE_SIZE) {
-      console.log('파일 크기 초과:', file.size);
-      showToast('파일 크기는 5MB 이하여야 합니다.', 'error');
-      return;
-    }
-  
-    console.log('이미지 업로드 시작');
-    setIsUploading(true);
-    uploadImageMutation(file);
-  };
 
   const handleImageDelete = () => {
     setEditedImage(null);

@@ -26,7 +26,7 @@ const MY_PAGE_TABS: TabItem[] = [
 export default function MyPage() {
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
-  const { 
+  const {
     setIsLogin,
   } = useMemberStore();
 
@@ -46,7 +46,7 @@ export default function MyPage() {
   //   setCurrentTab(id);
   // };
 
-  
+
 
   // 핏몬이가 모임장인 모임 데이터
   const hostedGatherings: GatheringItem[] = [
@@ -295,7 +295,7 @@ export default function MyPage() {
 
   return (
     <div className="w-full mx-auto pt-[80px]" style={{ maxWidth: '1200px' }}>
-       <Profile />
+      <Profile />
 
       <div className="mt-14">
         <Tab
