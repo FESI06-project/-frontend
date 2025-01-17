@@ -12,7 +12,6 @@ import GatheringGuestbook from './components/GatheringGuestbook';
 import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
-import ChallengeAddModal from './components/ChallengeAddModal';
 
 export default function GatheringDetail() {
   const router = useRouter();
@@ -187,10 +186,12 @@ export default function GatheringDetail() {
       {/* 모달 */}
       {showModal && (
         <Modal
-          title="챌린지 정보를 입력해주세요."
+          title="모임 정보를 입력해주세요."
           onClose={() => setShowModal(false)}
         >
-          <ChallengeAddModal />
+          <div>
+            <p>{'모임 정보'}</p>
+          </div>
         </Modal>
       )}
 
