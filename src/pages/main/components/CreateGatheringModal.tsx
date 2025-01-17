@@ -25,7 +25,16 @@ const initialState: CreateGatheringForm = {
   totalCount: 0,
   minCount: 0,
   tags: [],
-  challenges: [],
+  challenges: [
+    {
+      title: '',
+      description: '',
+      imageUrl: '',
+      maxPeopleCount: 0,
+      startDate: null,
+      endDate: null,
+    },
+  ],
 };
 
 export default function CreateGathering({
@@ -56,8 +65,33 @@ export default function CreateGathering({
   const handleChallengeUpdate = (updatedChallenge: CreateChallenge) => {
     setFormData((prev) => ({
       ...prev,
-      challenges: [updatedChallenge], // 단일 챌린지로 배열 업데이트
+      challenges: [updatedChallenge],
     }));
+  };
+
+  // 유효성 검사 함수
+  const isStepValid = () => {
+    if (currentStep === 0) {
+      return formData.mainType !== ''; // 0단계: mainType이 선택되어야 함
+    }
+    if (currentStep === 1) {
+      return (
+        formData.title.trim() !== '' &&
+        formData.description.trim() !== '' &&
+        formData.startDate !== null &&
+        formData.endDate !== null
+      ); // 1단계: 필수 필드 검증
+    }
+    if (currentStep === 2) {
+      const challenge = formData.challenges[0]; // 첫 번째 챌린지
+      return (
+        challenge?.title.trim() !== '' &&
+        challenge?.description.trim() !== '' &&
+        challenge?.startDate !== null &&
+        challenge?.endDate !== null
+      );
+    }
+    return true; // 3단계는 유효성 검사 없음
   };
 
   return (
@@ -111,12 +145,14 @@ export default function CreateGathering({
 
         <div>
           {currentStep < 3 ? (
-            <div className="flex justify-end mt-6">
+            <div className="flex w-full mt-6">
               <Button
                 name="다음"
                 handleButtonClick={() =>
                   setCurrentStep((prev) => Math.min(prev + 1, 3))
                 }
+                style={isStepValid() ? 'default' : 'disabled'}
+                className="w-full h-[52px]"
               />
             </div>
           ) : (

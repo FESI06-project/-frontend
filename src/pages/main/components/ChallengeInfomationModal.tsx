@@ -63,6 +63,7 @@ export default function ChallengeInfomationModal({
                   src={formData.imageUrl}
                   alt="이미지 미리보기"
                   className="rounded-[10px] w-full h-full object-cover"
+                  fill
                 />
                 <div className="absolute w-full h-full bg-black/70 rounded-[10px] z-10" />
               </>
