@@ -7,153 +7,162 @@ import { SelectType } from '@/stores/useSelectStore';
 import Image from 'next/image';
 import { useState, ChangeEvent, KeyboardEvent } from 'react';
 
-export default function GatheringInfomationModal() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [newTag, setNewTag] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState('');
-  const [selectedPlaceSi, setSelectedPlaceSi] = useState('seoul');
-  const [selectedPlaceGu, setSelectedPlaceGu] = useState('dongjak');
-  const [maxPeopleCount, setMaxPeopleCount] = useState(0);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+interface FormData {
+  title: string;
+  description: string;
+  tags: string[];
+  newTag: string;
+  imageUrl: string;
+  selectedPlaceSi: string;
+  selectedPlaceGu: string;
+  maxPeopleCount: number;
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
+interface GatheringInfomationModalProps {
+  onChange: (data: FormData) => void;
+}
+
+export default function GatheringInfomationModal({
+  onChange,
+}: GatheringInfomationModalProps) {
+  const [formData, setFormData] = useState<FormData>({
+    title: '',
+    description: '',
+    tags: [],
+    newTag: '',
+    imageUrl: '',
+    selectedPlaceSi: 'seoul',
+    selectedPlaceGu: 'dongjak',
+    maxPeopleCount: 0,
+    startDate: null,
+    endDate: null,
+  });
 
   const placeSiItems = [
     { value: 'seoul', label: '서울시' },
     { value: 'busan', label: '부산시' },
     { value: 'daejeon', label: '대전시' },
   ];
+
   const placeGuItems = [
     { value: 'dongjak', label: '동작구' },
     { value: 'kangsu', label: '강서구' },
     { value: 'mapo', label: '마포구' },
   ];
 
-  const handleGatheringTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-  const handleGatheringDescriptionChange = (
-    e: ChangeEvent<HTMLTextAreaElement>,
+  // 상태 업데이트 핸들러
+  const updateFormData = <K extends keyof FormData>(
+    key: K,
+    value: FormData[K],
   ) => {
-    setDescription(e.target.value);
+    setFormData((prev) => {
+      const updated = { ...prev, [key]: value };
+      onChange(updated); // 부모로 업데이트된 데이터 전달
+      return updated;
+    });
   };
 
-  const handleTagDeleteButtonClick = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag));
+  // 태그 관련 핸들러
+  const handleTagDelete = (tag: string) => {
+    const updatedTags = formData.tags.filter((t) => t !== tag);
+    updateFormData('tags', updatedTags);
   };
 
-  const handleNewTagOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleNewTagChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length >= 6) {
       alert('태그는 최대 5글자까지 추가 가능합니다.');
       return;
     }
-    setNewTag(e.target.value);
+    updateFormData('newTag', e.target.value);
   };
 
   const handleEnterKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
-      if (tags.length === 3) {
+      if (formData.tags.length === 3) {
         alert('태그는 최대 3개까지 추가 가능합니다.');
-        setNewTag('');
+        updateFormData('newTag', '');
         return;
       }
-      setTags([...tags, newTag]);
-      setNewTag('');
+      const updatedTags = [...formData.tags, formData.newTag];
+      updateFormData('tags', updatedTags);
+      updateFormData('newTag', '');
     }
   };
 
-  // 기능을 붙이지 않아 임시조치
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleCreateButtonClick = () => {
-    const newGathering = {
-      title,
-      description,
-      imageUrl,
-      startDate,
-      endDate,
-      mainLocation: placeSiItems.find((item) => item.value === selectedPlaceSi)
-        ?.label,
-      subLocation: placeGuItems.find((item) => item.value === selectedPlaceGu)
-        ?.label,
-      tags,
-      maxPeopleCount,
-    };
-
-    console.log(newGathering);
-  };
-
-  const handleImageEditButtonClick = () => {
-    const fileInput = document.getElementById('file-input');
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
+  // 이미지 관련 핸들러
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-
     const file = e.target.files[0];
-    if (file) {
-      setImageUrl(URL.createObjectURL(file));
-    }
+    const imageUrl = URL.createObjectURL(file);
+    updateFormData('imageUrl', imageUrl);
   };
 
-  const handleImageDeleteButtonClick = () => {
-    setImageUrl('');
+  const handleImageDelete = () => updateFormData('imageUrl', '');
+
+  const handleImageEditClick = () => {
+    const fileInput = document.getElementById('file-input') as HTMLInputElement;
+    fileInput?.click();
   };
 
   return (
     <div>
       {/* 모임 정보 */}
       <div id="information">
-        <div className="mt-[30px] mb-[10px]">모임 정보</div>
+        <h2 className="mt-[30px] mb-[10px]">모임 정보</h2>
         <div className="flex gap-[10px]">
+          {/* 이미지 업로드 */}
           <div className="relative border-[1px] rounded-[10px] bg-dark-400 border-dark-500 w-[130px] h-[130px] flex">
-            {/* <Image
-              className="border-[1px] rounded-[10px] border-dark-500"
-              width={130}
-              height={130}
-              alt="edit-image"
-            /> */}
-
-            {/* <div className="absolute bg-black/80 w-full h-full z-10 border-[1px] rounded-[10px] border-dark-500" /> */}
-
-            <div className="absolute w-[130px] h-[130px] z-20 flex flex-col justify-center items-center gap-2 hover:cursor-pointer">
+            {formData.imageUrl && (
+              <>
+                <img
+                  src={formData.imageUrl}
+                  alt="이미지 미리보기"
+                  className="rounded-[10px] w-full h-full object-cover"
+                />
+                <div className="absolute w-full h-full bg-black/70 rounded-[10px] z-10" />
+              </>
+            )}
+            <div className="absolute w-full h-full flex flex-col justify-center items-center gap-2 z-20 hover:cursor-pointer">
               <input
                 type="file"
+                id="file-input"
                 className="hidden"
                 accept="image/*"
-                id="file-input"
-                onChange={(e) => handleImageChange(e)}
+                onChange={handleImageChange}
               />
               <Image
-                src={'/assets/image/gathering_edit.svg'}
+                src="/assets/image/gathering_edit.svg"
                 width={45}
                 height={45}
-                alt="pencil"
-                onClick={handleImageEditButtonClick}
+                alt="edit-image"
+                onClick={handleImageEditClick}
               />
-              <p
-                onClick={handleImageDeleteButtonClick}
+              <button
+                onClick={handleImageDelete}
                 className="text-sm text-dark-700 hover:cursor-pointer"
               >
-                {'이미지 삭제'}
-              </p>
+                이미지 삭제
+              </button>
             </div>
           </div>
+
+          {/* 제목 및 설명 */}
           <div className="w-[360px]">
             <Input
               type="text"
               placeholder="모임명을 입력해 주세요. (25자 제한)"
-              handleInputChange={(e) => handleGatheringTitleChange(e)}
-              value={title}
+              handleInputChange={(e) => updateFormData('title', e.target.value)}
+              value={formData.title}
               className="outline-dark-500 bg-dark-400 mb-[7px] h-[47px]"
             />
             <TextArea
               placeholder="설명을 입력해 주세요. (50자 제한)"
-              handleInputChange={(e) => handleGatheringDescriptionChange(e)}
-              value={description}
+              handleInputChange={(e) =>
+                updateFormData('description', e.target.value)
+              }
+              value={formData.description}
               className="h-[76px] flex outline-dark-500 bg-dark-400 leading-[24px] overflow-x-auto resize-none whitespace-pre-wrap break-words"
             />
           </div>
@@ -162,47 +171,54 @@ export default function GatheringInfomationModal() {
 
       {/* 모임 태그 */}
       <div id="tags">
-        <div className="mt-[20px] mb-[10px]">모임 태그</div>
-        <div className="relative  ">
-          <div className="h-[47px] rounded-[8px] border border-dark-500  bg-dark-400 flex items-center gap-[10px] px-5">
-            {tags.map((tag, index) => (
+        <h2 className="mt-[20px] mb-[10px]">모임 태그</h2>
+        <div className="relative">
+          <div className="h-[47px] rounded-[8px] border border-dark-500 bg-dark-400 flex items-center gap-[10px] px-5">
+            {formData.tags.map((tag) => (
               <div
+                key={tag}
                 className="h-[30px] w-[121px] flex items-center justify-center py-[7px] px-[10px] bg-dark-200 rounded-[10px] gap-2 z-10"
-                key={index}
               >
                 <p className="text-primary text-sm">{`#${tag}`}</p>
-                <button onClick={() => handleTagDeleteButtonClick(tag)}>
+                <button onClick={() => handleTagDelete(tag)}>
                   <Image
                     src="/assets/image/cancel-tag.svg"
                     width={11}
                     height={11}
-                    alt="tag-delete-button"
+                    alt="delete"
                   />
                 </button>
               </div>
             ))}
           </div>
           <input
+            type="text"
             className="absolute w-full bg-transparent top-0 h-[47px] outline-none"
             style={{
-              paddingLeft: `${tags.length * 121 + 30 + (tags.length - 1) * 10}px`,
+              paddingLeft: `${
+                formData.tags.length * 121 +
+                30 +
+                (formData.tags.length - 1) * 10
+              }px`,
             }}
-            value={newTag}
-            onChange={(e) => handleNewTagOnChange(e)}
-            onKeyDown={(e) => handleEnterKeyDown(e)}
+            value={formData.newTag}
+            onChange={handleNewTagChange}
+            onKeyDown={handleEnterKeyDown}
           />
         </div>
       </div>
 
       {/* 장소 및 최대 인원 */}
-      <div className="flex gap-[10px]">
+      <div className="flex gap-[10px] mt-[20px]">
         <div id="place">
-          <div className="mt-[20px] mb-[10px]">장소</div>
+          <h2 className="mb-[10px]">장소</h2>
           <div className="flex">
             <Select
               items={placeSiItems}
-              selectedItem={selectedPlaceSi}
-              setSelectedItem={setSelectedPlaceSi}
+              selectedItem={formData.selectedPlaceSi}
+              setSelectedItem={(value) =>
+                updateFormData('selectedPlaceSi', value)
+              }
               width="175px"
               height="47px"
               className="mr-[10px] w-[175px]"
@@ -210,8 +226,10 @@ export default function GatheringInfomationModal() {
             />
             <Select
               items={placeGuItems}
-              selectedItem={selectedPlaceGu}
-              setSelectedItem={setSelectedPlaceGu}
+              selectedItem={formData.selectedPlaceGu}
+              setSelectedItem={(value) =>
+                updateFormData('selectedPlaceGu', value)
+              }
               width="175px"
               height="47px"
               currentSelectType={SelectType.DETAIL_EDIT_MODAL_PLACE_GU}
@@ -220,37 +238,35 @@ export default function GatheringInfomationModal() {
         </div>
 
         <div id="max-people-count">
-          <div className="mt-[20px] mb-[10px]">최대인원</div>
+          <h2 className="mb-[10px]">최대 인원</h2>
           <NumberSelect
+            targetNumber={formData.maxPeopleCount}
+            setTargetNumber={(value) => updateFormData('maxPeopleCount', value)}
             width="130px"
             height="47px"
-            targetNumber={maxPeopleCount}
-            setTargetNumber={setMaxPeopleCount}
           />
         </div>
       </div>
 
-      <div className="flex gap-[10px]">
+      {/* 날짜 선택 */}
+      <div className="flex gap-[10px] mt-[20px]">
         <div>
-          <div className="mt-[20px] mb-[10px]">시작 날짜</div>
+          <h2 className="mb-[10px]">시작 날짜</h2>
           <DatePickerCalendar
-            selectedDate={startDate}
-            setSelectedDate={setStartDate}
-            className="w-[245px] h-[47px]"
+            selectedDate={formData.startDate}
+            setSelectedDate={(date) => updateFormData('startDate', date)}
             width="245px"
             height="47px"
           />
         </div>
-
         <div>
-          <div className="mt-[20px] mb-[10px]">마감 날짜</div>
+          <h2 className="mb-[10px]">마감 날짜</h2>
           <DatePickerCalendar
-            selectedDate={endDate}
-            setSelectedDate={setEndDate}
-            className="w-[245px] h-[47px]"
+            selectedDate={formData.endDate}
+            setSelectedDate={(date) => updateFormData('endDate', date)}
             width="245px"
             height="47px"
-            minDate={startDate!}
+            minDate={formData.startDate!}
           />
         </div>
       </div>

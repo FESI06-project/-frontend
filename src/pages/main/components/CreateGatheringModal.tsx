@@ -77,7 +77,11 @@ export default function CreateGathering({
               onSelect={(mainType) => updateFormData('mainType', mainType)}
             />
           )}
-          {currentStep === 1 && <GatheringInfomationModal />}
+          {currentStep === 1 && (
+            <GatheringInfomationModal
+              onChange={(updatedData) => console.log(updatedData)}
+            />
+          )}
           {currentStep === 2 && <div>세 번째 단계 내용</div>}
           {currentStep === 3 && (
             <div className="text-center">
