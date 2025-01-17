@@ -6,6 +6,7 @@ import Heart from '@/components/common/Heart';
 import ModalInput from '@/components/common/ModalInput';
 import { GuestbookItem } from '@/types';
 import useGuestbookStore from '@/stores/useGuestbookStore';
+import Preparing from '@/components/common/Preparing';
 
 interface GuestbookModalProps {
   isEditMode: boolean;
@@ -91,6 +92,7 @@ export default function GuestbookModal({
 
   return (
     <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'} onClose={onClose}>
+      <Preparing isVisible={true} message="api 준비 중인 서비스입니다..." />
       <div className="w-[500px] h-[340px]">
         <form onSubmit={handleSubmit}>
           <div className="my-[20px] flex items-center gap-4">
