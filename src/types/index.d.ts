@@ -1,4 +1,4 @@
-import { GatheringChallegeProps } from './index.d';
+import { GatheringChallegeProps, CreateGatheringForm } from './index.d';
 export interface TabItem {
   id: string;
   label: string;
@@ -109,24 +109,27 @@ export interface GatheringListItem {
   tags: string[];
 }
 
+export interface CreateChallenge {
+  title: string;
+  description: string;
+  imageUrl: string;
+  maxPeopleCount: number;
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 export interface CreateGatheringForm {
   title: string;
   description: string;
   mainType: string;
   subType: string;
   imageUrl: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date | null;
+  endDate: Date | null;
   mainLocation: string;
   subLocation: string;
   totalCount: number;
   minCount: number;
   tags: string[];
-  challenges: {
-    title: string;
-    description: string;
-    imageUrl: string;
-    startDate: string;
-    endDate: string;
-  }[];
+  challenges: CreateChallenge[];
 }

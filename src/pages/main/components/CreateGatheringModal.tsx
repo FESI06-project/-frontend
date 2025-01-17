@@ -2,10 +2,11 @@ import Modal from '@/components/dialog/Modal';
 import { useState } from 'react';
 import Step from './Step';
 import ChoiceMainTypeModal from './ChoiceMainTypeModal';
-import { CreateGatheringForm } from '@/types';
+import { CreateChallenge, CreateGatheringForm } from '@/types';
 import Button from '@/components/common/Button';
 import Image from 'next/image';
 import GatheringInfomationModal from './GatheringInfomationModal';
+import ChallengeInfomationModal from './ChallengeInfomationModal';
 
 interface CreateGatheringProps {
   setShowModal: () => void;
@@ -17,8 +18,8 @@ const initialState: CreateGatheringForm = {
   mainType: '유산소형',
   subType: '',
   imageUrl: '',
-  startDate: '',
-  endDate: '',
+  startDate: null,
+  endDate: null,
   mainLocation: '',
   subLocation: '',
   totalCount: 0,
@@ -31,8 +32,9 @@ export default function CreateGathering({
   setShowModal,
 }: CreateGatheringProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [formData, setFormDate] = useState<CreateGatheringForm>(initialState);
+  const [formData, setFormData] = useState<CreateGatheringForm>(initialState);
+
+  console.log(formData);
 
   const stepTitles = [
     '모임에 오신 걸 환영해요! 🎉',
@@ -45,9 +47,16 @@ export default function CreateGathering({
     key: K,
     value: CreateGatheringForm[K],
   ) => {
-    setFormDate((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [key]: value,
+    }));
+  };
+
+  const handleChallengeUpdate = (updatedChallenge: CreateChallenge) => {
+    setFormData((prev) => ({
+      ...prev,
+      challenges: [updatedChallenge], // 단일 챌린지로 배열 업데이트
     }));
   };
 
@@ -79,10 +88,17 @@ export default function CreateGathering({
           )}
           {currentStep === 1 && (
             <GatheringInfomationModal
-              onChange={(updatedData) => console.log(updatedData)}
+              onChange={(updatedData) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  ...updatedData,
+                }))
+              }
             />
           )}
-          {currentStep === 2 && <div>세 번째 단계 내용</div>}
+          {currentStep === 2 && (
+            <ChallengeInfomationModal onChange={handleChallengeUpdate} />
+          )}
           {currentStep === 3 && (
             <div className="text-center">
               <h1 className="text-2xl font-bold">
