@@ -1,14 +1,23 @@
 import { GatheringChallegeProps, CreateGatheringForm } from './index.d';
+
+export interface PageResponse<T> {
+  content: T[];
+  currentPage: number;
+  totalElements: number;
+  totalPages: number;
+}
+
 export interface TabItem {
   id: string;
   label: string;
 }
 export interface UserProfile {
-  memberId: string;
+  memberId: number;
+  nickName: string;
   email: string;
-  nickname: string;
-  profileImage: string | null;
+  profileImageUrl: string;
 }
+
 export interface GatheringItem {
   gatheringId: number;
   gatheringTitle: string;
