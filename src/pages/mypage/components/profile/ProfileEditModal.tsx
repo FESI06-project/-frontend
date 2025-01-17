@@ -1,5 +1,4 @@
-// components/profile/ProfileEditModal.tsx
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useMutation } from '@tanstack/react-query';
 import Modal from '@/components/dialog/Modal';
@@ -24,11 +23,19 @@ export default function ProfileEditModal({
   initialImage,
   onUpdate
 }: ProfileEditModalProps) {
-  const [editedNickname, setEditedNickname] = useState(initialNickname);
-  const [editedImage, setEditedImage] = useState<string | null>(initialImage);
+  const [editedNickname, setEditedNickname] = useState('');
+  const [editedImage, setEditedImage] = useState<string | null>(null);
   const [, setIsDisabled] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const showToast = useToastStore((state) => state.show);
+
+  // Reset form state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setEditedNickname(initialNickname || '');
+      setEditedImage(initialImage);
+    }
+  }, [isOpen, initialNickname, initialImage]);
 
   const { handleImageUpload, isUploading } = useImageUpload({
     uploadFn: profileService.uploadImage,
@@ -36,6 +43,11 @@ export default function ProfileEditModal({
       setEditedImage(imageUrl);
     }
   });
+
+  const validateNickname = (nickname: string): boolean => {
+    const trimmedNickname = nickname.trim();
+    return trimmedNickname.length >= 2 && trimmedNickname.length <= 10;
+  };
 
   const { mutate: updateProfileMutation } = useMutation({
     mutationFn: ({ nickname, profileImageUrl }: { nickname: string; profileImageUrl: string | null }) =>
@@ -58,15 +70,21 @@ export default function ProfileEditModal({
     showToast('이미지가 삭제되었습니다.', 'check');
   };
 
+  const handleNicknameChange = (value: string) => {
+    setEditedNickname(value);
+    setIsDisabled(!validateNickname(value));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editedNickname.trim()) {
+    if (!validateNickname(editedNickname)) {
+      showToast('닉네임은 2글자 이상, 10글자 이하로 입력해주세요.', 'error');
       setIsDisabled(true);
       return;
     }
 
     updateProfileMutation({
-      nickname: editedNickname,
+      nickname: editedNickname.trim(),
       profileImageUrl: editedImage,
     });
   };
@@ -135,12 +153,9 @@ export default function ProfileEditModal({
               <ModalInput
                 type="title"
                 value={editedNickname}
-                onChange={(value) => {
-                  setEditedNickname(value);
-                  setIsDisabled(!value.trim());
-                }}
+                onChange={handleNicknameChange}
                 placeholder="닉네임을 수정해주세요."
-                maxLength={25}
+                maxLength={10}
                 onValidationFail={() => setIsDisabled(true)}
               />
             </div>

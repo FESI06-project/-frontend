@@ -3,23 +3,20 @@ import MainCard from '../gathering-section/MainCard';
 import ChallengeSection from '../gathering-section/ChallengeSection';
 import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
-import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
 import { sortGatheringsByDate } from '@/utils/sortGatherings';
 import Preparing from '@/components/common/Preparing';
+import {
+  hostedGatherings,
+  hostedGatheringStates,
+  hostedGatheringChallenges
+} from '@/pages/mypage/constants/constants';
 
 interface MyGatheringProps {
-  gatherings?: GatheringItem[];
-  gatheringStates: { [key: number]: GatheringStateType };
-  gatheringChallenges: { [key: number]: GatheringChallengeType };
   onGatheringClick: (gatheringId: number) => void;
   onCancelGathering: (gatheringId: number) => void;
 }
-
 export default function MyGatheringTab({
-  gatherings = [],
-  gatheringStates,
-  gatheringChallenges,
   onCancelGathering,
 }: MyGatheringProps) {
   const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
@@ -30,10 +27,12 @@ export default function MyGatheringTab({
       [gatheringId]: !prev[gatheringId]
     }));
   };
-  const validGatherings = (gatherings || []).filter(gathering => {
-    const state = gatheringStates[gathering?.gatheringId];
+
+  const validGatherings = hostedGatherings.filter(gathering => {
+    const state = hostedGatheringStates[gathering?.gatheringId];
     return gathering && state;
   });
+
 
   if (validGatherings.length === 0) {
     return <Null message="아직 생성한 모임이 없습니다." />;
@@ -45,15 +44,15 @@ export default function MyGatheringTab({
   return (
     <div className="space-y-6 pb-[50px]">
       {sortedGatherings.map((gathering) => {
-        const state = gatheringStates[gathering.gatheringId];
+        const state = hostedGatheringStates[gathering.gatheringId];
         if (!state) return null;
 
-        const challenges = gatheringChallenges[gathering.gatheringId];
+        const challenges = hostedGatheringChallenges[gathering.gatheringId];
         const isOpen = openChallenges[gathering.gatheringId];
 
         return (
           <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
-            <Preparing isVisible={true} message="준비 중인 서비스입니다..." />
+            <Preparing isVisible={true} message="api 준비 중인 서비스입니다..." />
             <MainCard
               gathering={gathering}
               state={state}

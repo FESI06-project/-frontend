@@ -1,49 +1,79 @@
-// // api/guestbookService.ts
-// import apiRequest from '@/utils/apiRequest';
-// import { GuestbookItem, PageResponse } from '@/types';
+import apiRequest from '@/utils/apiRequest';
+import { GuestbookItem, PageResponse } from '@/types';
 
-// interface CreateGuestbookRequest {
-//   rating: number;
-//   content: string;
-// }
+interface GuestbookRequest {
+  rating: number;
+  content: string;
+}
 
-// interface UpdateGuestbookRequest {
-//   rating: number;
-//   content: string;
-// }
+export const guestbookService = {
+  // 내가 작성한 방명록 목록 조회
+  getMyGuestbooks: async (page = 0, pageSize = 10) => {
+    return await apiRequest<PageResponse<GuestbookItem>>({
+      param: `api/v1/guestbooks/my?page=${page}&pageSize=${pageSize}`,
+      method: 'get'
+    });
+  },
 
-// export const guestbookService = {
-//   // 내가 작성한 방명록 목록 조회
-//   getMyGuestbooks: async (page = 0, pageSize = 10) => {
-//     return await apiRequest<PageResponse<GuestbookItem>>({
-//       param: `api/v1/guestbooks/my?page=${page}&pageSize=${pageSize}`,
-//       method: 'get'
-//     });
-//   },
+  // 방명록 작성
+  createGuestbook: async (gatheringId: number, data: GuestbookRequest) => {
+    console.log('Request Data:', {
+      gatheringId,
+      requestBody: data
+    });
 
-//   // 방명록 작성
-//   createGuestbook: async (gatheringId: number, data: CreateGuestbookRequest) => {
-//     return await apiRequest<void>({
-//       param: `api/v1/gatherings/${gatheringId}/guestbooks`,
-//       method: 'post',
-//       requestData: data
-//     });
-//   },
+    // 요청 데이터 validation
+    if (!gatheringId) throw new Error('Gathering ID is required');
+    if (data.rating < 1 || data.rating > 5) throw new Error('Rating must be between 1 and 5');
+    if (!data.content?.trim()) throw new Error('Content is required');
 
-//   // 방명록 수정
-//   updateGuestbook: async (gatheringId: number, guestbookId: number, data: UpdateGuestbookRequest) => {
-//     return await apiRequest<void>({
-//       param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
-//       method: 'put',
-//       requestData: data
-//     });
-//   },
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response = await apiRequest<any>({
+        param: `api/v1/gatherings/${gatheringId}/guestbooks`,
+        method: 'post',
+        requestData: {
+          rating: data.rating,
+          content: data.content.trim()
+        }
+      });
 
-//   // 방명록 삭제
-//   deleteGuestbook: async (gatheringId: number, guestbookId: number) => {
-//     return await apiRequest<void>({
-//       param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
-//       method: 'delete'
-//     });
-//   }
-// };
+      console.log('Create guestbook response:', response);
+      return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('Create guestbook error:', {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message
+      });
+      throw error;
+    }
+  },
+
+  // 방명록 수정
+  updateGuestbook: async (gatheringId: number, guestbookId: number, data: GuestbookRequest) => {
+    if (!gatheringId || !guestbookId) throw new Error('Gathering ID and Guestbook ID are required');
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await apiRequest<any>({
+      param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
+      method: 'put',
+      requestData: {
+        rating: data.rating,
+        content: data.content.trim()
+      }
+    });
+  },
+
+  // 방명록 삭제
+  deleteGuestbook: async (gatheringId: number, guestbookId: number) => {
+    if (!gatheringId || !guestbookId) throw new Error('Gathering ID and Guestbook ID are required');
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await apiRequest<any>({
+      param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
+      method: 'delete'
+    });
+  }
+};

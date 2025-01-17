@@ -4,23 +4,20 @@ import ChallengeSection from '../gathering-section/ChallengeSection';
 import MainCard from '../gathering-section/MainCard';
 import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
-import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
-import Preparing from '@/components/common/Preparing'; 
-
+import Preparing from '@/components/common/Preparing';
+import {
+  userGatherings,
+  userGatheringStates,
+  userGatheringChallenges
+} from '@/pages/mypage/constants/constants';
 
 interface JoinGatheringProps {
-  gatherings?: GatheringItem[];
-  gatheringStates: { [key: number]: GatheringStateType };
-  gatheringChallenges: { [key: number]: GatheringChallengeType };
   onGatheringClick: (gatheringId: number) => void;
   onCancelParticipation: (gatheringId: number) => void;
 }
 
-export default function MyGatheringTab({
-  gatherings = [],
-  gatheringStates,
-  gatheringChallenges,
+export default function JoinGathering({
   onCancelParticipation,
 }: JoinGatheringProps) {
   const [openChallenges, setOpenChallenges] = useState<{
@@ -33,34 +30,33 @@ export default function MyGatheringTab({
       [gatheringId]: !prev[gatheringId],
     }));
   };
-  const validGatherings = (gatherings || []).filter(gathering => {
-    const state = gatheringStates[gathering?.gatheringId];
+
+  const validGatherings = userGatherings.filter(gathering => {
+    const state = userGatheringStates[gathering?.gatheringId];
     return gathering && state;
   });
 
   if (validGatherings.length === 0) {
     return <Null message="아직 참여한 모임이 없습니다." />;
   }
-  
 
   const sortedGatherings = sortGatheringsByDate(validGatherings);
 
   return (
     <div className="space-y-6 pb-[50px]">
       {sortedGatherings.map((gathering) => {
-        const state = gatheringStates[gathering.gatheringId];
+        const state = userGatheringStates[gathering.gatheringId];
         if (!state) return null;
 
-        const challenges = gatheringChallenges[gathering.gatheringId];
+        const challenges = userGatheringChallenges[gathering.gatheringId];
         const isOpen = openChallenges[gathering.gatheringId];
 
         return (
-          
           <div
             key={gathering.gatheringId}
             className="relative rounded-lg overflow-hidden mb-[50px]"
           >
-          <Preparing isVisible={true} message="준비 중인 서비스입니다..." />
+            <Preparing isVisible={true} message="api 준비 중인 서비스입니다..." />
             <MainCard
               gathering={gathering}
               state={state}
@@ -78,9 +74,7 @@ export default function MyGatheringTab({
               type="gathering"
               gatheringStartDate={gathering.gatheringStartDate}
               gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
-              isReservationCancellable={
-                gathering.isReservationCancellable || false
-              }
+              isReservationCancellable={gathering.isReservationCancellable || false}
               onOverlay={() => {
                 setOpenChallenges((prev) => ({
                   ...prev,
