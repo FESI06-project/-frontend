@@ -1,18 +1,12 @@
-import { useState, useCallback } from 'react';
-import {
-  TabItem,
-} from '@/types';
+import { useState, useCallback, useEffect } from 'react';
+import { GuestbookItem, TabItem } from '@/types';
 import SubTag from '@/components/tag/SubTag';
 import GuestbookModal from '../guestbook/GuestbookModal';
 import WrittenGuestbooks from '../guestbook/WrittenGuestbooks';
 import AvailableGuestbooks from '../guestbook/AvailableGuestbooks';
 import useToastStore from '@/stores/useToastStore';
-import {
-  userGuestbooks,
-  userGatherings,
-  userGatheringChallenges,
-  userGatheringStates
-} from '@/pages/mypage/constants/constants';
+import useGuestbookStore from '@/stores/useGuestbookStore';
+import { userGatheringChallenges, userGatherings, userGatheringStates } from '../../constants/constants';
 
 const GUESTBOOK_TABS: TabItem[] = [
   { id: 'available', label: '작성 가능한 방명록' },
@@ -25,16 +19,42 @@ export default function GuestbookTab() {
     isOpen: boolean;
     isEditMode: boolean;
     gatheringId?: number;
-    guestbook?: typeof userGuestbooks[0];
+    guestbook?: GuestbookItem;
   }>({ isOpen: false, isEditMode: false });
 
   const showToast = useToastStore((state) => state.show);
+  const { 
+    guestbooks, 
+    isLoading,
+    fetchGuestbooks,
+    createGuestbook,
+    updateGuestbook 
+  } = useGuestbookStore();
 
-  const handleModalSubmit = useCallback(() => {
-    const message = modalState.isEditMode ? '수정' : '작성';
-    setModalState({ isOpen: false, isEditMode: false });
-    showToast(`방명록이 ${message}되었습니다.`, 'check');
-  }, [modalState.isEditMode, showToast]);
+  useEffect(() => {
+    if (showWritten) {
+      fetchGuestbooks();
+    }
+  }, [showWritten, fetchGuestbooks]);
+
+  const handleModalSubmit = useCallback(async (data: { content: string; rating: number }) => {
+    try {
+      if (modalState.isEditMode && modalState.guestbook) {
+        await updateGuestbook(
+          modalState.guestbook.gatheringId,
+          modalState.guestbook.reviewId,
+          data
+        );
+        showToast('방명록이 수정되었습니다.', 'check');
+      } else if (modalState.gatheringId) {
+        await createGuestbook(modalState.gatheringId, data);
+        showToast('방명록이 작성되었습니다.', 'check');
+      }
+      setModalState({ isOpen: false, isEditMode: false });
+    } catch (error) {
+      showToast('오류가 발생했습니다.', 'error');
+    }
+  }, [modalState, updateGuestbook, createGuestbook, showToast]);
 
   const handleModalClose = useCallback(() => {
     setModalState({ isOpen: false, isEditMode: false });
@@ -56,7 +76,7 @@ export default function GuestbookTab() {
     });
   }, []);
 
-  const handleEditClick = useCallback((guestbook: typeof userGuestbooks[0]) => {
+  const handleEditClick = useCallback((guestbook: GuestbookItem) => {
     setModalState({
       isOpen: true,
       isEditMode: true,
@@ -66,7 +86,6 @@ export default function GuestbookTab() {
 
   const handleTabChange = useCallback((id: TabItem['id']) => setShowWritten(id === 'written'), []);
 
-  //쓸 수 있는 방명록 필터링 함수
   const eligibleGatherings = useCallback(
     () =>
       userGatherings.filter((gathering) => {
@@ -92,7 +111,7 @@ export default function GuestbookTab() {
 
       {showWritten ? (
         <WrittenGuestbooks
-          guestbooks={userGuestbooks}
+          guestbooks={guestbooks} 
           gatherings={userGatherings}
           onEditClick={handleEditClick}
         />
