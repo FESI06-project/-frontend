@@ -6,6 +6,7 @@ import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
+import Preparing from '@/components/common/Preparing'; 
 
 interface MyGatheringTabProps {
   gatherings?: GatheringItem[];
@@ -39,6 +40,7 @@ export default function MyGatheringTab({
   if (validGatherings.length === 0) {
     return <Null message="아직 참여한 모임이 없습니다." />;
   }
+  
 
   const sortedGatherings = sortGatheringsByDate(validGatherings);
 
@@ -52,10 +54,12 @@ export default function MyGatheringTab({
         const isOpen = openChallenges[gathering.gatheringId];
 
         return (
+          
           <div
             key={gathering.gatheringId}
             className="relative rounded-lg overflow-hidden mb-[50px]"
           >
+          <Preparing isVisible={true} message="준비 중인 서비스입니다..." />
             <MainCard
               gathering={gathering}
               state={state}

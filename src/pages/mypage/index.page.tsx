@@ -5,6 +5,7 @@ import GatheringTab from './components/tab/GatheringTab';
 import GuestbookTab from './components/tab/GuestbookTab';
 import MyGatheringTab from './components/tab/MyGatheringTab';
 import CalendarTab from './components/tab/CalendarTab';
+import Preparing from '@/components/common/Preparing';
 import { useEffect, useState } from 'react';
 import type {
   TabItem,
@@ -312,6 +313,7 @@ export default function MyPage() {
               gatheringChallenges={userGatheringChallenges}
               onGatheringClick={handleGatheringClick}
               onCancelParticipation={handleCancelParticipation}
+              
             />
           )}
           {currentTab === 'guestbook' && (
