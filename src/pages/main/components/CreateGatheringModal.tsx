@@ -31,10 +31,8 @@ export default function CreateGathering({
   setShowModal,
 }: CreateGatheringProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<CreateGatheringForm>(() => {
-    const savedData = localStorage.getItem('createGatheringFormData');
-    return savedData ? JSON.parse(savedData) : initialState;
-  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [formData, setFormDate] = useState<CreateGatheringForm>(initialState);
 
   const stepTitles = [
     '모임에 오신 걸 환영해요! 🎉',
@@ -47,31 +45,10 @@ export default function CreateGathering({
     key: K,
     value: CreateGatheringForm[K],
   ) => {
-    const updatedData = {
-      ...formData,
+    setFormDate((prev) => ({
+      ...prev,
       [key]: value,
-    };
-    setFormData(updatedData);
-    localStorage.setItem(
-      'createGatheringFormData',
-      JSON.stringify(updatedData),
-    );
-  };
-
-  const handleNextStep = () => {
-    setCurrentStep((prev) => {
-      const nextStep = Math.min(prev + 1, 3);
-      localStorage.setItem('currentStep', JSON.stringify(nextStep));
-      return nextStep;
-    });
-  };
-
-  const handlePrevStep = () => {
-    setCurrentStep((prev) => {
-      const prevStep = Math.max(prev - 1, 0);
-      localStorage.setItem('currentStep', JSON.stringify(prevStep));
-      return prevStep;
-    });
+    }));
   };
 
   return (
@@ -81,7 +58,7 @@ export default function CreateGathering({
         {currentStep > 0 && (
           <div
             className="absolute -top-10 -left-1 cursor-pointer"
-            onClick={handlePrevStep}
+            onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
           >
             <Image
               src="/assets/image/arrow-left.svg"
@@ -97,18 +74,12 @@ export default function CreateGathering({
         <div className="mt-4">
           {currentStep === 0 && (
             <ChoiceMainTypeModal
-              selectedType={formData.mainType} // 선택된 타입 전달
               onSelect={(mainType) => updateFormData('mainType', mainType)}
             />
           )}
           {currentStep === 1 && (
             <GatheringInfomationModal
-              onChange={(updatedData) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  ...updatedData,
-                }))
-              }
+              onChange={(updatedData) => console.log(updatedData)}
             />
           )}
           {currentStep === 2 && <div>세 번째 단계 내용</div>}
@@ -125,7 +96,12 @@ export default function CreateGathering({
         <div>
           {currentStep < 3 ? (
             <div className="flex justify-end mt-6">
-              <Button name="다음" handleButtonClick={handleNextStep} />
+              <Button
+                name="다음"
+                handleButtonClick={() =>
+                  setCurrentStep((prev) => Math.min(prev + 1, 3))
+                }
+              />
             </div>
           ) : (
             <div className="text-center mt-4">완료~</div>
