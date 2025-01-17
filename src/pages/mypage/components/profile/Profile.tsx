@@ -5,16 +5,22 @@ import useMemberStore from '@/stores/useMemberStore';
 import ProfileEditModal from './ProfileEditModal';
 
 export default function Profile() {
-  const { nickname, email, profileImageUrl, setNickname, setProfileImageUrl } = useMemberStore();
+  const { user, setUser } = useMemberStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleProfileUpdate = (newNickname: string, newImageUrl: string | null) => {
-    setNickname(newNickname);
-    setProfileImageUrl(newImageUrl);
+  const handleProfileUpdate = (
+    newNickname: string,
+    newImageUrl: string | null,
+  ) => {
+    setUser({
+      ...user,
+      nickName: newNickname,
+      profileImageUrl: newImageUrl,
+    });
   };
 
   return (
@@ -23,9 +29,9 @@ export default function Profile() {
         <div className="flex-shrink-0">
           <Image
             src={
-              !profileImageUrl || profileImageUrl === 'null'
+              !user.profileImageUrl || user.profileImageUrl === 'null'
                 ? '/assets/image/mypage_profile.svg'
-                : profileImageUrl
+                : user.profileImageUrl
             }
             alt="프로필 이미지"
             width={50}
@@ -42,9 +48,9 @@ export default function Profile() {
         <div className="flex-grow">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-medium">{nickname || '닉네임 없음'}</h1>
+              <h1 className="font-medium">{user.nickName || '닉네임 없음'}</h1>
               <p className="text-dark-600 font-light">
-                {email || '이메일 없음'}
+                {user.email || '이메일 없음'}
               </p>
             </div>
             <button onClick={handleEditClick}>
@@ -62,8 +68,8 @@ export default function Profile() {
       <ProfileEditModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        initialNickname={nickname || ''}
-        initialImage={profileImageUrl}
+        initialNickname={user.nickName || ''}
+        initialImage={user.profileImageUrl}
         onUpdate={handleProfileUpdate}
       />
     </>

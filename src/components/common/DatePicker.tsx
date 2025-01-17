@@ -41,7 +41,7 @@ export default function DatePickerCalendar({
 
   return (
     <div
-      className={`relative flex items-center bg-dark-500 border-[1px] border-dark-400 rounded-[8px] ${className} w-[${width}] h-[${height}]`}
+      className={`relative flex items-center bg-dark-400 border-[1px] border-dark-500 rounded-[8px] ${className} w-[${width}] h-[${height}]`}
     >
       <DatePicker
         className={'datepicker'}

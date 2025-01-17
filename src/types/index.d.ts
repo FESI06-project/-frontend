@@ -1,4 +1,12 @@
-import { GatheringChallegeProps } from './index.d';
+import { GatheringChallegeProps, CreateGatheringForm } from './index.d';
+
+export interface PageResponse<T> {
+  content: T[];
+  currentPage: number;
+  totalElements: number;
+  totalPages: number;
+}
+
 export interface TabItem {
   id: string;
   label: string;
@@ -8,13 +16,6 @@ export interface UserProfile {
   nickName: string;
   email: string;
   profileImageUrl: string;
-}
-interface ProfileUpdate {
-  nickName: string;
-  profileImageUrl: string | null;
-}
-interface ImageUpload {
-  imageUrl: string;
 }
 
 export interface GatheringItem {
@@ -117,24 +118,27 @@ export interface GatheringListItem {
   tags: string[];
 }
 
+export interface CreateChallenge {
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  // maxPeopleCount: number;
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 export interface CreateGatheringForm {
   title: string;
   description: string;
   mainType: string;
   subType: string;
-  imageUrl: string;
-  startDate: string;
-  endDate: string;
+  imageUrl: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
   mainLocation: string;
   subLocation: string;
   totalCount: number;
   minCount: number;
   tags: string[];
-  challenges: {
-    title: string;
-    description: string;
-    imageUrl: string;
-    startDate: string;
-    endDate: string;
-  }[];
+  challenges: CreateChallenge[];
 }
