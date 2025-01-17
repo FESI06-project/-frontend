@@ -50,7 +50,7 @@ export default function GuestbookTab() {
         showToast('방명록이 작성되었습니다.', 'check');
       }
       setModalState({ isOpen: false, isEditMode: false });
-    } catch (error) {
+    } catch {
       showToast('오류가 발생했습니다.', 'error');
     }
   }, [modalState, updateGuestbook, createGuestbook, showToast]);

@@ -1,5 +1,5 @@
 // hooks/useTabState.ts
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import type { TabItem } from '@/types';
 
 interface UseTabStateProps {

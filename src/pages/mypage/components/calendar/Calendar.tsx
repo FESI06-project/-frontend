@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { 
+import {
   hostedGatherings, // 호스트로 참여한 모임 데이터
   userGatherings // 유저로 참여한 모임 데이터
 } from '@/pages/mypage/constants/constants';
@@ -9,7 +10,7 @@ import {
 export default function CalendarTab() {
   // FullCalendar 컴포넌트의 레퍼런스를 저장하기 위한 useRef
   const calendarRef = useRef<FullCalendar | null>(null);
-  
+
   // 현재 캘린더 제목 (현재 월, 연도 등)을 저장하기 위한 상태
   const [currentTitle, setCurrentTitle] = useState('');
 
@@ -124,7 +125,12 @@ export default function CalendarTab() {
             // 이벤트 커스터마이즈 렌더링
             <div className="flex items-center justify-center gap-1 px-1 py-0.5 rounded text-xs" style={{ color: event.textColor }}>
               {event.extendedProps.isHost && (
-                <img src="/assets/image/crown.svg" alt="host" className="w-3 h-3" />
+                <Image
+                  src="/assets/image/crown.svg"
+                  alt="host"
+                  width={12}
+                  height={12}
+                />
               )}
               <span>{event.title}</span>
             </div>
@@ -135,7 +141,7 @@ export default function CalendarTab() {
               {date.toLocaleString('en-US', { weekday: 'short' })} {/* 요일 표시 */}
             </span>
           )}
-          dayCellClassNames={({ isToday }) => 
+          dayCellClassNames={({ isToday }) =>
             `calendar-cell ${isToday ? 'today' : ''}` // 오늘 날짜 강조 스타일
           }
           dayCellContent={({ date }) => (

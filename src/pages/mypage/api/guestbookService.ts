@@ -28,6 +28,7 @@ export const guestbookService = {
     if (!data.content?.trim()) throw new Error('Content is required');
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await apiRequest<any>({
         param: `api/v1/gatherings/${gatheringId}/guestbooks`,
         method: 'post',
@@ -39,6 +40,7 @@ export const guestbookService = {
 
       console.log('Create guestbook response:', response);
       return response;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Create guestbook error:', {
         status: error?.response?.status,
@@ -53,6 +55,7 @@ export const guestbookService = {
   updateGuestbook: async (gatheringId: number, guestbookId: number, data: GuestbookRequest) => {
     if (!gatheringId || !guestbookId) throw new Error('Gathering ID and Guestbook ID are required');
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return await apiRequest<any>({
       param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
       method: 'put',
@@ -67,6 +70,7 @@ export const guestbookService = {
   deleteGuestbook: async (gatheringId: number, guestbookId: number) => {
     if (!gatheringId || !guestbookId) throw new Error('Gathering ID and Guestbook ID are required');
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return await apiRequest<any>({
       param: `api/v1/gatherings/${gatheringId}/guestbooks/${guestbookId}`,
       method: 'delete'
