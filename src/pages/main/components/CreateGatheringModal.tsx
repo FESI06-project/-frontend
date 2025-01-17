@@ -1,11 +1,13 @@
+import apiRequest from '@/utils/apiRequest';
 import Modal from '@/components/dialog/Modal';
 import { useState } from 'react';
 import Step from './Step';
 import ChoiceMainTypeModal from './ChoiceMainTypeModal';
-import { CreateGatheringForm } from '@/types';
+import { CreateChallenge, CreateGatheringForm } from '@/types';
 import Button from '@/components/common/Button';
 import Image from 'next/image';
 import GatheringInfomationModal from './GatheringInfomationModal';
+import ChallengeInfomationModal from './ChallengeInfomationModal';
 
 interface CreateGatheringProps {
   setShowModal: () => void;
@@ -16,23 +18,33 @@ const initialState: CreateGatheringForm = {
   description: '',
   mainType: '유산소형',
   subType: '',
-  imageUrl: '',
-  startDate: '',
-  endDate: '',
+  imageUrl: null,
+  startDate: null,
+  endDate: null,
   mainLocation: '',
   subLocation: '',
   totalCount: 0,
-  minCount: 0,
+  minCount: 5,
   tags: [],
-  challenges: [],
+  challenges: [
+    {
+      title: '',
+      description: '',
+      imageUrl: null,
+      // maxPeopleCount: 0,
+      startDate: null,
+      endDate: null,
+    },
+  ],
 };
 
 export default function CreateGathering({
   setShowModal,
 }: CreateGatheringProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [formData, setFormDate] = useState<CreateGatheringForm>(initialState);
+  const [formData, setFormData] = useState<CreateGatheringForm>(initialState);
+
+  console.log(formData);
 
   const stepTitles = [
     '모임에 오신 걸 환영해요! 🎉',
@@ -45,10 +57,65 @@ export default function CreateGathering({
     key: K,
     value: CreateGatheringForm[K],
   ) => {
-    setFormDate((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
+  };
+
+  const handleChallengeUpdate = (updatedChallenge: CreateChallenge) => {
+    setFormData((prev) => ({
+      ...prev,
+      challenges: [updatedChallenge],
+    }));
+  };
+
+  const isStepValid = () => {
+    if (currentStep === 0) {
+      return formData.mainType !== '';
+    }
+    if (currentStep === 1) {
+      return (
+        formData.title.trim() !== '' &&
+        formData.description.trim() !== '' &&
+        formData.startDate !== null &&
+        formData.endDate !== null
+      );
+    }
+    if (currentStep === 2) {
+      const challenge = formData.challenges[0];
+      return (
+        challenge?.title.trim() !== '' &&
+        challenge?.description.trim() !== '' &&
+        challenge?.startDate !== null &&
+        challenge?.endDate !== null
+      );
+    }
+    return true;
+  };
+
+  const handlePostGathering = async () => {
+    try {
+      const response = await apiRequest<CreateGatheringForm>({
+        param: '/api/v1/gatherings',
+        method: 'post',
+        requestData: formData,
+      });
+      console.log('POST 성공:', response);
+      setCurrentStep((prev) => Math.min(prev + 1, 3)); // 3단계로 이동
+    } catch (error) {
+      console.error('POST 실패:', error);
+      alert('모임 생성을 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleNextStep = () => {
+    if (currentStep === 2) {
+      // 2단계에서 POST 요청
+      handlePostGathering();
+    } else {
+      setCurrentStep((prev) => Math.min(prev + 1, 3));
+    }
   };
 
   return (
@@ -74,11 +141,27 @@ export default function CreateGathering({
         <div className="mt-4">
           {currentStep === 0 && (
             <ChoiceMainTypeModal
-              onSelect={(mainType) => updateFormData('mainType', mainType)}
+              onSelect={(mainType, subType) => {
+                console.log('메인 타입:', mainType);
+                console.log('서브 타입:', subType);
+                updateFormData('mainType', mainType);
+                updateFormData('subType', subType);
+              }}
             />
           )}
-          {currentStep === 1 && <GatheringInfomationModal />}
-          {currentStep === 2 && <div>세 번째 단계 내용</div>}
+          {currentStep === 1 && (
+            <GatheringInfomationModal
+              onChange={(updatedData) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  ...updatedData,
+                }))
+              }
+            />
+          )}
+          {currentStep === 2 && (
+            <ChallengeInfomationModal onChange={handleChallengeUpdate} />
+          )}
           {currentStep === 3 && (
             <div className="text-center">
               <h1 className="text-2xl font-bold">
@@ -91,12 +174,12 @@ export default function CreateGathering({
 
         <div>
           {currentStep < 3 ? (
-            <div className="flex justify-end mt-6">
+            <div className="flex w-full mt-6">
               <Button
                 name="다음"
-                handleButtonClick={() =>
-                  setCurrentStep((prev) => Math.min(prev + 1, 3))
-                }
+                handleButtonClick={handleNextStep}
+                style={isStepValid() ? 'default' : 'disabled'}
+                className="w-full h-[52px]"
               />
             </div>
           ) : (

@@ -1,6 +1,5 @@
 import { useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import Loading from '@/components/dialog/Loading';
 import Null from '@/components/common/Null';
 import Card from './Card';
 import { GatheringList } from '@/types';
@@ -58,7 +57,7 @@ export default function Cardlist({ mainType, subType, valid }: CardlistProps) {
 
   // 로딩 상태 처리
   if (isLoading) {
-    return <Loading />;
+    return <Null message="로딩중입니다." />;
   }
 
   // 오류 상태 처리
