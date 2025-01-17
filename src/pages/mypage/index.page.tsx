@@ -8,6 +8,7 @@ import Calendar from './components/calendar/Calendar';
 import { useEffect, useState } from 'react';
 import type { TabItem } from '@/types';
 import useMemberStore from '@/stores/useMemberStore';
+import useTabState from '@/hooks/useTabState';
 
 const MY_PAGE_TABS: TabItem[] = [
   { id: 'gathering', label: '나의 모임' },
@@ -18,17 +19,18 @@ const MY_PAGE_TABS: TabItem[] = [
 
 const CURRENT_TAB_KEY = 'mypage_current_tab';
 
+
 export default function MyPage() {
   const router = useRouter();
   const [isInitialized, setIsInitialized] = useState(false);
   const { setIsLogin } = useMemberStore();
+  const { currentTab, handleTabChange } = useTabState({
+    tabs: MY_PAGE_TABS,
+    storageKey: CURRENT_TAB_KEY
+  });
 
-  // URL 쿼리와 localStorage에서 현재 탭 상태를 가져오기
-  const [currentTab, setCurrentTab] = useState<TabItem['id']>(MY_PAGE_TABS[0].id);
-
-  // 초기화 및 탭 상태 복원
+  // 초기 로그인 체크 로그인 x -> 쿼리스트링으로 뒤로가기 불가능하게 
   useEffect(() => {
-    // 로그인 체크
     const isLoggedIn = localStorage.getItem('isLogin') === 'true';
     setIsLogin(isLoggedIn);
 
@@ -38,46 +40,10 @@ export default function MyPage() {
       return;
     }
 
-    // 탭 상태 복원 (우선순위: URL 쿼리 > localStorage > 기본값)
-    const tabFromQuery = router.query.tab as TabItem['id'];
-    const tabFromStorage = localStorage.getItem(CURRENT_TAB_KEY) as TabItem['id'];
-    const initialTab = tabFromQuery || tabFromStorage || MY_PAGE_TABS[0].id;
-
-    // URL 업데이트 및 상태 설정
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, tab: initialTab }
-      },
-      undefined,
-      { shallow: true }
-    );
-
-    setCurrentTab(initialTab);
-    localStorage.setItem(CURRENT_TAB_KEY, initialTab);
     setIsInitialized(true);
-  }, [router.isReady, setIsLogin]);
+  }, [router, setIsLogin]);
 
-  // URL 쿼리 변경 감지
-  useEffect(() => {
-    if (router.query.tab) {
-      const newTab = router.query.tab as TabItem['id'];
-      setCurrentTab(newTab);
-      localStorage.setItem(CURRENT_TAB_KEY, newTab);
-    }
-  }, [router.query.tab]);
-
-  const handleTabChange = (id: TabItem['id']) => {
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, tab: id }
-      },
-      undefined,
-      { shallow: true }
-    );
-  };
-
+  //아직 구현중 
   const handleGatheringClick = (gatheringId: number) => {
     console.log('모임 클릭:', gatheringId);
   };
