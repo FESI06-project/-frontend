@@ -1,34 +1,33 @@
 // MyGatheringTab.tsx
-import { sortGatheringsByDate } from '@/utils/sortGatherings';
-import ChallengeSection from '../gathering-section/ChallengeSection';
 import MainCard from '../gathering-section/MainCard';
+import ChallengeSection from '../gathering-section/ChallengeSection';
 import CanceledGathering from '@/components/common/CanceledGathering';
 import Null from '@/components/common/Null';
 import { GatheringChallengeType, GatheringItem, GatheringStateType } from '@/types';
 import { useState } from 'react';
+import { sortGatheringsByDate } from '@/utils/sortGatherings';
+import Preparing from '@/components/common/Preparing';
 
-interface MyGatheringTabProps {
+interface MyGatheringProps {
   gatherings?: GatheringItem[];
   gatheringStates: { [key: number]: GatheringStateType };
   gatheringChallenges: { [key: number]: GatheringChallengeType };
   onGatheringClick: (gatheringId: number) => void;
-  onCancelParticipation: (gatheringId: number) => void;
+  onCancelGathering: (gatheringId: number) => void;
 }
 
 export default function MyGatheringTab({
   gatherings = [],
   gatheringStates,
   gatheringChallenges,
-  onCancelParticipation,
-}: MyGatheringTabProps) {
-  const [openChallenges, setOpenChallenges] = useState<{
-    [key: number]: boolean;
-  }>({});
+  onCancelGathering,
+}: MyGatheringProps) {
+  const [openChallenges, setOpenChallenges] = useState<{ [key: number]: boolean }>({});
 
   const handleToggleChallenge = (gatheringId: number) => {
-    setOpenChallenges((prev) => ({
+    setOpenChallenges(prev => ({
       ...prev,
-      [gatheringId]: !prev[gatheringId],
+      [gatheringId]: !prev[gatheringId]
     }));
   };
   const validGatherings = (gatherings || []).filter(gathering => {
@@ -37,8 +36,9 @@ export default function MyGatheringTab({
   });
 
   if (validGatherings.length === 0) {
-    return <Null message="아직 참여한 모임이 없습니다." />;
+    return <Null message="아직 생성한 모임이 없습니다." />;
   }
+
 
   const sortedGatherings = sortGatheringsByDate(validGatherings);
 
@@ -52,14 +52,12 @@ export default function MyGatheringTab({
         const isOpen = openChallenges[gathering.gatheringId];
 
         return (
-          <div
-            key={gathering.gatheringId}
-            className="relative rounded-lg overflow-hidden mb-[50px]"
-          >
+          <div key={gathering.gatheringId} className="relative rounded-lg overflow-hidden mb-[50px]">
+            <Preparing isVisible={true} message="준비 중인 서비스입니다..." />
             <MainCard
               gathering={gathering}
               state={state}
-              onCancelParticipation={onCancelParticipation}
+              onCancelGathering={onCancelGathering}
             />
 
             <ChallengeSection
@@ -73,13 +71,11 @@ export default function MyGatheringTab({
               type="gathering"
               gatheringStartDate={gathering.gatheringStartDate}
               gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
-              isReservationCancellable={
-                gathering.isReservationCancellable || false
-              }
+              isReservationCancellable={gathering.isReservationCancellable || false}
               onOverlay={() => {
-                setOpenChallenges((prev) => ({
+                setOpenChallenges(prev => ({
                   ...prev,
-                  [gathering.gatheringId]: false,
+                  [gathering.gatheringId]: false
                 }));
               }}
             />

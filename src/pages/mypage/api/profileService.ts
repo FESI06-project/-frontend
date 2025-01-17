@@ -1,7 +1,15 @@
 // api/memberService.ts
 import instance from '@/utils/axios';
 import apiRequest from '@/utils/apiRequest';
-import { ImageUpload, ProfileUpdate, UserProfile } from '@/types';
+import { UserProfile } from '@/types';
+
+interface ProfileUpdate {
+  nickName: string;
+  profileImageUrl: string | null;
+}
+interface ImageUpload {
+  imageUrl: string;
+}
 
 export const profileService = {
   // 프로필 정보 조회

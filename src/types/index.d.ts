@@ -1,4 +1,11 @@
 import { GatheringChallegeProps } from './index.d';
+
+export interface PageResponse<T> {
+  content: T[];
+  currentPage: number;
+  totalElements: number;
+  totalPages: number;
+}
 export interface TabItem {
   id: string;
   label: string;
@@ -8,13 +15,6 @@ export interface UserProfile {
   nickName: string;
   email: string;
   profileImageUrl: string;
-}
-interface ProfileUpdate {
-  nickName: string;
-  profileImageUrl: string | null;
-}
-interface ImageUpload {
-  imageUrl: string;
 }
 
 export interface GatheringItem {
