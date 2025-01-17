@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 import Tab from '@/components/common/Tab';
 import Profile from './components/profile/Profile';
-import GatheringTab from './components/tab/GatheringTab';
-import GuestbookTab from './components/tab/GuestbookTab';
-import MyGatheringTab from './components/tab/MyGatheringTab';
-import CalendarTab from './components/tab/CalendarTab';
-import Preparing from '@/components/common/Preparing';
+import JoinGathering from './components/join-gathering/JoinGathering';
+import MyGathering from './components/my-gathering/MyGathering';
+import Guestbook from './components/guestbook/Guestbook';
+import Calendar from './components/calendar/Calendar';
 import { useEffect, useState } from 'react';
 import type {
   TabItem,
@@ -307,7 +306,7 @@ export default function MyPage() {
 
         <div className="mt-[37px]">
           {currentTab === 'gathering' && (
-            <GatheringTab
+            <JoinGathering
               gatherings={userGatherings}
               gatheringStates={userGatheringStates}
               gatheringChallenges={userGatheringChallenges}
@@ -317,7 +316,7 @@ export default function MyPage() {
             />
           )}
           {currentTab === 'guestbook' && (
-            <GuestbookTab
+            <Guestbook
               guestbooks={userGuestbooks}
               gatherings={userGatherings}  // hostedGatherings 제외
               gatheringChallenges={userGatheringChallenges}
@@ -325,7 +324,7 @@ export default function MyPage() {
             />
           )}
           {currentTab === 'myGathering' && (
-            <MyGatheringTab
+            <MyGathering
               gatherings={hostedGatherings}
               gatheringStates={hostedGatheringStates}
               gatheringChallenges={hostedGatheringChallenges}
@@ -334,7 +333,7 @@ export default function MyPage() {
             />
           )}
           {currentTab === 'calendar' && (
-            <CalendarTab
+            <Calendar
               events={[
                 ...hostedGatherings.map((gathering) => ({
                   gatheringId: gathering.gatheringId,
