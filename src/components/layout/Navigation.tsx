@@ -126,18 +126,7 @@ export default function Navigation() {
 
           {/* 사용자 프로필 영역 */}
           {isLogin ? (
-            <>
-              <UserProfile nickname={user.nickName} />
-              <button
-                onClick={() => {
-                  localStorage.removeItem('isLogin');
-                  useMemberStore.getState().setIsLogin(false);
-                  router.push('/');
-                }}
-              >
-                {'로그아웃'}
-              </button>
-            </>
+            <UserProfile nickname={user.nickName} />
           ) : (
             <button
               onClick={() => router.push('/login')}
