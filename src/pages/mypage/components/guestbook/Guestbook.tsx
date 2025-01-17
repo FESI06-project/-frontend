@@ -25,7 +25,6 @@ export default function GuestbookTab() {
   const showToast = useToastStore((state) => state.show);
   const { 
     guestbooks, 
-    isLoading,
     fetchGuestbooks,
     createGuestbook,
     updateGuestbook 

@@ -1,4 +1,3 @@
-// GuestbookModal.tsx
 import { useState } from 'react';
 import Modal from '@/components/dialog/Modal';
 import Button from '@/components/common/Button';
@@ -32,7 +31,6 @@ export default function GuestbookModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 상세 로깅 추가
     console.log('Form submission started with:', {
       gatheringId,
       content,
@@ -55,7 +53,7 @@ export default function GuestbookModal({
     try {
       const requestData = {
         content: content.trim(),
-        rating: Number(rating) // 확실하게 숫자로 변환
+        rating: Number(rating)
       };
       
       console.log('Sending request with data:', requestData);
@@ -68,18 +66,15 @@ export default function GuestbookModal({
       
       console.log('Request successful');
       onSubmit(requestData);
-    } catch (error: any) {
+    } catch (err) {
       console.error('Error details:', {
-        error,
-        response: error.response?.data,
-        status: error.response?.status,
-        headers: error.response?.headers
+        error: err,
+        response: err instanceof Error ? err.message : 'Unknown error'
       });
       onValidationFail();
     }
   };
 
-  // 입력값 변경 시 로깅
   const handleContentChange = (value: string) => {
     console.log('Content changed:', value);
     setContent(value);
@@ -92,8 +87,11 @@ export default function GuestbookModal({
 
   return (
     <Modal title={isEditMode ? '방명록 수정' : '방명록 작성'} onClose={onClose}>
-      <Preparing isVisible={true} message="api 준비 중인 서비스입니다..." />
-      <div className="w-[500px] h-[340px]">
+      <div className="w-[500px] h-[340px] relative">
+        <div className="absolute inset-0 z-10 bg-white/80">
+          <Preparing isVisible={true} message="api 준비 중인 서비스입니다..." />
+        </div>
+        
         <form onSubmit={handleSubmit}>
           <div className="my-[20px] flex items-center gap-4">
             <Heart rating={rating} onChange={handleRatingChange} />

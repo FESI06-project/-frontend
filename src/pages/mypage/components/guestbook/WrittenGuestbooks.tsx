@@ -45,7 +45,7 @@ export default function WrittenGuestbooks({
           state.selectedGuestbook.reviewId
         );
         showToast('삭제가 완료되었습니다.', 'check');
-      } catch (error) {
+      } catch {
         showToast('삭제에 실패했습니다.', 'error');
       }
     }
