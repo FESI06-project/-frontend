@@ -151,6 +151,7 @@ export default function GatheringInfomationModal() {
               className="outline-dark-500 bg-dark-400 mb-[7px] h-[47px]"
             />
             <TextArea
+              placeholder="설명을 입력해 주세요. (50자 제한)"
               handleInputChange={(e) => handleGatheringDescriptionChange(e)}
               value={description}
               className="h-[76px] flex outline-dark-500 bg-dark-400 leading-[24px] overflow-x-auto resize-none whitespace-pre-wrap break-words"
@@ -162,8 +163,8 @@ export default function GatheringInfomationModal() {
       {/* 모임 태그 */}
       <div id="tags">
         <div className="mt-[20px] mb-[10px]">모임 태그</div>
-        <div className="relative">
-          <div className="h-[47px] bg-dark-400 border-dark-500 rounded-[8px] flex items-center gap-[10px] px-5">
+        <div className="relative  ">
+          <div className="h-[47px] rounded-[8px] border border-dark-500  bg-dark-400 flex items-center gap-[10px] px-5">
             {tags.map((tag, index) => (
               <div
                 className="h-[30px] w-[121px] flex items-center justify-center py-[7px] px-[10px] bg-dark-200 rounded-[10px] gap-2 z-10"
