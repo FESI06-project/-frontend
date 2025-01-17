@@ -112,8 +112,8 @@ export interface GatheringListItem {
 export interface CreateChallenge {
   title: string;
   description: string;
-  imageUrl: string;
-  maxPeopleCount: number;
+  imageUrl: string | null;
+  // maxPeopleCount: number;
   startDate: Date | null;
   endDate: Date | null;
 }
@@ -123,7 +123,7 @@ export interface CreateGatheringForm {
   description: string;
   mainType: string;
   subType: string;
-  imageUrl: string;
+  imageUrl: string | null;
   startDate: Date | null;
   endDate: Date | null;
   mainLocation: string;

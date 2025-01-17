@@ -11,11 +11,10 @@ interface FormData {
   title: string;
   description: string;
   tags: string[];
-  newTag: string;
-  imageUrl: string;
-  selectedPlaceSi: string;
-  selectedPlaceGu: string;
-  maxPeopleCount: number;
+  imageUrl: string | null;
+  mainLocation: string;
+  subLocation: string;
+  totalCount: number;
   startDate: Date | null;
   endDate: Date | null;
 }
@@ -31,75 +30,78 @@ export default function GatheringInfomationModal({
     title: '',
     description: '',
     tags: [],
-    newTag: '',
-    imageUrl: '',
-    selectedPlaceSi: 'seoul',
-    selectedPlaceGu: 'dongjak',
-    maxPeopleCount: 0,
+    imageUrl: null,
+    mainLocation: '서울시',
+    subLocation: '동작구',
+    totalCount: 0,
     startDate: null,
     endDate: null,
   });
 
   const placeSiItems = [
-    { value: 'seoul', label: '서울시' },
-    { value: 'busan', label: '부산시' },
-    { value: 'daejeon', label: '대전시' },
+    { value: '서울시', label: '서울시' },
+    { value: '부산시', label: '부산시' },
+    { value: '대전시', label: '대전시' },
   ];
 
   const placeGuItems = [
-    { value: 'dongjak', label: '동작구' },
-    { value: 'kangsu', label: '강서구' },
-    { value: 'mapo', label: '마포구' },
+    { value: '동작구', label: '동작구' },
+    { value: '강서구', label: '강서구' },
+    { value: '마포구', label: '마포구' },
   ];
 
-  // 상태 업데이트 핸들러
+  const findLabelByValue = (
+    items: Array<{ value: string; label: string }>,
+    value: string,
+  ): string => items.find((item) => item.value === value)?.label || '';
+
   const updateFormData = <K extends keyof FormData>(
     key: K,
     value: FormData[K],
   ) => {
-    setFormData((prev) => {
-      const updated = { ...prev, [key]: value };
-      onChange(updated); // 부모로 업데이트된 데이터 전달
-      return updated;
-    });
+    const updatedForm = { ...formData, [key]: value };
+
+    // 부모로 전달 시 `mainLocation`과 `subLocation`을 `label`로 변환
+    const transformedData = {
+      ...updatedForm,
+      mainLocation: findLabelByValue(placeSiItems, updatedForm.mainLocation),
+      subLocation: findLabelByValue(placeGuItems, updatedForm.subLocation),
+    };
+
+    setFormData(updatedForm);
+    onChange(transformedData);
   };
 
-  // 태그 관련 핸들러
   const handleTagDelete = (tag: string) => {
-    const updatedTags = formData.tags.filter((t) => t !== tag);
-    updateFormData('tags', updatedTags);
+    updateFormData(
+      'tags',
+      formData.tags.filter((t) => t !== tag),
+    );
   };
 
-  const handleNewTagChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length >= 6) {
-      alert('태그는 최대 5글자까지 추가 가능합니다.');
-      return;
-    }
-    updateFormData('newTag', e.target.value);
-  };
-
-  const handleEnterKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
-      if (formData.tags.length === 3) {
+  const handleTagInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget.value.trim();
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing && input) {
+      if (formData.tags.length >= 3) {
         alert('태그는 최대 3개까지 추가 가능합니다.');
-        updateFormData('newTag', '');
         return;
       }
-      const updatedTags = [...formData.tags, formData.newTag];
-      updateFormData('tags', updatedTags);
-      updateFormData('newTag', '');
+      if (formData.tags.includes(input)) {
+        alert('이미 추가된 태그입니다.');
+        return;
+      }
+      updateFormData('tags', [...formData.tags, input]);
+      e.currentTarget.value = '';
     }
   };
 
-  // 이미지 관련 핸들러
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
-    updateFormData('imageUrl', imageUrl);
+    updateFormData('imageUrl', URL.createObjectURL(file));
   };
 
-  const handleImageDelete = () => updateFormData('imageUrl', '');
+  const handleImageDelete = () => updateFormData('imageUrl', null);
 
   const handleImageEditClick = () => {
     const fileInput = document.getElementById('file-input') as HTMLInputElement;
@@ -112,7 +114,6 @@ export default function GatheringInfomationModal({
       <div id="information">
         <h2 className="mt-[30px] mb-[10px]">모임 정보</h2>
         <div className="flex gap-[10px]">
-          {/* 이미지 업로드 */}
           <div className="relative border-[1px] rounded-[10px] bg-dark-400 border-dark-500 w-[130px] h-[130px] flex">
             {formData.imageUrl && (
               <>
@@ -147,8 +148,6 @@ export default function GatheringInfomationModal({
               </button>
             </div>
           </div>
-
-          {/* 제목 및 설명 */}
           <div className="w-[360px]">
             <Input
               type="text"
@@ -168,7 +167,6 @@ export default function GatheringInfomationModal({
           </div>
         </div>
       </div>
-
       {/* 모임 태그 */}
       <div id="tags">
         <h2 className="mt-[20px] mb-[10px]">모임 태그</h2>
@@ -194,20 +192,11 @@ export default function GatheringInfomationModal({
           <input
             type="text"
             className="absolute w-full bg-transparent top-0 h-[47px] outline-none"
-            style={{
-              paddingLeft: `${
-                formData.tags.length * 121 +
-                30 +
-                (formData.tags.length - 1) * 10
-              }px`,
-            }}
-            value={formData.newTag}
-            onChange={handleNewTagChange}
-            onKeyDown={handleEnterKeyDown}
+            placeholder="태그를 입력 후 Enter를 눌러주세요."
+            onKeyDown={handleTagInputKeyDown}
           />
         </div>
       </div>
-
       {/* 장소 및 최대 인원 */}
       <div className="flex gap-[10px] mt-[20px]">
         <div id="place">
@@ -215,10 +204,8 @@ export default function GatheringInfomationModal({
           <div className="flex">
             <Select
               items={placeSiItems}
-              selectedItem={formData.selectedPlaceSi}
-              setSelectedItem={(value) =>
-                updateFormData('selectedPlaceSi', value)
-              }
+              selectedItem={formData.mainLocation}
+              setSelectedItem={(value) => updateFormData('mainLocation', value)}
               width="175px"
               height="47px"
               className="mr-[10px] w-[175px]"
@@ -226,28 +213,24 @@ export default function GatheringInfomationModal({
             />
             <Select
               items={placeGuItems}
-              selectedItem={formData.selectedPlaceGu}
-              setSelectedItem={(value) =>
-                updateFormData('selectedPlaceGu', value)
-              }
+              selectedItem={formData.subLocation}
+              setSelectedItem={(value) => updateFormData('subLocation', value)}
               width="175px"
               height="47px"
               currentSelectType={SelectType.DETAIL_EDIT_MODAL_PLACE_GU}
             />
           </div>
         </div>
-
         <div id="max-people-count">
           <h2 className="mb-[10px]">최대 인원</h2>
           <NumberSelect
-            targetNumber={formData.maxPeopleCount}
-            setTargetNumber={(value) => updateFormData('maxPeopleCount', value)}
+            targetNumber={formData.totalCount}
+            setTargetNumber={(value) => updateFormData('totalCount', value)}
             width="130px"
             height="47px"
           />
         </div>
       </div>
-
       {/* 날짜 선택 */}
       <div className="flex gap-[10px] mt-[20px]">
         <div>

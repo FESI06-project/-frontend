@@ -1,6 +1,5 @@
 import DatePickerCalendar from '@/components/common/DatePicker';
 import Input from '@/components/common/Input';
-import NumberSelect from '@/components/common/NumberSelect';
 import TextArea from '@/components/common/TextArea';
 import { CreateChallenge } from '@/types';
 import Image from 'next/image';
@@ -16,8 +15,7 @@ export default function ChallengeInfomationModal({
   const [formData, setFormData] = useState<CreateChallenge>({
     title: '',
     description: '',
-    imageUrl: '',
-    maxPeopleCount: 0,
+    imageUrl: null,
     startDate: null,
     endDate: null,
   });
@@ -115,7 +113,7 @@ export default function ChallengeInfomationModal({
 
       {/* 최대 인원 및 날짜 선택 */}
       <div className="flex gap-[10px] mt-[20px]">
-        <div id="max-people-count">
+        {/* <div id="max-people-count">
           <h2 className="mb-[10px]">최대 인원</h2>
           <NumberSelect
             targetNumber={formData.maxPeopleCount}
@@ -123,7 +121,7 @@ export default function ChallengeInfomationModal({
             className="w-[90px]"
             height="47px"
           />
-        </div>
+        </div> */}
         <div id="start-date">
           <h2 className="mb-[10px]">시작 날짜</h2>
           <DatePickerCalendar
