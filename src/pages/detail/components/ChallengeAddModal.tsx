@@ -6,7 +6,10 @@ import TextArea from '@/components/common/TextArea';
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 
-export default function ChallengeAddModal({ onClose }) {
+interface ChallengeAddModalProps {
+  onClose: () => void;
+}
+export default function ChallengeAddModal({ onClose }: ChallengeAddModalProps) {
   const [challengeTitle, setChallengeTitle] = useState('');
   const [challengeDescription, setChallengeDescription] = useState('');
   const [challengeImageUrl, setChallengeImageUrl] = useState('');
