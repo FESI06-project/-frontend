@@ -138,23 +138,25 @@ export default function ChallengeAddModal({ onClose }) {
           </div>
 
           {/* 시작 날짜 */}
-          <div>
+          <div className="w-[195px]">
             <p className="mb-[10px]">시작 날짜</p>
             <DatePickerCalendar
-              className="w-[195px] h-[47px]"
               selectedDate={startDate}
               setSelectedDate={setStartDate}
+              width="195px"
+              height="47px"
             />
           </div>
 
           {/* 마감 날짜 */}
-          <div>
+          <div className="w-[195px]">
             <p className="mb-[10px]">마감 날짜</p>
             <DatePickerCalendar
-              className="w-[195px] h-[47px]"
               selectedDate={endDate}
               setSelectedDate={setEndDate}
               minDate={startDate!}
+              width="195px"
+              height="47px"
             />
           </div>
         </div>
