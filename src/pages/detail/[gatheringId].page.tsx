@@ -173,7 +173,7 @@ export default function GatheringDetail() {
           className="w-full absolute flex text-lg font-bold z-10"
         />
         {gathering.captainStatus && (
-          <div className="w-full absolute flex justify-between">
+          <div className="w-full absolute flex justify-between z-20">
             <div></div>
             <button
               onClick={() => handleChallengeAddButtonClick()}
