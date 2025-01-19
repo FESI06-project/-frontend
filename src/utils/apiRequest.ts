@@ -4,6 +4,7 @@ interface ApiRequestProps<T> {
   param: string;
   method?: 'get' | 'post' | 'patch' | 'delete' | 'put';
   requestData?: T;
+  cookies?: string;
 }
 
 /**
@@ -31,9 +32,7 @@ export default async function apiRequest<T>({
     url: param,
     method,
     data: requestData ?? null, // requestData가 없을 경우 null 전송
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    withCredentials: true,
   });
 
   return response.data;

@@ -1,11 +1,4 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import {
-  GatheringChallengeType,
-  GatheringItem,
-  GatheringStateType,
-  GuestbookItem,
-} from '@/types';
 import GatheringInformation from './components/GatheringInformation';
 import GatheringChallenge from './components/GatheringChallenge';
 import GatheringGuestbook from './components/GatheringGuestbook';
@@ -13,10 +6,44 @@ import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
 import ChallengeAddModal from './components/ChallengeAddModal';
+import useGatheringStore from '@/stores/useGatheringStore';
+import { usePathname } from 'next/navigation';
+// import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+// import axiosInstance, { baseURL } from '@/utils/axios';
 
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext,
+// ) => {
+//   const { gatheringId } = context.params as { gatheringId: string };
+//   const apiEndpoint = '/api/v1/gatherings/' + gatheringId;
+//   let { cookie } = context.req.headers;
+//   cookie = cookie ? cookie : '';
+//   axiosInstance.defaults.headers.Cookie = cookie;
+
+//   try {
+//     const gathering = await axiosInstance.get<GatheringDetail>(apiEndpoint);
+
+//     return {
+//       props: { gathering },
+//     };
+//   } catch (error) {
+//     throw error;
+//   } finally {
+//     /**
+//      * "axios"에 등록한 특정 유저의 쿠키 제거
+//      * ( 브라우저에서의 요청이 아니라 서버에서의 요청이므로 다른 유저도 같은 서버를 사용하기에 쿠키가 공유되는 문제가 생김 )
+//      */
+//     axiosInstance.defaults.headers.Cookie = '';
+//   }
+// };
 export default function GatheringDetail() {
-  const router = useRouter();
-  const gatheringId = router.query.gatheringId;
+  const { fetchGathering, gathering } = useGatheringStore();
+  const pathname = usePathname();
+  const gatheringId = parseInt(pathname.charAt(pathname.length - 1));
+  useEffect(() => {
+    fetchGathering(gatheringId);
+  }, []);
+
   const [showModal, setShowModal] = useState(false);
   const gatheringTabItems = [
     {
@@ -30,141 +57,18 @@ export default function GatheringDetail() {
   ];
   const [currentTab, setCurrentTab] = useState('challenge');
 
-  const gathering: GatheringItem = {
-    gatheringId: 0,
-    gatheringTitle: '모임 제목',
-    gatheringDescription:
-      '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷 ',
-    captainStatus: true, // 이 사용자가 모임장인지 아닌지
-    gatheringImage: 'www.www.ww.w.w.w.w',
-    gatheringMainType: '유산소형',
-    gatheringSubType: '런닝',
-    gatheringTags: ['심심할 때', '스트레스', '런닝 최고'],
-    gatheringStartDate: '2022-22-22',
-    gatheringEndDate: '2022-23-23',
-    gatheringSi: '대전',
-    gatheringGu: '서구',
-    gatheringStatus: '시작전',
-    isReservationCancellable: false,
-  };
-
-  const gatheringState: GatheringStateType = {
-    gatheringJoinedFivePeopleImages: [
-      'www.www.ww.w.w.w.w',
-      'www.www.ww.w.w.w.w',
-      'www.www.ww.w.w.w.w',
-      'www.www.ww.w.w.w.w',
-      'www.www.ww.w.w.w.w',
-    ],
-    gatheringAverageRating: 4.5,
-    gatheringGuestbookCount: 100,
-    gatheringMaxPeopleCount: 10,
-    gatheringMinPeopleCount: 3,
-    gatheringJoinedPeopleCount: 6,
-    gatheringStatus: '진행중',
-  };
-
-  const gatheringChallenge: GatheringChallengeType = {
-    inProgressChallenges: [
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: false,
-        verificationStatus: true,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: true,
-        verificationStatus: false,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
-    ],
-    doneChallenges: [
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: true,
-        verificationStatus: true,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
-      {
-        gatheringId: 0,
-        challengeId: 0,
-        title: 'string',
-        description: 'string',
-        imageUrl: 'string',
-        participantCount: 10,
-        successParticipantCount: 3,
-        participantStatus: true,
-        verificationStatus: true,
-        startDate: '2025-01-09T08:12:48.388Z',
-        endDate: '2025-01-09T08:12:48.388Z',
-      },
-    ],
-  };
-
-  const gatheringGuestbook: Array<GuestbookItem> = [
-    {
-      reviewId: 0,
-      rating: 3.5,
-      content:
-        '방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가능합니다방명록은 최대 300자까지 작성 가',
-      createDate: '2025-01-10T02:30:13.671Z',
-      writer: {
-        memberId: 0,
-        nickName: '유저닉네임10글자까지',
-        profileImageUrl: 'string',
-      },
-      reviewOwnerStatus: true,
-      gatheringId: 1,
-    },
-    {
-      reviewId: 0,
-      rating: 0,
-      content: 'string',
-      createDate: '2025-01-10T02:30:13.671Z',
-      writer: {
-        memberId: 0,
-        nickName: 'string',
-        profileImageUrl: 'string',
-      },
-      reviewOwnerStatus: true,
-      gatheringId: 0,
-    },
-  ];
-
   const handleChallengeAddButtonClick = () => {
     setShowModal(true);
   };
 
-  useEffect(() => {
-    console.log(gatheringId);
-  }, []);
+  if (!gathering) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-[1200px] flex flex-col place-self-center ">
-      <GatheringInformation information={gathering} />
-      <GatheringState state={gatheringState} />
+      <GatheringInformation gathering={gathering} />
+      <GatheringState gatheringId={gatheringId} />
       <div className="flex mt-[50px] w-full h-[49px] relative items-center justify-center">
         <Tab
           items={gatheringTabItems}
@@ -196,13 +100,13 @@ export default function GatheringDetail() {
 
       {currentTab === 'challenge' ? (
         <GatheringChallenge
-          challenges={gatheringChallenge}
+          gatheringId={gatheringId}
           captainStatus={gathering.captainStatus ?? false}
         />
       ) : (
         <GatheringGuestbook
-          guestbooks={gatheringGuestbook}
-          gatheringGuestbookCount={gatheringState.gatheringGuestbookCount}
+          gatheringId={gatheringId}
+          gatheringGuestbookCount={gathering.guestBookCount}
         />
       )}
     </div>

@@ -4,21 +4,35 @@ import Popover from '@/components/common/Popover';
 import Modal from '@/components/dialog/Modal';
 import SubTag from '@/components/tag/SubTag';
 
-import { GatheringChallegeProps } from '@/types';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChallengeCertificationModal from './ChallengeCertificationModal';
+import useGatheringStore from '@/stores/useGatheringStore';
 
 export default function GatheringChallenge({
-  challenges,
   captainStatus,
-}: GatheringChallegeProps) {
+  gatheringId,
+}: {
+  captainStatus: boolean;
+  gatheringId: number;
+}) {
   const challengeSubTagItems = [
     { id: 'inProgress', label: '진행중인 챌린지' },
     { id: 'done', label: '마감된 챌린지' },
   ];
   const [currentTag, setCurrentTag] = useState('inProgress');
   const [currentInquiryState, setCurrentInquiryState] = useState('list');
+
+  const { fetchGatheringChallenges, challenges } = useGatheringStore();
+
+  useEffect(() => {
+    fetchGatheringChallenges(
+      gatheringId,
+      0,
+      10,
+      currentTag === 'inProgress' ? 'IN_PROGRESS' : 'CLOSED',
+    );
+  }, [gatheringId, currentTag]);
 
   return (
     <div>
@@ -77,23 +91,8 @@ export default function GatheringChallenge({
 
         <div className="flex flex-col mt-[31px] mb-[27px] gap-6">
           {currentInquiryState === 'list' ? (
-            currentTag === 'inProgress' ? (
-              challenges.inProgressChallenges &&
-              challenges.inProgressChallenges.length > 0 ? (
-                challenges?.inProgressChallenges.map((challenge, index) => (
-                  <Challenge
-                    key={index}
-                    challenge={{ ...challenge, captainStatus }}
-                  />
-                ))
-              ) : (
-                <div className="h-[250px] bg-dark-200 rounded-[10px] flex items-center justify-center">
-                  {'진행중인 챌린지가 없습니다.'}
-                </div>
-              )
-            ) : challenges.doneChallenges &&
-              challenges.doneChallenges.length > 0 ? (
-              challenges?.doneChallenges.map((challenge, index) => (
+            challenges ? (
+              challenges?.map((challenge, index) => (
                 <Challenge
                   key={index}
                   challenge={{ ...challenge, captainStatus }}
@@ -101,7 +100,7 @@ export default function GatheringChallenge({
               ))
             ) : (
               <div className="h-[250px] bg-dark-200 rounded-[10px] flex items-center justify-center">
-                {'마감된 챌린지가 없습니다.'}
+                {'챌린지가 없습니다.'}
               </div>
             )
           ) : (

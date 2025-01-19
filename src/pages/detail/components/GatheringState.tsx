@@ -2,17 +2,21 @@ import BarChart from '@/components/chart/BarChart';
 import Button from '@/components/common/Button';
 import Heart from '@/components/common/Heart';
 import OpenStatus from '@/components/tag/OpenStatus';
-import { GatheringStateType } from '@/types';
+import useGatheringStore from '@/stores/useGatheringStore';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function GatheringState({
-  state,
+  gatheringId,
 }: {
-  state: GatheringStateType;
+  gatheringId: number;
 }) {
-  const gatheringId = 1;
   const [heart, setHeart] = useState<boolean>(false);
+  const { fetchGatheringStatus, gatheringStatus } = useGatheringStore();
+  useEffect(() => {
+    fetchGatheringStatus(gatheringId);
+  }, []);
+
   useEffect(() => {
     setHeart(
       localStorage.getItem('zzims') &&
@@ -20,7 +24,7 @@ export default function GatheringState({
     );
   }, [gatheringId]);
 
-  if (!state) {
+  if (!gatheringStatus) {
     return <div>{'Loading..'}</div>;
   }
 
@@ -48,10 +52,10 @@ export default function GatheringState({
       <div id="rating">
         <h3 className="mb-[18px] font-bold">{'모임 만족도'}</h3>
         <div className="flex">
-          <Heart rating={state.gatheringAverageRating} />
-          <span className="ml-[10px]">{`${state.gatheringAverageRating} / 5.0`}</span>
+          <Heart rating={gatheringStatus.averageRating} />
+          <span className="ml-[10px]">{`${gatheringStatus.averageRating} / 5.0`}</span>
         </div>
-        <div className="text-sm mt-[18px]">{`총 ${state.gatheringGuestbookCount}개의 방명록`}</div>
+        <div className="text-sm mt-[18px]">{`총 ${gatheringStatus.guestBookCount}개의 방명록`}</div>
       </div>
       <div className="flex">
         <div className="gap-[15px] w-[388px]">
@@ -59,7 +63,7 @@ export default function GatheringState({
             <div id="joined-people" className="flex items-center">
               {/* 참가자 5인 프로필 이미지 */}
               <div className="flex -space-x-[10px]">
-                {state.gatheringJoinedFivePeopleImages?.map((image, index) => (
+                {gatheringStatus.participants?.map((image, index) => (
                   <Image
                     key={index}
                     src="/assets/image/fitmon.png"
@@ -71,9 +75,9 @@ export default function GatheringState({
                 ))}
 
                 {/* 추가 인원 */}
-                {state.gatheringJoinedPeopleCount >= 5 && (
+                {gatheringStatus.participantCount >= 5 && (
                   <div className="w-[29px] h-[29px] text-center content-center bg-white text-black text-sm font-extrabold rounded-full">
-                    +{state.gatheringJoinedPeopleCount - 5}
+                    +{gatheringStatus.participantCount - 5}
                   </div>
                 )}
               </div>
@@ -81,7 +85,7 @@ export default function GatheringState({
               {/* 참가자 수 안내 */}
               <div className="flex justify-center items-center ml-3">
                 <p className="text-primary text-sm font-semibold">
-                  {`${state.gatheringJoinedPeopleCount}명`}
+                  {`${gatheringStatus.participantCount}명`}
                 </p>
                 <p className="text-sm font-semibold">{'이 참가하고 있어요'}</p>
               </div>
@@ -90,21 +94,21 @@ export default function GatheringState({
             {/* 개설 상태 안내 */}
             <OpenStatus
               className="h-5"
-              gatheringJoinedPeopleCount={state.gatheringJoinedPeopleCount}
+              gatheringJoinedPeopleCount={gatheringStatus.participantCount}
             />
           </div>
 
           {/* 참가자 상태 바 */}
           <div className="my-[15px]">
             <BarChart
-              total={state.gatheringMaxPeopleCount}
-              value={state.gatheringJoinedPeopleCount}
+              total={gatheringStatus.totalCount}
+              value={gatheringStatus.participantCount}
             />
           </div>
 
           <div className="flex justify-between">
-            <p className="text-sm text-dark-700 mt-[15px]">{`최소 ${state.gatheringMinPeopleCount}명`}</p>
-            <p className="text-sm text-dark-700 mt-[15px]">{`최대 ${state.gatheringMaxPeopleCount}명`}</p>
+            <p className="text-sm text-dark-700 mt-[15px]">{`최소 ${gatheringStatus.minCount}명`}</p>
+            <p className="text-sm text-dark-700 mt-[15px]">{`최대 ${gatheringStatus.totalCount}명`}</p>
           </div>
         </div>
         <div className="flex mb-auto h-[56px]" id="buttons">

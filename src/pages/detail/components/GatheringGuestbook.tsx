@@ -1,17 +1,21 @@
 import Heart from '@/components/common/Heart';
 import Pagination from '@/components/common/Pagination';
-import { GuestbookItem } from '@/types';
+import useGatheringStore from '@/stores/useGatheringStore';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function GatheringGuestbook({
-  guestbooks,
   gatheringGuestbookCount,
+  gatheringId,
 }: {
-  guestbooks: Array<GuestbookItem>;
   gatheringGuestbookCount: number;
+  gatheringId: number;
 }) {
   const [page, setPage] = useState(0);
+  const { guestbooks, fetchGatheringGuestbooks } = useGatheringStore();
+  useEffect(() => {
+    fetchGatheringGuestbooks(gatheringId, 0, 10);
+  }, [gatheringId]);
   return (
     <div className="mt-[43px] mb-[130px] w-full">
       {/* 방명록 리스트 */}
