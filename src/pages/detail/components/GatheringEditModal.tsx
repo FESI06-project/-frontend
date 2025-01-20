@@ -5,37 +5,36 @@ import NumberSelect from '@/components/common/NumberSelect';
 import Select from '@/components/common/Select';
 import TextArea from '@/components/common/TextArea';
 import { SelectType } from '@/stores/useSelectStore';
-import { GatheringItem } from '@/types';
+// import { GatheringItem } from '@/types';
 import Image from 'next/image';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { GatheringDetail } from '../[gatheringId].page';
 
 export default function GatheringEditModal({
   information,
 }: {
-  information: GatheringItem;
+  information: GatheringDetail;
 }) {
-  const [title, setTitle] = useState(information.gatheringTitle);
-  const [description, setDescription] = useState(
-    information.gatheringDescription,
-  );
+  const [title, setTitle] = useState(information.title);
+  const [description, setDescription] = useState(information.description);
   const [newTag, setNewTag] = useState('');
-  const [tags, setTags] = useState<Array<string>>(information.gatheringTags);
-  const [imageUrl, setImageUrl] = useState(information.gatheringImage);
+  const [tags, setTags] = useState<Array<string>>(information.tags);
+  const [imageUrl, setImageUrl] = useState(information.imageUrl);
   const [selectedPlaceSi, setSelectedPlaceSi] = useState('seoul');
   const [selectedPlaceGu, setSelectedPlaceGu] = useState('dongjak');
   const [maxPeopleCount, setMaxPeopleCount] = useState(0);
   const [startDate, setStartDate] = useState<Date | null>(
     new Date(
-      information.gatheringStartDate.split('-').map((str) => parseInt(str))[0],
-      information.gatheringStartDate.split('-').map((str) => parseInt(str))[1],
-      information.gatheringStartDate.split('-').map((str) => parseInt(str))[2],
+      information.startDate.split('-').map((str) => parseInt(str))[0],
+      information.startDate.split('-').map((str) => parseInt(str))[1],
+      information.startDate.split('-').map((str) => parseInt(str))[2],
     ),
   );
   const [endDate, setEndDate] = useState<Date | null>(
     new Date(
-      information.gatheringEndDate.split('-').map((str) => parseInt(str))[0],
-      information.gatheringEndDate.split('-').map((str) => parseInt(str))[1],
-      information.gatheringEndDate.split('-').map((str) => parseInt(str))[2],
+      information.endDate.split('-').map((str) => parseInt(str))[0],
+      information.endDate.split('-').map((str) => parseInt(str))[1],
+      information.endDate.split('-').map((str) => parseInt(str))[2],
     ),
   );
   const placeSiItems = [

@@ -1,16 +1,16 @@
 import Image from 'next/image';
 import TagList from './tag';
-import { GatheringItem } from '@/types';
 import Popover from '@/components/common/Popover';
 import { useState } from 'react';
 import Alert from '@/components/dialog/Alert';
 import Modal from '@/components/dialog/Modal';
 import GatheringEditModal from './GatheringEditModal';
+import { GatheringDetail } from '../[gatheringId].page';
 
 export default function GatheringInformation({
   information,
 }: {
-  information: GatheringItem;
+  information: GatheringDetail;
 }) {
   const [showSelectAlert, setShowSelectAlert] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -46,9 +46,7 @@ export default function GatheringInformation({
     <div id="gathering-information" className="w-full">
       <div id="type-information">
         <div className="flex mt-20 gap-[10px]">
-          <p className="text-lg font-semibold">
-            {information.gatheringMainType ?? ''}
-          </p>
+          <p className="text-lg font-semibold">{information.mainType ?? ''}</p>
           <Image
             src="/assets/image/arrow-right.svg"
             alt="arrow"
@@ -56,7 +54,7 @@ export default function GatheringInformation({
             height={12}
           />
           <p className="text-primary text-lg font-semibold">
-            {information.gatheringSubType}
+            {information.subType}
           </p>
         </div>
       </div>
@@ -72,7 +70,7 @@ export default function GatheringInformation({
           <div className="flex justify-between">
             {' '}
             <h3 className="text-[1.75rem] font-semibold">
-              {information.gatheringTitle}
+              {information.title}
             </h3>
             {information.captainStatus && (
               <>
@@ -97,10 +95,10 @@ export default function GatheringInformation({
           </div>
 
           <p className="text-[1.125rem] text-dark-700 mt-[3px]">
-            {information.gatheringDescription}
+            {information.description}
           </p>
           <div id="tags" className="mt-5">
-            <TagList tagList={information.gatheringTags} />
+            <TagList tagList={information.tags} />
           </div>
           <div
             id="range-and-place"
@@ -116,7 +114,7 @@ export default function GatheringInformation({
               />
               <h1 className="font-semibold text-lg">{'모임 기간'}</h1>
               <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>{' '}
-              <p className="text-lg">{`${information.gatheringStartDate}~${information.gatheringEndDate}`}</p>
+              <p className="text-lg">{`${information.startDate}~${information.endDate}`}</p>
             </div>
             <div id="place" className="flex items-center">
               <Image
@@ -128,7 +126,7 @@ export default function GatheringInformation({
               />
               <h1 className="font-semibold text-lg">{'모임 장소'}</h1>
               <p className="bg-dark-500 h-[12px] w-[1px] mx-[15px]"></p>
-              <p className="text-lg">{`${information.gatheringSi} ${information.gatheringGu}`}</p>
+              <p className="text-lg">{`${information.mainLocation} ${information.subLocation}`}</p>
             </div>
           </div>
         </div>

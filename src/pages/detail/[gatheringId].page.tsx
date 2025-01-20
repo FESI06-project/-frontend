@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   GatheringChallengeType,
-  GatheringItem,
+  // GatheringItem,
   GatheringStateType,
   GuestbookItem,
 } from '@/types';
@@ -13,8 +13,84 @@ import GatheringState from './components/GatheringState';
 import Tab from '@/components/common/Tab';
 import Modal from '@/components/dialog/Modal';
 import ChallengeAddModal from './components/ChallengeAddModal';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import apiRequest from '@/utils/apiRequest';
+// import axios from 'axios';
+// import axiosInstance from '@/utils/axios';
+// import { parse } from 'path';
 
-export default function GatheringDetail() {
+export interface GatheringDetail {
+  gatheringId: number;
+  captainStatus: boolean;
+  title: string;
+  description: string;
+  mainType: string;
+  subType: string;
+  imageUrl: string;
+  startDate: string;
+  endDate: string;
+  mainLocation: string;
+  subLocation: string;
+  minCount: number;
+  totalCount: number;
+  participantCount: number;
+  status: string;
+  tags: Array<string>;
+  participants: Array<GatheringParticipants>;
+  averageRating: number;
+  guestBookCount: number;
+}
+
+interface GatheringParticipants {
+  memberId: number;
+  nickName: string;
+  profileImageUrl: string;
+}
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const { gatheringId } = context.params as { gatheringId: string };
+  const numericGatheringId = Number(gatheringId);
+  const apiEndpoint = `api/v1/gatherings/${numericGatheringId}`;
+  // console.log(gatheringId);
+  // if (!gatheringId) {
+  //   throw new Error('Invalid gatheringId');
+  // }
+
+  // 클라이언트의 요청 헤더에서 쿠키 가져오기
+  // const headers = {
+  //   Cookie: context.req.headers.cookie || '',
+  // };
+  // const cookies = context.req.headers.cookie || '';
+
+  // axios.defaults.headers.Cookie = cookies;
+
+  // // 여기서 이제 axios 요청하기
+
+  // axios.defaults.headers.Cookie = '';
+
+  const gathering = await apiRequest<GatheringDetail>({
+    param: apiEndpoint,
+    // header: {},
+  });
+
+  return {
+    props: { gathering },
+  };
+
+  // try {
+  //   const response = await axiosInstance.get(apiEndpoint);
+  //   return {
+  //     props: { gathering: response.data },
+  //   };
+  // } catch (error) {
+  //   console.error(error);
+  //   return {
+  //     props: { gathering: null },
+  //   };
+  // }
+};
+export default function GatheringDetail(gathering: GatheringDetail) {
   const router = useRouter();
   const gatheringId = router.query.gatheringId;
   const [showModal, setShowModal] = useState(false);
@@ -29,24 +105,6 @@ export default function GatheringDetail() {
     },
   ];
   const [currentTab, setCurrentTab] = useState('challenge');
-
-  const gathering: GatheringItem = {
-    gatheringId: 0,
-    gatheringTitle: '모임 제목',
-    gatheringDescription:
-      '디스크립션은50자까지 올수있습니답둘셋넷 디스크립션은50자까지 올수있습니답둘셋넷 ',
-    captainStatus: true, // 이 사용자가 모임장인지 아닌지
-    gatheringImage: 'www.www.ww.w.w.w.w',
-    gatheringMainType: '유산소형',
-    gatheringSubType: '런닝',
-    gatheringTags: ['심심할 때', '스트레스', '런닝 최고'],
-    gatheringStartDate: '2022-22-22',
-    gatheringEndDate: '2022-23-23',
-    gatheringSi: '대전',
-    gatheringGu: '서구',
-    gatheringStatus: '시작전',
-    isReservationCancellable: false,
-  };
 
   const gatheringState: GatheringStateType = {
     gatheringJoinedFivePeopleImages: [
